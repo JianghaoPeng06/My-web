@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JasperPeng</title>
+<meta name="description" content="Designer · Creator · Explorer —— 一个关于视觉设计、想象力、技术与人类创造力的个人档案馆。">
+<meta name="author" content="JasperPeng">
+<link rel="canonical" href="/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="JasperPeng">
+<meta property="og:description" content="Designer · Creator · Explorer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JasperPeng">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<style>
+  /* 扉页是全屏封面，不挂导航 —— 压一条栏会破坏「翻开一本书」的感觉 */
+  .cover { position: relative; overflow: hidden; min-height: 100svh;
+    display: grid; grid-template-rows: 1fr auto; justify-items: center;
+    padding-block: 32px 24px; background: var(--bg);
+    transition: opacity .5s var(--e-io), transform .5s var(--e-out), filter .5s var(--e-io); }
+  .cover.is-leaving { opacity: 0; transform: scale(1.015); filter: blur(3px); }
+  .cover__aurora { position: absolute; inset: -18%; pointer-events: none; }
+  .cover__aurora span { position: absolute; border-radius: 50%; filter: blur(90px); will-change: transform, opacity; }
+  /* 五级 alpha 缓降，避免大尺寸渐变出现同心圆色带 */
+  .aur1 { width: 52vmax; height: 52vmax; top: 2%; left: 4%; opacity: .5;
+    background: radial-gradient(circle, color-mix(in srgb, var(--star) 42%, transparent) 0%,
+      color-mix(in srgb, var(--star) 31%, transparent) 24%, color-mix(in srgb, var(--star) 17%, transparent) 44%,
+      color-mix(in srgb, var(--star) 6%, transparent) 62%, transparent 79%);
+    animation: aurA 19s var(--e-io) infinite alternate; }
+  .aur2 { width: 46vmax; height: 46vmax; top: 26%; right: 0; opacity: .42;
+    background: radial-gradient(circle, #9B72CB 0%, color-mix(in srgb, #9B72CB 62%, transparent) 24%,
+      color-mix(in srgb, #9B72CB 30%, transparent) 44%, color-mix(in srgb, #9B72CB 10%, transparent) 62%, transparent 79%);
+    animation: aurB 23s var(--e-io) infinite alternate; }
+  .aur3 { width: 42vmax; height: 42vmax; bottom: -4%; left: 30%; opacity: .34;
+    background: radial-gradient(circle, #F5B8D0 0%, color-mix(in srgb, #F5B8D0 70%, transparent) 24%,
+      color-mix(in srgb, #F5B8D0 38%, transparent) 44%, color-mix(in srgb, #F5B8D0 14%, transparent) 62%, transparent 79%);
+    animation: aurC 29s var(--e-io) infinite alternate; }
+  @keyframes aurA { to { transform: translate3d(7vw, 5vh, 0) scale(1.16); opacity: .2 } }
+  @keyframes aurB { to { transform: translate3d(-6vw, 7vh, 0) scale(1.22); opacity: .16 } }
+  @keyframes aurC { to { transform: translate3d(4vw, -6vh, 0) scale(1.12); opacity: .16 } }
+  .cover__grain { position: absolute; inset: 0; pointer-events: none; opacity: .55; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E"); }
+  .cover__inner { position: relative; z-index: 1; align-self: center; text-align: center; padding-inline: var(--gutter); }
+  .cover__mark { display: grid; place-items: center; width: 46px; height: 46px; margin: 0 auto 30px;
+    border-radius: var(--r-sm); background: var(--text); color: var(--bg); font-size: 22px; font-weight: 700;
+    animation: cin .9s var(--e-out) both; }
+  .cover__title { font-size: clamp(46px, 9vw, 128px); line-height: 1; letter-spacing: -.055em; font-weight: 600;
+    animation: cin .9s var(--e-out) .08s both; }
+  .cover__sub { margin-top: 20px; color: var(--text-muted); font-size: clamp(11px, 1.15vw, 14px);
+    font-weight: 500; letter-spacing: .22em; text-transform: uppercase; animation: cin .9s var(--e-out) .16s both; }
+  .cover__enter { margin-top: clamp(36px, 5vw, 56px); animation: cin .9s var(--e-out) .24s both; }
+  .cover__foot { position: relative; z-index: 1; color: var(--text-faint); font-size: 12px;
+    animation: cin .9s var(--e-out) .36s both; }
+  @keyframes cin { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .aur1 { opacity: .22 }
+    :root:not([data-theme="light"]) .aur2 { opacity: .18 }
+    :root:not([data-theme="light"]) .aur3 { opacity: .16 }
+    :root:not([data-theme="light"]) .cover__grain { mix-blend-mode: screen; opacity: .4 }
+  }
+</style>
+</head>
+<body data-base="" data-page="cover">
+
+<main class="cover" id="cover">
+  <!-- 白底之上极淡的色彩呼吸。三团渐变周期 19/23/29 秒互质，叠加后看不出循环 -->
+  <div class="cover__aurora" aria-hidden="true">
+    <span class="aur1"></span><span class="aur2"></span><span class="aur3"></span>
+  </div>
+  <div class="cover__grain" aria-hidden="true"></div>
+
+  <div class="cover__inner">
+    <p class="cover__mark" aria-hidden="true">J</p>
+    <h1 class="cover__title">JasperPeng</h1>
+    <p class="cover__sub">Designer · Creator · Explorer</p>
+    <p class="cover__enter">
+      <a class="btn btn--primary" href="home.html" data-enter>Explore<i class="arr" aria-hidden="true"></i></a>
+    </p>
+  </div>
+
+  <p class="cover__foot">JasperPeng©2026</p>
+</main>
+
+<script>
+  /* 扉页很轻，不加载整套 main.js */
+  (function () {
+    var link = document.querySelector('[data-enter]'), cover = document.getElementById('cover');
+    if (!link || !cover) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if ('startViewTransition' in document) return;   /* 交给 CSS，避免叠两套动画 */
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      cover.classList.add('is-leaving');
+      setTimeout(function () { location.href = link.getAttribute('href'); }, 460);
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{TITLE}} — JasperPeng</title>
+<meta name="description" content="{{DESC}}">
+<link rel="canonical" href="/{{DIR}}/{{CAT}}/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{TITLE}} — JasperPeng">
+<meta property="og:description" content="{{DESC}}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="{{BASE}}css/style.css">
+<link rel="icon" href="{{BASE}}assets/icons/favicon.svg" type="image/svg+xml">
+</head>
+<!--
+  data-base    路径前缀，让嵌套目录里的链接和根目录一致
+  data-section 所属一级板块   data-cat 当前分类
+-->
+<body data-base="{{BASE}}" data-page="category" data-section="{{SECTION}}" data-cat="{{CAT}}">
+
+<a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
+
+<!-- #chrome:header:start -->
+<!-- #chrome:header:end -->
+
+<main id="main">
+
+  <nav class="crumb wrap" aria-label="页面位置" data-crumb></nav>
+
+  <!-- 通用版式 · 标题区 -->
+  <section class="cat-hero wrap">
+    <p class="eyebrow reveal" data-cat-eyebrow>{{SECTION_LABEL}}</p>
+    <h1 class="h1 reveal" data-cat-title>{{TITLE}}</h1>
+    <p class="lede reveal" style="margin-top:var(--sp-md)" data-cat-desc>{{DESC}}</p>
+    <p class="cat-hero__count reveal" data-cat-count></p>
+  </section>
+
+  <!-- 同级分类：可在 Artifacts / Design / … 之间横跳，当前项高亮 -->
+  <div class="wrap">
+    <nav class="cats reveal" aria-label="同级分类" data-siblings></nav>
+  </div>
+
+  <!-- 通用版式 · 3 列大板块 -->
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="grid grid--3" data-cat-grid></div>
+      <div class="empty" data-cat-empty hidden>
+        <p class="h3" data-i18n="emptyTitle">这个分类还没有内容</p>
+        <p class="lede" data-i18n="emptyDesc">先去看看其他板块，或者回到首页。</p>
+        <p style="margin-top:var(--sp-md)">
+          <a class="btn btn--soft" href="{{BASE}}home.html"><span data-i18n="toHome">回到首页</span><i class="arr" aria-hidden="true"></i></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 通用版式 · 2 列小板块（内容多于 3 篇时才出现） -->
+  <section class="section section--alt" data-cat-list-wrap hidden>
+    <div class="wrap">
+      <div class="list" data-cat-list></div>
+    </div>
+  </section>
+
+  <noscript>
+    <div class="wrap notice">
+      <p>这个分类页需要 JavaScript 才能列出文章。你也可以从 <a href="{{BASE}}home.html">首页</a> 浏览全部板块。</p>
+    </div>
+  </noscript>
+
+</main>
+
+<!-- #chrome:footer:start -->
+<!-- #chrome:footer:end -->
+
+<button class="to-top" type="button" data-totop aria-label="回到顶部">
+  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg>
+</button>
+
+<script src="{{BASE}}js/assets.js"></script>
+<script src="{{BASE}}js/data.js"></script>
+<script src="{{BASE}}js/main.js" defer></script>
+</body>
+</html>

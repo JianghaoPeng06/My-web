@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>地图 — JasperPeng</title>
+<meta name="description" content="虚构世界的地图与地理体系。">
+<link rel="canonical" href="/universe/maps/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="地图 — JasperPeng">
+<meta property="og:description" content="虚构世界的地图与地理体系。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+</head>
+<!--
+  data-base    路径前缀，让嵌套目录里的链接和根目录一致
+  data-section 所属一级板块   data-cat 当前分类
+-->
+<body data-base="../../" data-page="category" data-section="universe" data-cat="maps">
+
+<a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
+
+<!-- #chrome:header:start -->
+<header class="hdr" data-header>
+  <div class="hdr__inner">
+    <a class="brand" href="../../home.html" aria-label="JasperPeng">
+      <span class="brand__mark" aria-hidden="true">J</span>
+      <span class="brand__name">JasperPeng</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+          <button class="nav__link" type="button" data-menu data-t="s.research.label" aria-expanded="false" aria-controls="menu-research">研究</button>
+          <button class="nav__link" type="button" data-menu data-t="s.works.label" aria-expanded="false" aria-controls="menu-works">作品</button>
+          <button class="nav__link" type="button" data-menu data-t="s.universe.label" aria-expanded="false" aria-controls="menu-universe">世界观</button>
+          <button class="nav__link" type="button" data-menu data-t="s.characters.label" aria-expanded="false" aria-controls="menu-characters">角色</button>
+          <button class="nav__link" type="button" data-menu data-t="s.about.label" aria-expanded="false" aria-controls="menu-about">关于</button>
+          <button class="nav__link" type="button" data-menu data-t="s.contact.label" aria-expanded="false" aria-controls="menu-contact">联系</button>
+    </nav>
+    <div class="hdr__tools">
+      <button class="icon-btn" type="button" data-search-open aria-label="Search" title="⌘K">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16 21 21"/></svg>
+      </button>
+      <button class="icon-btn burger" type="button" data-burger aria-label="Menu" aria-expanded="false" aria-controls="mnav">
+        <span class="burger__icon" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+  <!-- 六块面板装在同一个舞台里：舞台就是那块白底，横移时它只把高度补间到
+       新面板的高度，不收起再展开（openai / apple 的顶栏就是这么干的，
+       见 css 的 .menu-stage 与 main.js 的 dropdowns） -->
+  <div class="menu-stage" data-menu-stage>
+      <div class="menu" id="menu-research" role="region" aria-label="研究" aria-hidden="true">
+        <div class="menu__grid" style="--cols:2">
+          <div><p class="menu__kicker" data-t="s.research.kicker">浏览研究</p><ul class="menu__list"><li><a href="../../research/news/" data-t="c.research.news.label">动态<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../research/philosophy/" data-t="c.research.philosophy.label">思考<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+          <div><p class="menu__kicker" data-t="s.research.featKicker">我的研究</p><ul class="menu__list"><li><a href="../../article.html?a=the-word" data-t="f.research.0.label">The word<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../article.html?a=image-read" data-t="f.research.1.label">图像<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+        </div>
+      </div>
+      <div class="menu" id="menu-works" role="region" aria-label="作品" aria-hidden="true">
+        <div class="menu__grid" style="--cols:2">
+          <div><p class="menu__kicker" data-t="s.works.kicker">浏览作品</p><ul class="menu__list"><li><a href="../../works/artifacts/" data-t="c.works.artifacts.label">手作<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../works/design/" data-t="c.works.design.label">设计<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../works/illustrations/" data-t="c.works.illustrations.label">插画<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../works/comics/" data-t="c.works.comics.label">漫画<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../works/art/" data-t="c.works.art.label">艺术<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../works/photos/" data-t="c.works.photos.label">摄影<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+          <div><p class="menu__kicker" data-t="s.works.featKicker">精选</p><ul class="menu__list"><li><a href="../../article.html?a=tongtong-mask" data-t="f.works.0.label">嗵嗵仮面<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../article.html?a=indian-anklets" data-t="f.works.1.label">印度脚铃<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../article.html?a=doudou-seasons" data-t="f.works.2.label">DOUDOU<i class="arr" aria-hidden="true"></i></a></li></ul><p class="menu__kicker menu__kicker--sp" data-t="gk.works">摄影</p><div class="menu__tags"><a href="../../article.html?a=osaka" data-t="g.works.0.label">大阪</a><a href="../../article.html?a=kyoto" data-t="g.works.1.label">京都</a><a href="../../article.html?a=nanjing-station" data-t="g.works.2.label">南京站</a></div></div>
+        </div>
+      </div>
+      <div class="menu" id="menu-universe" role="region" aria-label="世界观" aria-hidden="true">
+        <div class="menu__grid" style="--cols:2">
+          <div><p class="menu__kicker" data-t="s.universe.kicker">浏览世界观</p><ul class="menu__list"><li><a href="../../universe/maps/" data-t="c.universe.maps.label">地图<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../universe/terrain/" data-t="c.universe.terrain.label">地形<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../universe/metro/" data-t="c.universe.metro.label">轨道交通<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../universe/architecture/" data-t="c.universe.architecture.label">建筑<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../universe/scenery/" data-t="c.universe.scenery.label">风景<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+          <div><p class="menu__kicker" data-t="s.universe.featKicker">品牌</p><ul class="menu__list"><li><a href="../../article.html?a=noote-metro" data-t="f.universe.0.label">NooteMetro<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+        </div>
+      </div>
+      <div class="menu" id="menu-characters" role="region" aria-label="角色" aria-hidden="true">
+        <div class="menu__grid" style="--cols:2">
+          <div><p class="menu__kicker" data-t="s.characters.kicker">浏览角色</p><ul class="menu__list"><li><a href="../../characters/" data-t="c.characters.oc.label">原创角色<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../characters/" data-t="c.characters.character.label">角色<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../characters/illustrations/" data-t="c.characters.illustrations.label">角色插画<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../characters/guidebook/" data-t="c.characters.guidebook.label">设定集<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+          <div><p class="menu__kicker" data-t="s.characters.featKicker">原创角色</p><ul class="menu__list"><li><a href="../../characters/?c=caomeijiang" data-t="f.characters.0.label">草莓酱<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../characters/?c=la" data-t="f.characters.1.label">拉<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../characters/?c=qi" data-t="f.characters.2.label">祈<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../characters/?c=xiahua" data-t="f.characters.3.label">夏花<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+        </div>
+      </div>
+      <div class="menu" id="menu-about" role="region" aria-label="关于" aria-hidden="true">
+        <div class="menu__grid" style="--cols:2">
+          <div><p class="menu__kicker" data-t="s.about.kicker">关于我</p><ul class="menu__list"><li><a href="../../resources/resources/" data-t="c.about.resources.label">资源<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../resources/guidelines/" data-t="c.about.guidelines.label">规范<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../resources/misc/" data-t="c.about.misc.label">杂项<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+          <div><p class="menu__kicker" data-t="s.about.featKicker">规范</p><ul class="menu__list"><li><a href="../../article.html?a=fonts" data-t="f.about.0.label">字体<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../article.html?a=logos" data-t="f.about.1.label">标识<i class="arr" aria-hidden="true"></i></a></li><li><a href="../../resources/resources/" data-t="f.about.2.label">插画素材<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+        </div>
+      </div>
+      <div class="menu" id="menu-contact" role="region" aria-label="联系" aria-hidden="true">
+        <div class="menu__grid" style="--cols:2">
+          <div><p class="menu__kicker" data-t="s.contact.kicker">联系</p><ul class="menu__list"><li><a href="mailto:pengjasper@icloud.com" data-t="l.contact.0.label">邮件<i class="arr" aria-hidden="true"></i></a></li><li><span class="menu__soon" data-t="l.contact.1.label">X<em data-i18n="soon">暂未开放</em></span></li><li><span class="menu__soon" data-t="l.contact.2.label">Bluesky<em data-i18n="soon">暂未开放</em></span></li><li><span class="menu__soon" data-t="l.contact.3.label">Github<em data-i18n="soon">暂未开放</em></span></li></ul></div>
+          <div><p class="menu__kicker" data-t="n.contact.0.kicker">关于我</p><p class="menu__note menu__note--dim" data-t="n.contact.0.text">常驻中国大陆</p><p class="menu__kicker menu__kicker--sp" data-t="n.contact.1.kicker">赞助</p><p class="menu__note menu__note--dim" data-t="n.contact.1.text">暂未开放</p></div>
+        </div>
+      </div>
+  </div>
+</header>
+<div class="scrim" data-scrim aria-hidden="true"></div>
+
+<div class="mnav" id="mnav" data-mnav hidden>
+  <nav aria-label="Mobile">
+    <ul>
+        <li class="mnav__item">
+          <button class="mnav__head" type="button" data-acc data-t="s.research.label" aria-expanded="false">研究<i class="chev" aria-hidden="true"></i></button>
+          <div class="mnav__panel"><a href="../../research/news/" data-t="c.research.news.label">动态</a><a href="../../research/philosophy/" data-t="c.research.philosophy.label">思考</a></div>
+        </li>
+        <li class="mnav__item">
+          <button class="mnav__head" type="button" data-acc data-t="s.works.label" aria-expanded="false">作品<i class="chev" aria-hidden="true"></i></button>
+          <div class="mnav__panel"><a href="../../works/artifacts/" data-t="c.works.artifacts.label">手作</a><a href="../../works/design/" data-t="c.works.design.label">设计</a><a href="../../works/illustrations/" data-t="c.works.illustrations.label">插画</a><a href="../../works/comics/" data-t="c.works.comics.label">漫画</a><a href="../../works/art/" data-t="c.works.art.label">艺术</a><a href="../../works/photos/" data-t="c.works.photos.label">摄影</a></div>
+        </li>
+        <li class="mnav__item">
+          <button class="mnav__head" type="button" data-acc data-t="s.universe.label" aria-expanded="false">世界观<i class="chev" aria-hidden="true"></i></button>
+          <div class="mnav__panel"><a href="../../universe/maps/" data-t="c.universe.maps.label">地图</a><a href="../../universe/terrain/" data-t="c.universe.terrain.label">地形</a><a href="../../universe/metro/" data-t="c.universe.metro.label">轨道交通</a><a href="../../universe/architecture/" data-t="c.universe.architecture.label">建筑</a><a href="../../universe/scenery/" data-t="c.universe.scenery.label">风景</a></div>
+        </li>
+        <li class="mnav__item">
+          <button class="mnav__head" type="button" data-acc data-t="s.characters.label" aria-expanded="false">角色<i class="chev" aria-hidden="true"></i></button>
+          <div class="mnav__panel"><a href="../../characters/" data-t="c.characters.oc.label">原创角色</a><a href="../../characters/" data-t="c.characters.character.label">角色</a><a href="../../characters/illustrations/" data-t="c.characters.illustrations.label">角色插画</a><a href="../../characters/guidebook/" data-t="c.characters.guidebook.label">设定集</a></div>
+        </li>
+        <li class="mnav__item">
+          <button class="mnav__head" type="button" data-acc data-t="s.about.label" aria-expanded="false">关于<i class="chev" aria-hidden="true"></i></button>
+          <div class="mnav__panel"><a href="../../resources/resources/" data-t="c.about.resources.label">资源</a><a href="../../resources/guidelines/" data-t="c.about.guidelines.label">规范</a><a href="../../resources/misc/" data-t="c.about.misc.label">杂项</a></div>
+        </li>
+        <li class="mnav__item">
+          <button class="mnav__head" type="button" data-acc data-t="s.contact.label" aria-expanded="false">联系<i class="chev" aria-hidden="true"></i></button>
+          <div class="mnav__panel"><a href="mailto:pengjasper@icloud.com" data-t="l.contact.0.label">邮件</a><span class="menu__soon" data-t="l.contact.1.label">X<em data-i18n="soon">暂未开放</em></span><span class="menu__soon" data-t="l.contact.2.label">Bluesky<em data-i18n="soon">暂未开放</em></span><span class="menu__soon" data-t="l.contact.3.label">Github<em data-i18n="soon">暂未开放</em></span></div>
+        </li>
+    </ul>
+  </nav>
+</div>
+
+<div class="search" data-search hidden>
+  <div class="search__panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search__bar">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16 21 21"/></svg>
+      <input type="search" data-search-input data-i18n="search" placeholder="搜索文章、作品、角色…" autocomplete="off" spellcheck="false" aria-label="Search">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="search__results" data-search-results aria-live="polite"></div>
+  </div>
+</div><!-- #chrome:header:end -->
+
+<main id="main">
+
+  <nav class="crumb wrap" aria-label="页面位置" data-crumb></nav>
+
+  <!-- 通用版式 · 标题区 -->
+  <section class="cat-hero wrap">
+    <p class="eyebrow reveal" data-cat-eyebrow>浏览世界观</p>
+    <h1 class="h1 reveal" data-cat-title>地图</h1>
+    <p class="lede reveal" style="margin-top:var(--sp-md)" data-cat-desc>虚构世界的地图与地理体系。</p>
+    <p class="cat-hero__count reveal" data-cat-count></p>
+  </section>
+
+  <!-- 同级分类：可在 Artifacts / Design / … 之间横跳，当前项高亮 -->
+  <div class="wrap">
+    <nav class="cats reveal" aria-label="同级分类" data-siblings></nav>
+  </div>
+
+  <!-- 通用版式 · 3 列大板块 -->
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="grid grid--3" data-cat-grid></div>
+      <div class="empty" data-cat-empty hidden>
+        <p class="h3" data-i18n="emptyTitle">这个分类还没有内容</p>
+        <p class="lede" data-i18n="emptyDesc">先去看看其他板块，或者回到首页。</p>
+        <p style="margin-top:var(--sp-md)">
+          <a class="btn btn--soft" href="../../home.html"><span data-i18n="toHome">回到首页</span><i class="arr" aria-hidden="true"></i></a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 通用版式 · 2 列小板块（内容多于 3 篇时才出现） -->
+  <section class="section section--alt" data-cat-list-wrap hidden>
+    <div class="wrap">
+      <div class="list" data-cat-list></div>
+    </div>
+  </section>
+
+  <noscript>
+    <div class="wrap notice">
+      <p>这个分类页需要 JavaScript 才能列出文章。你也可以从 <a href="../../home.html">首页</a> 浏览全部板块。</p>
+    </div>
+  </noscript>
+
+</main>
+
+<!-- #chrome:footer:start -->
+<footer class="ftr">
+  <div class="wrap">
+    <nav class="crumb" aria-label="Breadcrumb" data-crumb>
+      <a href="../../home.html">JasperPeng</a>
+    </nav>
+    <div class="ftr__grid">
+      <div class="ftr__col"><h3 data-t="s.research.kicker">浏览研究</h3><a href="../../research/news/" data-t="c.research.news.label">动态</a><a href="../../research/philosophy/" data-t="c.research.philosophy.label">思考</a></div>
+      <div class="ftr__col"><h3 data-t="s.works.kicker">浏览作品</h3><a href="../../works/artifacts/" data-t="c.works.artifacts.label">手作</a><a href="../../works/design/" data-t="c.works.design.label">设计</a><a href="../../works/illustrations/" data-t="c.works.illustrations.label">插画</a><a href="../../works/comics/" data-t="c.works.comics.label">漫画</a><a href="../../works/art/" data-t="c.works.art.label">艺术</a><a href="../../works/photos/" data-t="c.works.photos.label">摄影</a></div>
+      <div class="ftr__col"><h3 data-t="s.universe.kicker">浏览世界观</h3><a href="../../universe/maps/" data-t="c.universe.maps.label">地图</a><a href="../../universe/terrain/" data-t="c.universe.terrain.label">地形</a><a href="../../universe/metro/" data-t="c.universe.metro.label">轨道交通</a><a href="../../universe/architecture/" data-t="c.universe.architecture.label">建筑</a><a href="../../universe/scenery/" data-t="c.universe.scenery.label">风景</a></div>
+      <div class="ftr__col"><h3 data-t="s.characters.kicker">浏览角色</h3><a href="../../characters/" data-t="c.characters.oc.label">原创角色</a><a href="../../characters/" data-t="c.characters.character.label">角色</a><a href="../../characters/illustrations/" data-t="c.characters.illustrations.label">角色插画</a><a href="../../characters/guidebook/" data-t="c.characters.guidebook.label">设定集</a></div>
+      <div class="ftr__col"><h3 data-t="s.about.kicker">关于我</h3><a href="../../resources/resources/" data-t="c.about.resources.label">资源</a><a href="../../resources/guidelines/" data-t="c.about.guidelines.label">规范</a><a href="../../resources/misc/" data-t="c.about.misc.label">杂项</a></div>
+      <div class="ftr__col"><h3 data-t="s.contact.kicker">联系</h3><a href="mailto:pengjasper@icloud.com" data-t="l.contact.0.label">邮件</a><span class="ftr__soon" data-t="l.contact.1.label">X<em data-i18n="soon">暂未开放</em></span><span class="ftr__soon" data-t="l.contact.2.label">Bluesky<em data-i18n="soon">暂未开放</em></span><span class="ftr__soon" data-t="l.contact.3.label">Github<em data-i18n="soon">暂未开放</em></span><h3 data-t="n.contact.0.kicker">关于我</h3><p class="ftr__note" data-t="n.contact.0.text">常驻中国大陆</p><h3 data-t="n.contact.1.kicker">赞助</h3><p class="ftr__note" data-t="n.contact.1.text">暂未开放</p></div>
+    </div>
+    <div class="ftr__bar">
+      <p class="ftr__copy">JasperPeng©2026</p>
+      <div class="lang" data-lang>
+        <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.75"/><path d="M3.25 12h17.5M12 3.25c4.8 5.5 4.8 12.1 0 17.5-4.8-5.4-4.8-12 0-17.5Z"/></svg>
+          <span data-lang-label>简体中文 中国大陆</span><i class="chev" aria-hidden="true"></i>
+        </button>
+        <ul class="lang__menu" role="listbox" data-lang-menu></ul>
+      </div>
+    </div>
+  </div>
+</footer><!-- #chrome:footer:end -->
+
+<button class="to-top" type="button" data-totop aria-label="回到顶部">
+  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg>
+</button>
+
+<script src="../../js/assets.js"></script>
+<script src="../../js/data.js"></script>
+<script src="../../js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,975 @@
+/* =============================================================
+   JasperPeng — style.css
+
+   实现原则（按优先级）：
+     信息架构 > 视觉层级 > 比例关系 > 具体像素坐标
+
+   Figma 的坐标不直接翻译成 CSS。栅格用 grid + gap + max-width
+   推导，使其在 1280 屏上恰好还原设计稿，其余宽度自动适配：
+     3 列大卡  (1240 - 44×2) / 3 = 384   ← 设计稿值
+     2 列列表  (1240 - 70)   / 2 = 585   ← 设计稿值
+     页脚 5 列 (1240 - 110×4)/ 5 = 160   ← 设计稿值
+
+   01 令牌   02 复位   03 版心   04 排版   05 按钮/图标
+   06 页头   07 下拉   08 移动导航   09 搜索   10 Hero
+   11 海报   12 卡片   13 列表块   14 分类导航   15 页内条
+   16 分类页  17 文章页  18 角色页  19 页脚  20 入场/回顶
+   21 响应式  22 偏好设置
+   ============================================================= */
+
+/* ---------- 01 令牌 ---------- */
+:root {
+  /* 色板 —— 取自 Figma 导出 */
+  --bg:            #FFFFFF;
+  --bg-2:          #F5F5F5;   /* Figma 画布底色 */
+  --bg-3:          #EFEFEF;
+  --surface:       #FFFFFF;
+  --placeholder:   #EDEDED;   /* Figma 图片文件预留 */
+  --text:          #1A1A1A;   /* Figma 主文字 */
+  --text-2:        #454545;
+  --text-muted:    #727272;   /* Figma 次要文字 */
+  --text-faint:    #767676;   /* Figma 原值 #9C9C9C 白底仅 2.75，压到过 AA 的 4.58 */
+  --border:        #E6E6E6;
+  --border-2:      #CCCCCC;
+  --accent:        #1F8FC9;   /* 由 Figma 星体色 #4BB6EC 加深，保证文字对比度 */
+  --star:          #4BB6EC;   /* Figma 星体本色 */
+  --on-accent:     #FFFFFF;
+
+  /* 深色（角色页固定使用，其余页面跟随系统） */
+  --d-bg:          #0B0B0C;
+  --d-bg-2:        #151517;
+  --d-surface:     #1C1C1F;
+  --d-text:        #F2F2F2;
+  --d-text-2:      #C9C9C9;
+  --d-muted:       #9A9A9A;
+  --d-faint:       #8C8C8C;
+  --d-border:      #2A2A2D;
+  --d-chip:        #8E8E93;   /* Figma 角色页缩略图色 */
+
+  /* 字阶 —— 导航 17px 对齐 openai 实测值 */
+  --fs-display: clamp(56px, 8.6vw, 116px);
+  --fs-h1:      clamp(36px, 4.6vw, 64px);
+  --fs-h2:      clamp(26px, 3vw, 40px);
+  --fs-h3:      clamp(19px, 1.6vw, 22px);
+  --fs-body:    17px;
+  --fs-nav:     17px;
+  --fs-small:   15px;
+  --fs-caption: 13px;
+
+  /* 间距 */
+  --sp-sm: 12px; --sp-md: 20px;
+  --sp-lg: 32px; --sp-xl: 56px; --sp-2xl: 88px;
+  --sp-section: clamp(72px, 8.6vw, 128px);
+
+  /* 版心与栅格（推导值，1280 屏上等于设计稿） */
+  --content:  1240px;
+  --gutter:   clamp(20px, 3.2vw, 40px);
+  --gap-card: clamp(18px, 2.5vw, 32px);    /* Figma 是 44；openai 实测 24，取 32 折中 */
+  --gap-list: clamp(24px, 5.47vw, 70px);   /* 1280 屏 → 70 */
+  --gap-foot: clamp(20px, 8.6vw, 110px);   /* 1280 屏 → 110 */
+  --nav-gap:  43px;                        /* 设计稿实测 42.9 */
+  --header-h: 72px;                        /* Figma 顶部栏 1280×72 */
+  --panel-w:  761px;                       /* Figma 下拉面板宽 */
+
+  /* 圆角 —— Figma: 10 / 17.5 / 22 / 26 */
+  --r-xs: 8px;  --r-sm: 12px; --r-md: 18px;
+  --r-lg: 26px; --r-xl: 36px; --r-pill: 999px;
+
+  /* 动效 */
+  --e-out:   cubic-bezier(.16, 1, .3, 1);
+  --e-io:    cubic-bezier(.25, .1, .25, 1);
+  --e-press: cubic-bezier(.2, .9, .3, 1.3);
+  --t-fast: .18s; --t: .32s; --t-slow: .7s;
+
+  --shadow-md: 0 8px 30px rgba(16,16,16,.07);
+  --shadow-lg: 0 20px 60px rgba(16,16,16,.12), 0 4px 12px rgba(16,16,16,.05);
+
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC",
+          Inter, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Songti SC", "Source Han Serif SC", Georgia, serif;
+}
+
+/* 跟随系统深色（角色页除外，它自己锁死） */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--d-bg); --bg-2: var(--d-bg-2); --bg-3: #202024;
+    --surface: var(--d-bg); --placeholder: var(--d-surface);
+    --text: var(--d-text); --text-2: var(--d-text-2);
+    --text-muted: var(--d-muted); --text-faint: var(--d-faint);
+    --border: var(--d-border); --border-2: #3A3A3E;
+    --accent: #5FC2F0; --on-accent: #0B0B0C;
+    --shadow-md: 0 8px 30px rgba(0,0,0,.45);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,.6);
+  }
+}
+
+/* ---------- 02 复位 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ⚠ 关键修复：作者样式里的 display 会盖过浏览器默认的 [hidden]{display:none}。
+   之前 .search-overlay{display:grid} 就把 hidden 架空了，
+   导致一层透明遮罩长期盖住整页，任何位置都点不动。 */
+[hidden] { display: none !important; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 20px);
+  background: var(--bg);
+  /* 用 clip 而不是 hidden —— hidden 会让根元素变成滚动容器，
+     从而废掉页头的 position: sticky。clip 只裁剪，不建滚动容器。 */
+  overflow-x: clip;
+}
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+body.is-locked { overflow: hidden; }
+img, svg, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+::selection { background: var(--text); color: var(--bg); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 5px; }
+
+.skip-link {
+  position: fixed; top: 12px; left: 12px; z-index: 1000;
+  padding: 10px 18px; border-radius: var(--r-pill);
+  background: var(--text); color: var(--bg);
+  transform: translateY(-200%); transition: transform var(--t) var(--e-out);
+}
+.skip-link:focus { transform: none; }
+
+/* ---------- 03 版心 ---------- */
+.wrap {
+  width: min(100% - var(--gutter) * 2, var(--content));
+  margin-inline: auto;
+}
+.section { padding-block: var(--sp-section); }
+.section--alt  { background: var(--bg-2); }
+.section--tight { padding-block: clamp(40px, 5vw, 72px); }
+
+/* ---------- 04 排版 ---------- */
+.eyebrow {
+  margin-bottom: var(--sp-sm);
+  color: var(--text-muted);
+  font-size: var(--fs-caption); font-weight: 600; letter-spacing: .04em;
+}
+.h1 { font-size: var(--fs-h1); line-height: 1.04; letter-spacing: -.04em; font-weight: 600; text-wrap: balance; }
+.h2 { font-size: var(--fs-h2); line-height: 1.1;  letter-spacing: -.03em; font-weight: 600; text-wrap: balance; }
+.h3 { font-size: var(--fs-h3); line-height: 1.28; letter-spacing: -.02em; font-weight: 550; }
+.lede { color: var(--text-muted); font-size: clamp(16px, 1.5vw, 19px); line-height: 1.55; max-width: 60ch; }
+.caption { color: var(--text-faint); font-size: var(--fs-caption); }
+
+.sec-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: var(--sp-lg); margin-bottom: clamp(28px, 3.4vw, 44px);
+}
+.sec-head__text { max-width: 62ch; }
+
+/* ---------- 05 按钮 / 图标 ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding-inline: 28px;      /* Figma 主按钮 188×52 */
+  border-radius: var(--r-pill);
+  font-size: var(--fs-small); font-weight: 600; white-space: nowrap;
+  transition: background var(--t-fast) var(--e-io), color var(--t-fast) var(--e-io),
+              transform var(--t) var(--e-out), box-shadow var(--t) var(--e-io),
+              border-color var(--t-fast) var(--e-io);
+}
+.btn--primary { background: var(--text); color: var(--bg); }
+.btn--primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); background: var(--accent); color: var(--on-accent); }
+.btn--soft { background: var(--bg-2); color: var(--text); }
+.section--alt .btn--soft { background: var(--surface); }
+.btn--soft:hover { background: var(--bg-3); transform: translateY(-2px); }
+.btn--ghost { border: 1px solid var(--border-2); }
+.btn--ghost:hover { background: var(--bg-2); border-color: var(--text); }
+.btn:active { transform: scale(.965); transition-timing-function: var(--e-press); transition-duration: .12s; }
+
+.link-more {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding-bottom: 4px; border-bottom: 1px solid currentColor;
+  font-size: var(--fs-small); font-weight: 500; flex: none;
+  transition: opacity var(--t-fast) var(--e-io);
+}
+.link-more:hover { opacity: .62; }
+
+.arr {
+  width: 18px; height: 10px; flex: none; background: currentColor;
+  -webkit-mask: var(--m-arr) center/contain no-repeat; mask: var(--m-arr) center/contain no-repeat;
+  transition: transform var(--t) var(--e-out);
+}
+:root {
+  --m-arr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 10'%3E%3Cpath d='M0 5h16M12 1l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.btn:hover .arr, .link-more:hover .arr { transform: translateX(4px); }
+
+.chev {
+  width: 9px; height: 9px; flex: none; opacity: .5;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform var(--t) var(--e-out), opacity var(--t-fast);
+}
+/* 右上外链箭头：right+top 两条边未旋转时本来就指向 ↗ */
+.ne {
+  display: inline-block; width: 9px; height: 9px; flex: none; opacity: .5;
+  border-right: 1.4px solid currentColor; border-top: 1.4px solid currentColor;
+}
+.ico { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn {
+  display: inline-grid; place-items: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  transition: background var(--t-fast) var(--e-io), transform var(--t-fast) var(--e-out);
+}
+.icon-btn:hover { background: var(--bg-2); }
+.icon-btn:active { transform: scale(.9); transition-timing-function: var(--e-press); }
+
+/* ---------- 06 页头 ---------- */
+.hdr {
+  position: sticky; top: 0; z-index: 500;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--t) var(--e-io), background var(--t) var(--e-io);
+}
+.hdr.is-scrolled { border-bottom-color: var(--border); }
+.hdr__inner {
+  display: flex; align-items: center;
+  height: var(--header-h);
+  width: min(100% - var(--gutter) * 2, var(--content));
+  margin-inline: auto;
+}
+.brand { display: inline-flex; align-items: center; gap: 10px; margin-right: auto; font-weight: 600; letter-spacing: -.02em; }
+.brand__mark {
+  display: grid; place-items: center;
+  width: 28px; height: 28px; border-radius: var(--r-xs);
+  background: var(--text); color: var(--bg); font-size: 15px; font-weight: 700;
+  transition: transform var(--t) var(--e-out), background var(--t) var(--e-io);
+}
+.brand:hover .brand__mark { transform: rotate(-8deg) scale(1.06); background: var(--accent); color: var(--on-accent); }
+.brand__name { font-size: var(--fs-nav); }
+
+/* 导航右对齐，间距沿用设计稿实测的 43px */
+.nav { display: flex; align-items: center; gap: var(--nav-gap); margin-right: var(--sp-lg); }
+.nav__link {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 5px;
+  height: var(--header-h);
+  font-size: var(--fs-nav); font-weight: 450; color: var(--text-2);
+  transition: color var(--t-fast) var(--e-io);
+}
+.nav__link::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 18px; height: 1.5px;
+  background: currentColor; transform: scaleX(0); transform-origin: right;
+  transition: transform var(--t) var(--e-out);
+}
+.nav__link:hover, .nav__link[aria-expanded="true"] { color: var(--text); }
+.nav__link:hover::after, .nav__link[aria-expanded="true"]::after { transform: scaleX(1); transform-origin: left; }
+
+.hdr__tools { display: flex; align-items: center; gap: 4px; }
+.burger { display: none; }
+.burger__icon { position: relative; display: block; width: 18px; height: 14px; }
+.burger__icon span {
+  position: absolute; left: 0; width: 100%; height: 1.6px; border-radius: 2px;
+  background: currentColor; transition: transform var(--t) var(--e-out);
+}
+.burger__icon span:nth-child(1) { top: 4px; }
+.burger__icon span:nth-child(2) { top: 9px; }
+.burger[aria-expanded="true"] .burger__icon span:nth-child(1) { transform: translateY(2.5px) rotate(45deg); }
+.burger[aria-expanded="true"] .burger__icon span:nth-child(2) { transform: translateY(-2.5px) rotate(-45deg); }
+
+.progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; }
+.progress span {
+  display: block; height: 100%; width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--star));
+  transition: width .1s linear;
+}
+
+/* ---------- 07 下拉面板 ----------
+   按 Figma「主页顶部栏展示」那七张画板量的：
+     · 背景通栏（画板 1280 宽的白条，连着顶栏一起 439 高）
+     · 内容块 761 宽，右边缘贴版心右侧（x 499 → 1260，画板边距 20）
+     · 左边缘 499 正好落在第一个导航项 Research（字形 x 510.6）上
+   所以内容左边缘对齐「顶栏第一个标签」，左侧那段留白是设计里就有的呼吸。
+   这里不写死 761 —— 改成运行时量出第一个导航项的位置（见 main.js 的
+   alignMenus），换语言、换字号、换视口都能对上，Figma 那组数值是其中一例。 */
+/* 六块面板装在同一个舞台 .menu-stage 里，舞台自己就是那块白底。
+   舞台高度 0 → 内容高度，overflow:hidden —— 帘幕效果由高度动画本身产生，
+   面板不用再各自裁一遍，也就不会出现「旧面板比新背景高、露在白底外面」。
+
+   三种情形：
+     从无到有   高度 0 → h，内容自上而下淡入
+     面板横移   高度 h₁ → h₂ 连续补间，两块内容按指针方向横向交接；
+                帘幕一步都不播 —— 指针没离开顶栏，这块白底就一直在
+     彻底收起   高度 → 0
+
+   高度由 JS 量好写进 --menu-h（见 main.js 的 dropdowns）。
+   下边那道线用 box-shadow 画 —— border 会算进 border-box 的高度里，
+   和量出来的内容高度差 1px，接缝会露出来。 */
+.menu-stage {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 500;
+  height: 0; overflow: hidden;
+  background: var(--surface);
+  box-shadow: 0 1px 0 transparent;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: height .46s var(--e-out), opacity .2s var(--e-io),
+              box-shadow .2s var(--e-io), visibility 0s linear .46s;
+}
+.menu-stage.is-on {
+  height: var(--menu-h, 0px);
+  opacity: 1; visibility: visible; pointer-events: auto;
+  box-shadow: 0 1px 0 var(--border);
+  transition: height .46s var(--e-out), opacity .16s var(--e-io),
+              box-shadow .2s var(--e-io), visibility 0s;
+}
+/* 横移时高度补间稍快，透明度完全不动 —— 动一下就会看见闪 */
+.menu-stage.is-swap {
+  transition: height .34s var(--e-out), opacity 0s, box-shadow .2s var(--e-io), visibility 0s;
+}
+
+.menu {
+  position: absolute; top: 0; left: 0; right: 0;
+  width: 100%;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .2s var(--e-io), visibility 0s linear .2s;
+}
+.menu.is-open {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transition: opacity .2s var(--e-io), visibility 0s;
+}
+/* 内容块：左边缘 = 第一个导航项，右边缘 = 版心右侧。
+   --menu-left 由 JS 量好写在 .hdr 上；JS 没跑起来时退回 761 定宽右对齐（Figma 值）。
+   上下留白也取自稿件：顶 32、底 72。 */
+.menu__grid {
+  display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+  gap: var(--sp-lg) 50px;                          /* 稿件里列间距 50 */
+  width: auto;
+  margin-left: var(--menu-left, auto);
+  margin-right: max(var(--gutter), calc((100% - var(--content)) / 2));
+  max-width: calc(100% - var(--gutter) * 2);
+  padding-block: clamp(24px, 2.5vw, 32px) clamp(36px, 5.6vw, 72px);
+  opacity: 0; transform: translateY(-10px);
+  transition: opacity .3s var(--e-io) .04s, transform .5s var(--e-out) .04s;
+}
+/* JS 没跑起来时量不到导航位置，退回 Figma 的 761 定宽右对齐 */
+html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) * 2); }
+.menu.is-open .menu__grid { opacity: 1; transform: none; }
+
+/* 面板之间横移：帘幕一步都不重放，两块内容按指针的移动方向交接。
+   --dx 由 JS 按「往右还是往左」写进来，所以从「研究」滑到「联系」是往左送、
+   反过来是往右送，方向感和鼠标一致。 */
+.menu.is-swap-in { transition: none; }
+.menu.is-swap-in .menu__grid { animation: menuIn .34s var(--e-out) both; }
+/* 让位的那块：留在原地把内容淡出去，JS 在动画结束后摘掉这个类 */
+.menu.is-leaving {
+  opacity: 1; visibility: visible; pointer-events: none; transition: none;
+}
+.menu.is-leaving .menu__grid { animation: menuOut .2s var(--e-io) both; }
+@keyframes menuIn  { from { opacity: 0; transform: translateX(var(--dx, 18px)); }
+                     to   { opacity: 1; transform: none; } }
+@keyframes menuOut { from { opacity: 1; transform: none; }
+                     to   { opacity: 0; transform: translateX(calc(var(--dx, 18px) * -1)); } }
+/* 面板展开时顶栏转成实色，和面板连成一整块（openai 同样如此） */
+.hdr.is-menu-open { background: var(--surface); border-bottom-color: transparent; }
+.menu__kicker {
+  margin-bottom: var(--sp-sm); color: var(--text-faint);
+  font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+}
+.menu__kicker--sp { margin-top: var(--sp-md); }
+.menu__list a, .menu__soon {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 0;
+  font-size: var(--fs-small); font-weight: 500;
+  transition: color var(--t-fast) var(--e-io);
+}
+.menu__list a:hover { color: var(--accent); }
+.menu__list a:hover .arr { transform: translateX(3px); }
+.menu__list a .arr { width: 14px; opacity: 0; transition: opacity var(--t-fast), transform var(--t) var(--e-out); }
+.menu__list a:hover .arr { opacity: .7; }
+.menu__soon { color: var(--text-faint); cursor: default; }
+.menu__soon em {
+  font-style: normal; font-size: 11px; padding: 2px 8px;
+  border: 1px solid var(--border); border-radius: var(--r-pill); color: var(--text-muted);
+}
+.menu__note { font-size: var(--fs-small); color: var(--text-2); }
+.menu__note--dim { color: var(--text-faint); }
+.menu__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.menu__tags a {
+  display: inline-flex; align-items: center; height: 32px; padding-inline: 14px;
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  font-size: 13px; color: var(--text-2);
+  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
+}
+.menu__tags a:hover { border-color: var(--text); color: var(--text); background: var(--bg-2); }
+
+.scrim {
+  position: fixed; inset: var(--header-h) 0 0; z-index: 490;
+  /* Figma 展开态里压的是 #9C9C9C @ 68%，这里收到 45% —— 68% 在真实网页上过重 */
+  background: rgba(156,156,156,.45); opacity: 0; pointer-events: none;
+  transition: opacity var(--t) var(--e-io);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .scrim { background: rgba(0,0,0,.55); }
+}
+.scrim.is-on { opacity: 1; pointer-events: auto; }
+
+/* ---------- 08 移动导航 ---------- */
+.mnav {
+  position: fixed; inset: var(--header-h) 0 0; z-index: 495;
+  background: var(--bg); overflow-y: auto;
+  padding: var(--sp-md) var(--gutter) var(--sp-2xl);
+  opacity: 0; transform: translateY(-10px);
+  transition: opacity var(--t) var(--e-io), transform var(--t) var(--e-out);
+}
+.mnav.is-on { opacity: 1; transform: none; }
+.mnav__item { border-bottom: 1px solid var(--border); }
+.mnav__head {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  padding: 18px 2px; font-size: 21px; font-weight: 500; letter-spacing: -.02em;
+}
+.mnav__head[aria-expanded="true"] .chev { transform: rotate(-135deg) translate(-3px, -3px); }
+.mnav__panel { display: grid; height: 0; overflow: hidden; transition: height var(--t) var(--e-out); }
+.mnav__panel a, .mnav__panel .menu__soon { padding: 11px 2px 11px 16px; font-size: 16px; color: var(--text-muted); }
+.mnav__panel > :last-child { margin-bottom: 18px; }
+
+/* ---------- 09 搜索 ---------- */
+.search {
+  position: fixed; inset: 0; z-index: 600;
+  display: grid; align-items: start; justify-items: center;
+  padding: clamp(56px, 12vh, 140px) var(--gutter) var(--sp-md);
+  background: rgba(12,12,14,.34);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  opacity: 0; transition: opacity var(--t) var(--e-io);
+}
+.search.is-on { opacity: 1; }
+.search__panel {
+  width: min(680px, 100%); overflow: hidden;
+  background: var(--surface); border-radius: var(--r-md); box-shadow: var(--shadow-lg);
+  transform: translateY(-10px) scale(.985); transition: transform var(--t) var(--e-out);
+}
+.search.is-on .search__panel { transform: none; }
+.search__bar { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--border); }
+.search__bar .ico { flex: none; stroke: var(--text-muted); }
+.search__bar input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font-size: var(--fs-body); color: var(--text); }
+.search__bar input::placeholder { color: var(--text-faint); }
+.search__bar kbd { font: 500 11px/1 var(--font); color: var(--text-muted); border: 1px solid var(--border-2); border-radius: 6px; padding: 5px 7px; }
+.search__results { max-height: min(52vh, 440px); overflow-y: auto; padding: 8px; }
+.sr { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: var(--r-sm); }
+.sr:hover, .sr.is-sel { background: var(--bg-2); }
+.sr__thumb { width: 40px; height: 40px; flex: none; border-radius: var(--r-xs); background: var(--placeholder); object-fit: cover; }
+.sr__t { display: block; font-size: var(--fs-small); font-weight: 500; }
+.sr__c { display: block; font-size: 12px; color: var(--text-muted); }
+.sr__empty { padding: 36px; text-align: center; color: var(--text-muted); font-size: var(--fs-small); }
+
+/* ---------- 10 Hero ---------- */
+.hero { padding-block: clamp(40px, 6vw, 88px) clamp(48px, 6vw, 96px); }
+.hero__inner {
+  display: grid; grid-template-columns: 1.05fr .95fr;
+  align-items: center; gap: clamp(28px, 4vw, 64px);
+}
+.hero__title {
+  display: flex; flex-direction: column;
+  font-size: var(--fs-display); line-height: .92; letter-spacing: -.055em; font-weight: 600;
+}
+.hero__title span:nth-child(2) { margin-left: .26em; }
+.hero__title span:nth-child(3) { margin-left: .52em; }
+.hero__lede { margin-top: clamp(24px, 2.6vw, 36px); max-width: 46ch; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(24px, 2.8vw, 36px); }
+
+/* 星体 —— Figma：420 正圆 / #4BB6EC / 透明度 0.1 / 2px 模糊
+   球内四团彩光被圆形裁住，光在球里流动 */
+.hero__visual { display: grid; place-items: center; width: 100%; aspect-ratio: 1; max-height: min(64vh, 560px); }
+/* 外晕 inset -12%，总尺寸是星体的 124%。星体按 80% 收，
+   让外晕正好落在列内，不会溢出视口。 */
+/* 牵引（跟随指针）挂在 .star 上，沉浮挂在 .star__body / .star__glow 上 ——
+   两个 transform 分给不同元素，才不会互相顶掉
+   （CSS 动画的优先级高于内联 style，写在同一个元素上时牵引会被吃掉）。 */
+.star {
+  position: relative; width: min(84%, 500px); aspect-ratio: 1;
+  transition: transform 1.1s var(--e-out); will-change: transform;
+}
+.star > span { position: absolute; inset: 0; border-radius: 50%; }
+
+/* 球体。质感目标是用户给的那张参考图：
+     · 珠光/皂泡感，整体极淡，几乎没有实色
+     · 边缘一圈亮环（内侧比中心亮），把球从背景里「托」出来
+     · 内部几团彩光缓慢漂移、互相融合，亮度各自随机起伏
+     · 一层极细的颗粒，去掉大面积渐变的塑料感
+   Figma 给的也是 420 正圆 / 2px 模糊，对得上。 */
+.star__body {
+  overflow: hidden;
+  /* 圆边界靠 mask 画，不靠 overflow + border-radius ——
+     移动端 Safari 在「父元素带 filter + 3D 动画」时会把圆角丢掉、只按矩形
+     border-box 裁切，深色模式下就露出一块灰方块（README §8 bug #18）。
+     mask 是绘制阶段的裁切，filter 之后才应用，不会被跳过；
+     97%→100% 这一段顺带给边缘留了柔化，观感和原来那 2px 模糊一致。 */
+  -webkit-mask-image: radial-gradient(circle closest-side at 50% 50%, #000 97%, rgba(0,0,0,0) 100%);
+          mask-image: radial-gradient(circle closest-side at 50% 50%, #000 97%, rgba(0,0,0,0) 100%);
+  /* 底色本身也收成圆、边缘透明：万一连 mask 都不生效，露出来的也是圆不是方块 */
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,.96) 0%, rgba(255,255,255,.4) 34%, transparent 62%),
+    radial-gradient(circle closest-side at 50% 50%, #FBF7F4 0%, #F3F1F4 62%, #EDE9EE 96%, rgba(237,233,238,0) 100%);
+  filter: blur(2px);
+  animation: orbFloat 11s var(--e-io) infinite alternate;
+}
+/* 颗粒 */
+.star__body::before {
+  content: ""; position: absolute; inset: -10%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay; opacity: .5; pointer-events: none;
+}
+/* 内侧亮环 —— 参考图里最关键的一笔：边缘比中心亮一档 */
+.star__body::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%,
+    transparent 58%, rgba(255,255,255,.34) 78%, rgba(255,255,255,.92) 93%, rgba(255,255,255,.5) 100%);
+  pointer-events: none;
+}
+/* 球内彩光。multiply 让重叠处自然「融」在一起而不是越叠越白。
+   漂移用 13/17/21/15/19 秒，闪烁用 7.3/9.1/11.7/8.5/6.7 秒 ——
+   两组周期都互质，叠起来看不出循环，观感就是随机明灭。 */
+.star__body i {
+  position: absolute; width: 82%; height: 82%; border-radius: 50%;
+  filter: blur(34px); mix-blend-mode: multiply;
+}
+.star__body i:nth-child(1) { background: radial-gradient(circle, #FFD9C2 0%, rgba(255,217,194,0) 70%); top: -8%;  left: -6%;
+  animation: b1 13s var(--e-io) infinite alternate, sh1 7.3s var(--e-io) infinite alternate; }
+.star__body i:nth-child(2) { background: radial-gradient(circle, #BFE0FF 0%, rgba(191,224,255,0) 70%); top: 6%;   right: -10%;
+  animation: b2 17s var(--e-io) infinite alternate, sh2 9.1s var(--e-io) -2s infinite alternate; }
+.star__body i:nth-child(3) { background: radial-gradient(circle, #FFC8E6 0%, rgba(255,200,230,0) 70%); bottom: -6%; right: 2%;
+  animation: b3 21s var(--e-io) infinite alternate, sh3 11.7s var(--e-io) -5s infinite alternate; }
+.star__body i:nth-child(4) { background: radial-gradient(circle, #C7F0DA 0%, rgba(199,240,218,0) 70%); bottom: -8%; left: 8%;
+  animation: b4 15s var(--e-io) infinite alternate, sh4 8.5s var(--e-io) -3s infinite alternate; }
+.star__body i:nth-child(5) { background: radial-gradient(circle, #DCCBFF 0%, rgba(220,203,255,0) 70%); top: 26%;  right: -4%;
+  animation: b5 19s var(--e-io) infinite alternate, sh5 6.7s var(--e-io) -1s infinite alternate; }
+
+/* 外晕：球外那圈淡彩，跟着一起沉浮 */
+.star > .star__glow {
+  inset: -14%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255,255,255,.5) 0%, rgba(255,200,230,.3) 46%, rgba(199,224,255,.22) 62%, transparent 74%);
+  filter: blur(44px); animation: orbFloat 11s var(--e-io) infinite alternate;
+}
+/* 顶部那道柔高光，自己慢慢绕一圈 */
+.star__gloss {
+  background: radial-gradient(ellipse 44% 30% at 34% 20%,
+    rgba(255,255,255,.9) 0%, rgba(255,255,255,.28) 42%, transparent 70%);
+  filter: blur(5px); animation: orbit 26s var(--e-io) infinite;
+}
+
+/* 小幅度、慢 —— 上下 14px，一个来回 22 秒 */
+@keyframes orbFloat { from { transform: translate3d(0,0,0) scale(1) } to { transform: translate3d(0,-14px,0) scale(1.012) } }
+@keyframes orbit { 0%,100% { transform: translate(8px,-5px) } 25% { transform: translate(5px,8px) } 50% { transform: translate(-8px,5px) } 75% { transform: translate(-5px,-8px) } }
+@keyframes b1 { to { transform: translate(24%, 20%) scale(1.16) } }
+@keyframes b2 { to { transform: translate(-20%, 24%) scale(1.10) } }
+@keyframes b3 { to { transform: translate(16%, -22%) scale(1.20) } }
+@keyframes b4 { to { transform: translate(-22%, -16%) scale(1.12) } }
+@keyframes b5 { to { transform: translate(18%, 18%) scale(1.14) } }
+@keyframes sh1 { from { opacity: .38 } to { opacity: .82 } }
+@keyframes sh2 { from { opacity: .72 } to { opacity: .34 } }
+@keyframes sh3 { from { opacity: .30 } to { opacity: .76 } }
+@keyframes sh4 { from { opacity: .66 } to { opacity: .28 } }
+@keyframes sh5 { from { opacity: .34 } to { opacity: .70 } }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .star__body {
+    background:
+      radial-gradient(circle at 32% 28%, rgba(255,255,255,.34) 0%, rgba(255,255,255,.1) 34%, transparent 62%),
+      radial-gradient(circle closest-side at 50% 50%, #23222A 0%, #1A1A20 66%, #141419 96%, rgba(20,20,25,0) 100%);
+  }
+  :root:not([data-theme="light"]) .star__body i { mix-blend-mode: screen; filter: blur(38px); }
+  :root:not([data-theme="light"]) .star__body::after {
+    background: radial-gradient(circle at 50% 50%,
+      transparent 58%, rgba(255,255,255,.14) 78%, rgba(255,255,255,.44) 93%, rgba(255,255,255,.2) 100%);
+  }
+  :root:not([data-theme="light"]) .star__body::before { mix-blend-mode: soft-light; opacity: .35; }
+  :root:not([data-theme="light"]) .star__gloss { opacity: .3; }
+}
+
+/* ---------- 11 节日海报 · Figma 16:9 全宽（纯展示，不可交互） ---------- */
+.poster { padding-bottom: var(--sp-section); }
+.poster__frame {
+  position: relative; overflow: hidden;
+  aspect-ratio: 16 / 9; border-radius: var(--r-lg);
+  background: var(--placeholder);
+}
+.poster__frame img { width: 100%; height: 100%; object-fit: cover; }
+.poster__cap { margin-top: var(--sp-sm); text-align: right; }
+
+/* ---------- 12 卡片（Figma 通用版式：1:1 图 → 标题 → 元信息）---------- */
+.grid { display: grid; gap: var(--gap-card); }
+.grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.card { min-width: 0; }
+.card__link { display: block; -webkit-tap-highlight-color: transparent; }
+.card__media {
+  position: relative; display: block; overflow: hidden;
+  aspect-ratio: 1;                     /* Figma 全部为正方形 */
+  border-radius: var(--r-md); background: var(--placeholder);
+  transition: transform var(--t) var(--e-out), box-shadow var(--t) var(--e-out);
+}
+.card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--e-out); }
+/* hover：图片块整体轻微上浮 + 一点投影，图再放大一档。
+   幅度仍然克制（-6px / 1.05），时长拉长、缓动放软，保持 apple 那种「慢慢定住」的手感。
+   只在真有指针的设备上做 —— 触屏上 :hover 会「粘住」，抬手后还留在上浮态。 */
+@media (hover: hover) and (pointer: fine) {
+  .card__link:hover .card__media { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .card__link:hover .card__media img { transform: scale(1.05); }
+}
+.card__link:active .card__media { transform: scale(.994); transition-duration: .12s; }
+.card__body { padding-top: var(--sp-md); }
+.card__title { font-size: var(--fs-h3); line-height: 1.3; letter-spacing: -.02em; font-weight: 550; transition: color var(--t-fast) var(--e-io); }
+.card__link:hover .card__title { color: var(--accent); }
+.card__meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin-top: 8px; color: var(--text-muted); font-size: var(--fs-caption);
+}
+.card__meta > span + span::before { content: "·"; margin-right: 8px; color: var(--border-2); }
+.card__link:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; border-radius: var(--r-md); }
+
+/* ---------- 13 列表块 · Figma 2 列（180 方图 + 文字）---------- */
+.list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-lg) var(--gap-list); }
+.list__item { min-width: 0; }
+.list__link { display: grid; grid-template-columns: 180px 1fr; gap: var(--sp-md); align-items: center; -webkit-tap-highlight-color: transparent; }
+.list__media {
+  aspect-ratio: 1; overflow: hidden; border-radius: var(--r-sm); background: var(--placeholder);
+  transition: transform var(--t) var(--e-out), box-shadow var(--t) var(--e-out);
+}
+.list__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--e-out); }
+@media (hover: hover) and (pointer: fine) {
+  .list__link:hover .list__media { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+  .list__link:hover .list__media img { transform: scale(1.06); }
+}
+.list__title { font-size: 17px; line-height: 1.35; letter-spacing: -.02em; font-weight: 550; }
+.list__link:hover .list__title { color: var(--accent); }
+.list__meta { margin-top: 6px; color: var(--text-muted); font-size: var(--fs-caption); display: flex; flex-wrap: wrap; gap: 8px; }
+.list__meta > span + span::before { content: "·"; margin-right: 8px; color: var(--border-2); }
+
+/* ---------- 14 分类导航（横向可滑，无难看的滚动条）---------- */
+.cats {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: clamp(24px, 3vw, 40px);
+  overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity;
+}
+.cats::-webkit-scrollbar { display: none; }
+.cats__link {
+  flex: none; scroll-snap-align: start;
+  padding: 9px 16px; border-radius: var(--r-pill);
+  color: var(--text-muted); font-size: 14px; font-weight: 500; white-space: nowrap;
+  transition: background var(--t-fast) var(--e-io), color var(--t-fast) var(--e-io);
+}
+.cats__link:hover { background: var(--bg-2); color: var(--text); }
+.section--alt .cats__link:hover { background: var(--surface); }
+.cats__link[aria-current="page"] { background: var(--text); color: var(--bg); }
+.cats__link:active { transform: scale(.96); transition-duration: .12s; }
+
+/* ---------- 15 页内条（面包屑 · Figma「顶」）----------
+   没有返回按钮 —— 依赖浏览器返回键与常驻导航，和 apple / openai 一致 */
+.crumb { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: var(--sp-lg); font-size: var(--fs-caption); color: var(--text-muted); }
+.crumb a { transition: color var(--t-fast); }
+.crumb a:hover { color: var(--text); }
+.crumb [aria-current] { color: var(--text); font-weight: 500; }
+.crumb__sep {
+  width: 6px; height: 6px; flex: none;
+  border-right: 1.3px solid var(--border-2); border-top: 1.3px solid var(--border-2);
+  transform: rotate(45deg);
+}
+
+/* ---------- 16 分类页 ---------- */
+.cat-hero { padding-block: clamp(32px, 4.6vw, 64px) clamp(20px, 2.6vw, 32px); }
+.cat-hero .h1 { max-width: 18ch; }
+.cat-hero__count { margin-top: var(--sp-md); color: var(--text-faint); font-size: var(--fs-caption); }
+.empty {
+  display: grid; justify-items: center; gap: 10px;
+  padding: clamp(56px, 8vw, 96px) var(--sp-md); text-align: center;
+  border: 1px dashed var(--border-2); border-radius: var(--r-lg);
+}
+.notice { padding-block: var(--sp-2xl); color: var(--text-muted); }
+.notice a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- 17 文章页 ---------- */
+.read { width: min(100% - var(--gutter) * 2, 720px); margin-inline: auto; }
+.article__head { padding-top: clamp(24px, 3.4vw, 44px); }
+/* Figma 批注：此处深色为标签栏，由作者手动添加标签，以及作者信息 */
+.tagbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  padding: 10px 12px; margin-bottom: clamp(24px, 3vw, 34px);
+  background: var(--text); border-radius: var(--r-pill);
+}
+.tagbar__pill {
+  display: inline-flex; align-items: center; height: 28px; padding-inline: 13px;
+  border-radius: var(--r-pill); font-size: 12px; font-weight: 500;
+  background: rgba(255,255,255,.14); color: #fff;
+}
+.tagbar__by { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; padding-right: 8px; font-size: var(--fs-caption); color: rgba(255,255,255,.86); }
+.tagbar__avatar { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--star); color: #06263A; font-size: 11px; font-weight: 700; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tagbar { background: var(--bg-2); border: 1px solid var(--border); }
+  :root:not([data-theme="light"]) .tagbar__pill { background: rgba(255,255,255,.08); color: var(--text); }
+  :root:not([data-theme="light"]) .tagbar__by { color: var(--text-2); }
+}
+.article__title { font-size: clamp(30px, 4.2vw, 52px); line-height: 1.14; letter-spacing: -.04em; font-weight: 600; text-wrap: balance; }
+.article__lede { margin-top: var(--sp-md); color: var(--text-muted); font-size: clamp(17px, 1.7vw, 20px); line-height: 1.55; }
+.article__meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: var(--sp-md); color: var(--text-muted); font-size: var(--fs-caption); }
+.article__meta > *:not(:first-child)::before { content: "·"; margin-right: 8px; color: var(--border-2); }
+.article__hero { margin-top: clamp(28px, 3.4vw, 44px); }
+.article__hero img, .fig img { width: 100%; height: 100%; object-fit: cover; }
+.article__hero .fig__media { aspect-ratio: 16 / 9; border-radius: var(--r-lg); }
+.fig { margin-block: clamp(32px, 4vw, 44px); }
+.fig__media { display: block; overflow: hidden; aspect-ratio: 3 / 2; border-radius: var(--r-md); background: var(--placeholder); }
+figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); font-size: var(--fs-caption); }
+.article__body { padding-block: clamp(32px, 4vw, 56px) clamp(40px, 5vw, 72px); }
+.article__body p { margin-bottom: 28px; color: var(--text-2); font-size: var(--fs-body); line-height: 1.85; }
+.article__body h2 { margin: 44px 0 18px; font-size: clamp(21px, 2.2vw, 27px); letter-spacing: -.025em; font-weight: 600; }
+.article__body h3 { margin: 34px 0 14px; font-size: clamp(18px, 1.7vw, 21px); letter-spacing: -.02em; font-weight: 600; }
+.article__body ul, .article__body ol { margin: 0 0 28px; padding-left: 1.4em; color: var(--text-2); font-size: var(--fs-body); line-height: 1.85; }
+.article__body li { margin-bottom: 8px; }
+.article__body li::marker { color: var(--text-faint); }
+.article__body hr { margin: 48px 0; border: 0; border-top: 1px solid var(--border); }
+.article__body a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.article__body strong { color: var(--text); font-weight: 600; }
+.article__body blockquote {
+  margin: 44px 0; padding: 4px 0 4px 24px; border-left: 3px solid var(--accent);
+  font-family: var(--font-serif); font-size: clamp(19px, 2.2vw, 25px); line-height: 1.55; color: var(--text);
+}
+/* 界面语言 ≠ 正文语言时的一句说明。刻意做得很轻，不抢正文。 */
+.article__body .note-lang {
+  margin-bottom: 32px; padding: 12px 16px;
+  border-left: 2px solid var(--border-2); border-radius: 0 var(--r-xs) var(--r-xs) 0;
+  background: var(--bg-2); color: var(--text-muted);
+  font-size: var(--fs-caption); line-height: 1.6;
+}
+
+/* ---------- 18 角色页（Figma 批注：固定深色，不跟随主题）---------- */
+.chars {
+  min-height: 100vh;
+  background: var(--d-bg); color: var(--d-text);
+  --text: var(--d-text); --text-2: var(--d-text-2);
+  --text-muted: var(--d-muted); --text-faint: var(--d-faint);
+  --border: var(--d-border); --border-2: #3A3A3E;
+  --bg: var(--d-bg); --bg-2: var(--d-bg-2); --surface: var(--d-surface);
+  --placeholder: var(--d-surface); --accent: #5FC2F0; --on-accent: #0B0B0C;
+}
+.chars__filters { display: flex; flex-wrap: wrap; gap: 8px; margin-block: var(--sp-lg); }
+.chars__filter {
+  height: 36px; padding-inline: 18px; border-radius: var(--r-pill);
+  border: 1px solid var(--d-border); color: var(--d-muted);
+  font-size: 14px; font-weight: 500;
+  transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+}
+.chars__filter:hover { color: var(--d-text); border-color: #4A4A4E; }
+.chars__filter[aria-pressed="true"] { background: var(--d-text); color: var(--d-bg); border-color: var(--d-text); }
+.chars__filter:active { transform: scale(.96); transition-duration: .12s; }
+
+/* 二级取值胶囊 */
+.chars__values { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: var(--sp-lg); }
+.chars__value {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 32px; padding-inline: 14px; border-radius: var(--r-pill);
+  border: 1px solid var(--d-border); color: var(--d-muted); font-size: 13px;
+  transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+}
+.chars__value em {
+  font-style: normal; font-size: 11px; padding: 1px 6px; border-radius: var(--r-pill);
+  background: rgba(255,255,255,.09); color: inherit;
+}
+.chars__value:hover { color: var(--d-text); border-color: #4A4A4E; }
+.chars__value[aria-pressed="true"] { background: #5FC2F0; color: #06263A; border-color: #5FC2F0; }
+.chars__value[aria-pressed="true"] em { background: rgba(0,0,0,.14); }
+.chars__value:active { transform: scale(.96); transition-duration: .12s; }
+.chars__none { color: var(--d-muted); font-size: var(--fs-small); padding: var(--sp-md) 0; }
+
+/* 立绘缩略图条 —— Figma 85×145，当前项带白框 */
+/* 横向滚动容器同时也会裁上下方向：原来只有 padding-bottom，
+   选中态的外框和 hover 上浮就被顶边切掉了一半。四周都留出余量。 */
+.chars__strip {
+  display: flex; gap: 14px; overflow-x: auto;
+  padding: 10px 4px 14px; scrollbar-width: none; scroll-behavior: smooth;
+}
+.chars__strip::-webkit-scrollbar { display: none; }
+.chars__thumb {
+  flex: none; width: 85px; aspect-ratio: 85 / 145;
+  border-radius: var(--r-sm); overflow: hidden;
+  background: var(--d-chip); opacity: .55;
+  scroll-margin-inline: 20px;
+  /* 选中环用 box-shadow 而不是 outline —— outline 不参与布局，
+     在滚动容器里更容易被裁；box-shadow 配合上面的 padding 稳定得多。 */
+  box-shadow: 0 0 0 0 rgba(255,255,255,0);
+  transition: opacity var(--t) var(--e-io), box-shadow var(--t) var(--e-io), transform var(--t) var(--e-out);
+}
+.chars__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.chars__thumb:hover { opacity: .92; transform: translateY(-3px); }
+.chars__thumb:focus-visible { outline: 2px solid #5FC2F0; outline-offset: 3px; }
+.chars__thumb[aria-current="true"] {
+  opacity: 1; transform: translateY(-2px);
+  box-shadow: 0 0 0 2px var(--d-bg), 0 0 0 4px #fff;
+}
+
+.chars__stage { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 64px); align-items: center; padding-block: clamp(32px, 5vw, 72px); }
+/* 立绘为 PNG 透明背景，不要裁切 */
+.chars__art { display: grid; place-items: center; aspect-ratio: 4 / 5; }
+.chars__art img { width: 100%; height: 100%; object-fit: contain; }
+.chars__name { font-size: clamp(38px, 5.4vw, 76px); line-height: 1; letter-spacing: -.05em; font-weight: 600; }
+.chars__role { margin-top: var(--sp-md); color: var(--d-muted); font-size: var(--fs-small); letter-spacing: .04em; }
+.chars__quote { margin-top: var(--sp-lg); font-family: var(--font-serif); font-size: clamp(19px, 2.2vw, 26px); line-height: 1.5; }
+.chars__bio { margin-top: var(--sp-md); color: var(--d-text-2); line-height: 1.8; max-width: 46ch; }
+.chars__cta { margin-top: var(--sp-lg); }
+.chars .btn--primary { background: var(--d-text); color: var(--d-bg); }
+.chars .btn--primary:hover { background: #5FC2F0; color: #06263A; }
+.chars__empty { padding: var(--sp-2xl) 0; color: var(--d-muted); }
+/* 角色板块的文章。「原创角色」分类改成跳本页之后，那些文章收在这里 */
+.chars__reading { padding-block: clamp(32px, 4vw, 56px) clamp(48px, 6vw, 88px); border-top: 1px solid var(--d-border); }
+.chars__reading .sec-head { margin-bottom: var(--sp-lg); }
+
+/* ---------- 19 页脚（Figma Frame 52，每页常驻）---------- */
+.ftr { border-top: 1px solid var(--border); background: var(--bg); padding-block: clamp(36px, 4.6vw, 64px) 84px; }   /* 底部这 84px 是给 fixed 的回顶按钮让位：滚到底时它正好压在 .ftr__bar 那一行上 */
+.ftr .crumb { padding-top: 0; padding-bottom: var(--sp-lg); }
+.ftr__grid {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--sp-lg) var(--gap-foot);
+  padding-block: var(--sp-lg); border-top: 1px solid var(--border);
+}
+.ftr__col { display: grid; align-content: start; gap: 6px; }
+.ftr__col h3 { font-size: var(--fs-caption); font-weight: 600; margin-bottom: 4px; }
+.ftr__col h3 + h3, .ftr__col a + h3, .ftr__col p + h3 { margin-top: var(--sp-md); }
+.ftr__col a, .ftr__soon { width: fit-content; color: var(--text-muted); font-size: 14px; padding-block: 4px; transition: color var(--t-fast) var(--e-io); }
+.ftr__col a:hover { color: var(--text); }
+.ftr__soon { display: flex; align-items: center; gap: 8px; cursor: default; color: var(--text-faint); }
+.ftr__soon em { font-style: normal; font-size: 11px; padding: 2px 8px; border: 1px solid var(--border); border-radius: var(--r-pill); color: var(--text-muted); white-space: nowrap; }
+.ftr__note { color: var(--text-muted); font-size: 14px; }
+.ftr__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-md); padding-top: var(--sp-lg); border-top: 1px solid var(--border); }
+.ftr__copy { color: var(--text-muted); font-size: var(--fs-caption); }
+
+.lang { position: relative; }
+.lang__btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 38px; padding-inline: 14px;
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  color: var(--text-2); font-size: var(--fs-caption);
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+.lang__btn:hover { border-color: var(--border-2); background: var(--bg-2); }
+.lang__btn .ico { width: 16px; height: 16px; stroke-width: 1.4; }
+.lang__menu {
+  position: absolute; right: 0; bottom: calc(100% + 8px); min-width: 210px; padding: 6px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm); box-shadow: var(--shadow-lg);
+  opacity: 0; visibility: hidden; transform: translateY(6px);
+  transition: opacity var(--t-fast) var(--e-io), transform var(--t) var(--e-out), visibility var(--t-fast);
+}
+.lang.is-open .lang__menu { opacity: 1; visibility: visible; transform: none; }
+.lang.is-open .lang__btn .chev { transform: rotate(-135deg) translate(-3px, -3px); }
+.lang__menu button { display: block; width: 100%; padding: 10px 12px; border-radius: var(--r-xs); text-align: left; font-size: 14px; }
+.lang__menu button:hover { background: var(--bg-2); }
+.lang__menu button[aria-selected="true"] { color: var(--accent); font-weight: 500; }
+
+/* ---------- 20 入场 / 回顶 ---------- */
+/* apple 的入场：位移小、时间长、末段几乎停住再落定。
+   缓动用 --e-out（.16,1,.3,1），前 30% 就走完大半距离，剩下慢慢收。 */
+.reveal {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity .9s var(--e-out), transform .9s var(--e-out);
+  transition-delay: var(--delay, 0ms);
+}
+.reveal.is-in { opacity: 1; transform: none; }
+
+.to-top {
+  position: fixed; right: 24px; bottom: 24px; z-index: 470;
+  display: grid; place-items: center; width: 44px; height: 44px;
+  border-radius: 50%; background: var(--surface); border: 1px solid var(--border);
+  box-shadow: var(--shadow-md); color: var(--text);
+  opacity: 0; visibility: hidden; transform: translateY(10px);
+  transition: opacity var(--t) var(--e-io), transform var(--t) var(--e-out), visibility var(--t), background var(--t-fast);
+}
+.to-top.is-on { opacity: 1; visibility: visible; transform: none; }
+.to-top:hover { background: var(--text); color: var(--bg); }
+.to-top .ico { width: 18px; height: 18px; }
+
+/* 跨页过渡：已经整套删掉（用户反馈「加载新页面很卡，网页会闪烁跳动」）。
+   之前有两层：
+     1. @view-transition { navigation: auto } —— 跨文档视图过渡。它会先把旧页面截屏冻住，
+        再等新文档来。本站的正文是 JS 渲染的，新页面往往在「还没渲染完」的那一帧被换上去，
+        于是先闪一下空白再跳成有内容 —— 就是用户看到的闪烁跳动。
+     2. main.js 的 body.is-exiting 淡出：点链接后先等 240ms 再真正跳转。
+        不支持视图过渡的浏览器（用户的手机）走的就是这条，等于每次点击白等四分之一秒 —— 「卡」。
+   没有过渡 = 点了立刻走，是最快也最稳的观感。要加回来的话，
+   两层必须同时改：CSS 这段和 main.js 的 pageTransition。 */
+
+/* ---------- 21 响应式 ----------
+   移动端重新设计层级，不是把桌面端等比缩小 */
+@media (max-width: 1024px) {
+  :root { --nav-gap: 28px; --fs-nav: 16px; }
+}
+@media (max-width: 900px) {
+  :root { --header-h: 60px; }
+  .nav, .menu, .menu-stage { display: none; }
+  .burger { display: inline-grid; }
+  .grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .list { grid-template-columns: 1fr; }
+  .ftr__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-lg) var(--sp-lg); }
+
+  /* Hero 竖排，星体收小，避免顶掉首屏文字 */
+  .hero__inner { grid-template-columns: 1fr; gap: var(--sp-xl); }
+  .hero__visual { max-height: 42vh; order: 2; }
+  .star { width: min(72vw, 360px); }
+  .chars__stage { grid-template-columns: 1fr; }
+
+  /* 触摸目标补足到 44px 一线，纯靠内边距，不动版面 */
+  .brand { min-height: 44px; }
+  .link-more { padding-block: 9px; }
+  .crumb a, .crumb span { padding-block: 6px; }
+  .ftr__col { gap: 0; }
+  .ftr__col a, .ftr__soon { padding-block: 11px; }
+  .cats { margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+}
+@media (max-width: 768px) {
+  .list__link { grid-template-columns: 120px 1fr; }
+}
+@media (max-width: 640px) {
+  .brand__name { display: none; }
+  .grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-md); }
+  .ftr__grid { grid-template-columns: 1fr; }
+  /* 语言选择器留在右下角，和 JasperPeng©2026 同一行（用户要求）。
+     nowrap + 收窄按钮，保证 375 宽也不会被挤到下一行去。 */
+  .ftr__bar { flex-wrap: nowrap; align-items: center; gap: var(--sp-sm); }
+  .ftr__copy { white-space: nowrap; }
+  .lang { flex: none; }
+  .lang__btn { height: 36px; padding-inline: 11px; gap: 6px; }
+  .sec-head { flex-direction: column; align-items: flex-start; gap: var(--sp-md); }
+  .tagbar { border-radius: var(--r-md); }
+  .tagbar__by { width: 100%; margin-left: 0; padding-top: 4px; }
+  .card__title { font-size: 16px; }
+  .hero__actions .btn { flex: 1 1 100%; }
+  .to-top { right: 16px; bottom: 16px; }
+  .poster__frame { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 430px) {
+  .hero__title { font-size: 17vw; }
+  .hero__title span:nth-child(2) { margin-left: .18em; }
+  .hero__title span:nth-child(3) { margin-left: .36em; }
+  .list__link { grid-template-columns: 96px 1fr; gap: var(--sp-sm); }
+}
+
+/* ---------- 22 偏好设置 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+@media print {
+  .hdr, .ftr, .to-top, .scrim, .search, .mnav, .crumb, .poster { display: none !important; }
+  body { color: #000; background: #fff; }
+  .read { width: 100%; }
+}
