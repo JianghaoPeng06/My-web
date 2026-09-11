@@ -870,3 +870,5 @@ Figma 批注要求 **PNG 透明背景** —— 换成 `<slug>.png` 更好（png 
   （其 `.reveal` / `.is-visible` 在 CSS 里根本没定义，入场动画实际未生效；搜索结果也无样式）
 - 用户自己部署的旧版：`https://jianghao.kdns.fr`
   （早期星体参照过它：`.gradient-orb` 三段渐变 + `blur(2px)` + 6s `floating` 浮动）
+
+来自作者：2026.9.12 改了一部分图片，修改了一部分文章
