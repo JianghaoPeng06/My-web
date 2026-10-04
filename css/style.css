@@ -1001,6 +1001,8 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .ftr__note { color: var(--text-muted); font-size: 14px; }
 .ftr__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-md); padding-top: var(--sp-lg); border-top: 1px solid var(--border); }
 .ftr__copy { color: var(--text-muted); font-size: var(--fs-caption); }
+/* 版本号：跟在版权后面，再淡一档，只给需要的人看（数值在 data.js 的 VERSION） */
+.ftr__ver { margin-left: .5em; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
 .lang { position: relative; }
 .lang__btn {
@@ -1117,6 +1119,8 @@ html.js-on .reveal:not(.is-in) { opacity: 0; transform: translateY(22px); transi
      nowrap + 收窄按钮，保证 375 宽也不会被挤到下一行去。 */
   .ftr__bar { flex-wrap: nowrap; align-items: center; gap: var(--sp-sm); }
   .ftr__copy { white-space: nowrap; }
+  /* 版本号在手机上另起一行：和版权挤在一行的话，选了 English 时语言按钮会被推出屏幕右边 8px（375 宽实测） */
+  .ftr__ver { display: block; margin-left: 0; }
   .lang { flex: none; }
   .lang__btn { height: 36px; padding-inline: 11px; gap: 6px; }
   .sec-head { flex-direction: column; align-items: flex-start; gap: var(--sp-md); }

@@ -32,6 +32,11 @@
 
   var MAIL = 'pengjasper@icloud.com';
 
+  /* 网站版本号 —— 显示在每页页脚「JasperPeng©2026」后面。
+     由站长自己决定什么时候改、改成多少；改完保存、刷新即可，
+     再双击「刷新图片.cmd」把它写进静态页面（忘了也不要紧，页面打开时会自动对上）。 */
+  var VERSION = 'v2.0.0';
+
   /* 四语字段构造器 */
   function L(zhs, zht, en, ja) { return { 'zh-Hans': zhs, 'zh-Hant': zht, en: en, ja: ja }; }
   /* 专有名词：四语同形 */
@@ -891,6 +896,6 @@
     return 'works';
   }
 
-  w.JP = { SECTIONS: SECTIONS, ARTICLES: A, CHARACTERS: CHARACTERS, MAIL: MAIL, asset: assetOf };
+  w.JP = { SECTIONS: SECTIONS, ARTICLES: A, CHARACTERS: CHARACTERS, MAIL: MAIL, VERSION: VERSION, asset: assetOf };
 
 })(window);

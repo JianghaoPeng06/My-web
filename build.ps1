@@ -154,6 +154,8 @@ for ($i = 0; $i -lt $secs.Count; $i++) {
     $s | Add-Member Notes $notes
 }
 $mail = ([regex]::Match($data, "var MAIL\s*=\s*'([^']+)'")).Groups[1].Value
+# 网站版本号：data.js 里的 var VERSION，写进每页页脚（main.js 打开页面时会再按 data.js 对一遍）
+$version = ([regex]::Match($data, "var VERSION\s*=\s*'([^']+)'")).Groups[1].Value
 $dirSecs = $secs | Where-Object { $_.Dir }
 
 function Esc([string]$s) { $s -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;' -replace '"','&quot;' }
@@ -354,7 +356,7 @@ function Build-Footer($base) {
     <div class="ftr__grid">
 $cols    </div>
     <div class="ftr__bar">
-      <p class="ftr__copy">JasperPeng©2026</p>
+      <p class="ftr__copy">JasperPeng©2026 <span class="ftr__ver" data-version>$(Esc $version)</span></p>
       <div class="lang" data-lang>
         <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.75"/><path d="M3.25 12h17.5M12 3.25c4.8 5.5 4.8 12.1 0 17.5-4.8-5.4-4.8-12 0-17.5Z"/></svg>

@@ -1610,6 +1610,10 @@
      简体首页会看到「News · 2026年8月18日 · 8 min read」这种中英混排。
      启动时也走一遍，静态文案就永远跟当前语言一致了。 */
 
+  /* 页脚版本号：构建时已经写进静态 HTML，这里按 data.js 再对一遍 ——
+     改了版本号忘了跑构建，页面上照样是新的。 */
+  if (D.VERSION) $$('[data-version]').forEach(function (n) { n.textContent = D.VERSION; });
+
   i18n();
   alignMenus();
   reveal(document);
