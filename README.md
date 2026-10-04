@@ -49,6 +49,7 @@ E:\GitHub\My-web\
 ├── articles/<slug>/        ★ 每篇文章一个页面，build.ps1 生成（39 个），**不要手改**
 ├── article.html            旧地址跳转页：article.html?a=<slug> → articles/<slug>/（老链接不失效）
 ├── sitemap.xml / robots.txt  build.ps1 生成，给搜索引擎看的全站地址清单
+├── _headers                ★ Cloudflare 的缓存规则：css / js / 图片每次先问服务器有没有更新（**别删**，见 §8 bug #31）
 ├── category.html           分类模板（**生成源**，含 {{TOKEN}}，不要直接访问）
 ├── characters/index.html   角色页（深色锁定）  ?c=<slug>
 │
@@ -596,6 +597,7 @@ P(专有名词)          // 四语同形，天然不翻译
 | 28 | **文章分享出去没有标题和封面** | 见 §3.5c。构建时有个坑：data.js 开头注释里那行示范写法 `add({ slug: 'kyoto', … })` 也被正则当成了一篇文章（第一次跑出 40 篇）。构建现在只认 `var A = []` 之后的 `add(`，同一个 slug 出现两次以后面那条为准 |
 | 29 | 发新文章首页「最近更新」不变 | 那 9 篇是手写在 home.html 里的。见 §3.5d：改成构建按日期生成 + 运行时按 data.js 核对 |
 | 30 | **线上整站点不动**（菜单、搜索等所有交互失效，2026-10-04） | 旧的「清空文件夹 → 复制文件进来 → VS Code 同步」流程把两份分叉的历史合在一起，`<<<<<<<` / `=======` / `>>>>>>>` 冲突标记被提交进 `js/main.js`、`css/style.css`、`README.md`，main.js 直接语法错误。去掉冲突残留修好（提交 `83c21ea`）。同一次还修了一个：`indian-anklets` 文件是 `.jpg`、页面引用 `.JPG`，**Cloudflare 区分大小写**导致 404。教训：只在 `E:\GitHub\My-web` 一处改，见 §1b |
+| 31 | **推送后老访客看到「新页面 + 旧样式」**（2026-10-04 推 v2.0.0 时发现） | Cloudflare Pages 默认：HTML `max-age=0`（每次都取新的），但 css / js / 图片 `max-age=14400` —— 浏览器存 **4 小时**不问。于是页脚版本号是新的，`.ftr__ver` 的样式却还是旧 style.css 里没有的。修复：根目录加 `_headers`，给 `/css/*` `/js/*` `/assets/*` 都设成 `public, max-age=0, must-revalidate` —— 每次先问一句，没变就回 304 用缓存，几乎不费流量。`/assets/*` 也加上，是因为换图的方式是「盖掉同名文件」，同样会被缓存挡住。比起给 css / js 地址加 `?v=哈希`，这个不用改任何页面、不用记得跑构建 |
 
 ### ⚠ 测试方法论（重要教训）
 

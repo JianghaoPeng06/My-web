@@ -1,0 +1,15 @@
+# Cloudflare Pages 的缓存规则（别删这个文件）
+#
+# 让浏览器每次打开页面都先问一下服务器：样式、脚本、图片有没有更新。
+# 没更新就继续用手上那份（服务器只回一句「没变」，不重新下载）；
+# 有更新就立刻拿新的。这样推送之后，老访客也能马上看到新版。
+# 不加这个文件时，Cloudflare 默认让浏览器把它们存 4 小时不问。
+
+/css/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=0, must-revalidate
