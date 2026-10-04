@@ -979,31 +979,21 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
   --border: rgba(255,255,255,.1); --border-2: rgba(255,255,255,.2);
   --accent: #8FD8FF; --on-accent: #070024;
 }
-/* 地图铺满整屏，从顶栏底下开始（顶栏透明地浮在上面）；往下滚出地图后顶栏恢复平常样子（JS 加 .is-over-map） */
-.cmap-main { margin-top: calc(-1 * var(--header-h)); }
-.comics .hdr.is-over-map:not(.is-menu-open) {
+/* 地图铺满整屏，从顶栏底下开始，顶栏一直透明地浮在上面。
+   漫画页没有页脚、页面不滚动，所以不再有「滚出地图后顶栏变回普通样子」那一步（用户 2026-10-05 让删掉的） */
+.cmap-main { margin-top: calc(-1 * var(--header-h) - 1px); }   /* 顶栏 72 高 + 1px 底边，少减 1px 页面就会多出 1px 能滚 */
+.comics .hdr:not(.is-menu-open) {
   background: linear-gradient(180deg, rgba(4,0,22,.62), rgba(4,0,22,0));
   border-bottom-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none;
 }
-.comics .hdr.is-over-map:not(.is-menu-open) .nav__link,
-.comics .hdr.is-over-map:not(.is-menu-open) .icon-btn { opacity: .72; transition: opacity var(--t-fast); }
-/* 漫画页展开子菜单（用户 2026-10-05：展开的「舞台」要和没展开时的顶栏一个透明度、一个风格）：
-   · 在地图上方时：没展开的顶栏是半透明深色、不模糊 → 展开后顶栏 + 舞台也是同一种半透明深色、不模糊，连成一块
-   · 滚出地图后：顶栏是全站那种毛玻璃 → 舞台也是同样的毛玻璃。
-     顶栏自己带模糊的话，里面的舞台模糊不到后面的页面（嵌套毛玻璃的限制），所以展开时把顶栏的模糊挪到 ::before，舞台自己再模糊一次
+.comics .hdr:not(.is-menu-open) .nav__link,
+.comics .hdr:not(.is-menu-open) .icon-btn { opacity: .72; transition: opacity var(--t-fast); }
+.comics .hdr:not(.is-menu-open) .nav__link:hover,
+.comics .hdr:not(.is-menu-open) .icon-btn:hover { opacity: 1; }
+/* 展开子菜单：顶栏 + 舞台和没展开时的顶栏一个透明度、一个风格 —— 同一种半透明深色、不模糊，连成一块（用户 2026-10-05）。
    （试过的第二版：顶栏、舞台底边加青白发光细线 —— 用户觉得变丑了，别再加） */
-.comics .hdr.is-menu-open { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
-.comics .hdr.is-over-map.is-menu-open,
-.comics .hdr.is-over-map .menu-stage { background: rgba(4,0,22,.55); }
-.comics .hdr:not(.is-over-map).is-menu-open::before {
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
-}
-.comics .hdr:not(.is-over-map) .menu-stage {
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
-}
+.comics .hdr.is-menu-open,
+.comics .menu-stage { background: rgba(4,0,22,.55); backdrop-filter: none; -webkit-backdrop-filter: none; }
 .comics .menu-stage.is-on { box-shadow: 0 1px 0 rgba(190,205,255,.14); }
 /* 展开时压暗页面的遮罩：地图本来就暗，压轻一点，别把氛围压没了 */
 .comics .scrim { background: rgba(3,0,20,.32); }
@@ -1012,33 +1002,6 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
   background: rgba(10,5,44,.78);
   backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%);
 }
-/* 页脚（第二版，用户觉得可以，保留）：布局、字体沿用全站，只换颜色和氛围 —— */
-/* 页脚：深空色 —— 顶上一道很淡的柔光（像行星边缘）、稀疏的星点；顶边是同一条青白细线。
-   排版、字号、颜色层级和全站页脚一样，文字都压在足够深的底上 */
-.comics .ftr {
-  position: relative; z-index: 1; border-top: 0;
-  background:
-    radial-gradient(ellipse 60% 120px at 50% 0, rgba(110,150,255,.16), transparent 70%),
-    linear-gradient(180deg, rgba(7,1,38,.78), rgba(3,0,20,.94));
-  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-}
-.comics .ftr::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgba(150,195,255,.32) 22%, rgba(205,232,255,.75) 50%, rgba(150,195,255,.32) 78%, transparent);
-  box-shadow: 0 0 8px rgba(140,195,255,.35);
-}
-.comics .ftr::after {
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .55;
-  background:
-    radial-gradient(1px 1px at 40px 60px, rgba(255,255,255,.8), transparent),
-    radial-gradient(1px 1px at 190px 30px, rgba(210,230,255,.7), transparent),
-    radial-gradient(1.4px 1.4px at 120px 150px, rgba(255,255,255,.6), transparent),
-    radial-gradient(1px 1px at 260px 210px, rgba(200,220,255,.6), transparent);
-  background-size: 300px 260px;
-}
-.comics .ftr__bar { border-top-color: rgba(190,205,255,.1); }
-.comics .hdr.is-over-map:not(.is-menu-open) .nav__link:hover,
-.comics .hdr.is-over-map:not(.is-menu-open) .icon-btn:hover { opacity: 1; }
 
 .cmap {
   position: relative; overflow: hidden; isolation: isolate;
@@ -1049,8 +1012,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .cmap.is-drag { cursor: grabbing; }
 
 /* 底：当前章节的封面，大幅虚化压暗（Phigros 换章节时背景跟着换）。只做透明度过渡，模糊本身不动 */
-/* 固定在视口上（不跟着地图滚走）：往下滚到页脚时，半透明的页脚后面还是这一章的虚化封面，整页一个氛围 */
-.cmap__art { position: fixed; inset: -6%; z-index: 0; pointer-events: none; }
+.cmap__art { position: absolute; inset: -6%; z-index: 0; pointer-events: none; }
 .cmap__art img {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
   filter: blur(40px) saturate(1.3) brightness(.5); opacity: 0;
@@ -1099,6 +1061,38 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .cmap__hint i { width: 6px; height: 6px; border-radius: 50%; background: #9FD4FF; box-shadow: 0 0 8px #9FD4FF; animation: cmPulse 2.4s var(--e-io) infinite; }
 .cmap__hint.is-gone { opacity: 0; transform: translate(-50%, 8px); }
 .cmap.is-focus .cmap__hint { opacity: 0; }
+/* 漫画页没有页脚，只有这一行悬浮在地图底部（用户 2026-10-05）：左下版权 + 版本号，右下语言选择。
+   两枚胶囊和上面「拖动浏览」那个提示同一个样式（半透明深底、细边、轻模糊、12px）。
+   build.ps1 的 Build-MiniBar 生成，类名沿用页脚的 ftr__copy / ftr__ver / lang，版本号同步和语言切换的脚本照常工作 */
+.cmap-bar {
+  position: fixed; left: 0; right: 0; bottom: max(28px, env(safe-area-inset-bottom)); z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding-inline: max(var(--gutter), calc((100% - var(--content)) / 2));
+  pointer-events: none;
+}
+.cmap-bar > * { pointer-events: auto; }
+.cmap-bar .ftr__copy, .cmap-bar .lang__btn {
+  display: inline-flex; align-items: center; gap: 8px; height: auto;
+  padding: 8px 16px; border-radius: var(--r-pill);
+  background: rgba(10,4,40,.42); border: 1px solid rgba(180,200,255,.18);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  color: rgba(225,232,255,.78); font-size: 12px; letter-spacing: .04em; white-space: nowrap;
+}
+.cmap-bar .ftr__ver { display: inline; margin-left: 0; color: rgba(190,205,255,.55); }
+.cmap-bar .lang__btn { transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast); }
+.cmap-bar .lang__btn:hover, .cmap-bar .lang.is-open .lang__btn { border-color: rgba(190,215,255,.4); background: rgba(16,8,58,.6); color: #fff; }
+.cmap-bar .lang__btn .ico { width: 14px; height: 14px; }
+.cmap-bar .lang__menu {
+  background: rgba(10,5,44,.82); border-color: rgba(180,200,255,.18);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+}
+.cmap-bar .lang__menu button:hover { background: rgba(140,180,255,.12); }
+@media (max-width: 640px) {
+  /* 手机上三枚胶囊挤不下一行：版权和语言留在最底下两角，「拖动浏览」提示挪到它们上面一行 */
+  .cmap-bar { bottom: max(16px, env(safe-area-inset-bottom)); gap: 8px; }
+  .cmap-bar .ftr__copy, .cmap-bar .lang__btn { padding: 7px 12px; font-size: 11px; letter-spacing: .02em; }
+  .cmap__hint { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 46px); }
+}
 @keyframes cmPulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
 
 /* 引导线：底线发光，上面一段亮光沿着线流过去（流光），拐点一个小菱形 */
@@ -1201,7 +1195,6 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .cmap.no-anim .cnode__sub, .cmap.no-anim .cnode__shade { transition: none; }
 @media (max-width: 640px) {
   .cnode__label { font-size: 40px; }        /* 手机上整张图缩小到约 0.5，字号放大一点抵消（显示出来约 20px） */
-  .cmap__hint { bottom: max(20px, env(safe-area-inset-bottom)); }
 }
 .cmap-noscript { padding-block: var(--sp-lg); color: var(--text-muted); }
 .cmap-noscript a { color: var(--accent); }

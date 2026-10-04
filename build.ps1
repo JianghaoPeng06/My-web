@@ -322,6 +322,26 @@ function FtrCol([string]$dataT, [string]$label, [string]$inner) {
     "      <div class=""ftr__col""><h3 class=""ftr__head""><button class=""ftr__toggle"" type=""button"" aria-expanded=""false"" data-ftr-acc><span data-t=""$dataT"">$(Esc $label)</span><i class=""chev"" aria-hidden=""true""></i></button></h3><div class=""ftr__panel""><div class=""ftr__inner"">$inner</div></div></div>`n"
 }
 
+# ---------- 页脚最底下那一行：版权 + 版本号 + 语言选择 ----------
+# 普通页脚和漫画页的「迷你底栏」共用这一段
+function Build-Bar {
+@"
+      <p class="ftr__copy">JasperPeng©2026 <span class="ftr__ver" data-version>$(Esc $version)</span></p>
+      <div class="lang" data-lang>
+        <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.75"/><path d="M3.25 12h17.5M12 3.25c4.8 5.5 4.8 12.1 0 17.5-4.8-5.4-4.8-12 0-17.5Z"/></svg>
+          <span data-lang-label>简体中文 中国大陆</span><i class="chev" aria-hidden="true"></i>
+        </button>
+        <ul class="lang__menu" role="listbox" data-lang-menu></ul>
+      </div>
+"@
+}
+# 漫画页没有页脚（用户 2026-10-05：底部那一大片导航删掉，只留版权 + 版本号 + 语言，悬浮在地图上）。
+# 页面里写 <!-- #chrome:minibar:start --><!-- #chrome:minibar:end -->，就只生成这一行
+function Build-MiniBar {
+    "<div class=""cmap-bar"" data-minibar>`n" + (Build-Bar) + "`n</div>`n"
+}
+
 function Build-Footer($base) {
     $cols = ''
     foreach ($s in $dirSecs) {
@@ -356,15 +376,7 @@ function Build-Footer($base) {
     <div class="ftr__grid">
 $cols    </div>
     <div class="ftr__bar">
-      <p class="ftr__copy">JasperPeng©2026 <span class="ftr__ver" data-version>$(Esc $version)</span></p>
-      <div class="lang" data-lang>
-        <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
-          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.75"/><path d="M3.25 12h17.5M12 3.25c4.8 5.5 4.8 12.1 0 17.5-4.8-5.4-4.8-12 0-17.5Z"/></svg>
-          <span data-lang-label>简体中文 中国大陆</span><i class="chev" aria-hidden="true"></i>
-        </button>
-        <ul class="lang__menu" role="listbox" data-lang-menu></ul>
-      </div>
-    </div>
+$(Build-Bar)`n    </div>
   </div>
 </footer>
 "@
@@ -761,6 +773,8 @@ Get-ChildItem $root -Recurse -Filter *.html |
     if (-not $hdrCache.ContainsKey($base)) { $hdrCache[$base] = Build-Header $base; $ftrCache[$base] = Build-Footer $base }
     $html = [regex]::Replace($html, '(?s)(<!-- #chrome:header:start -->).*?(<!-- #chrome:header:end -->)',
       { param($m) $m.Groups[1].Value + "`n" + $hdrCache[$base] + $m.Groups[2].Value })
+    $html = [regex]::Replace($html, '(?s)(<!-- #chrome:minibar:start -->).*?(<!-- #chrome:minibar:end -->)',
+      { param($m) $m.Groups[1].Value + "`n" + (Build-MiniBar) + $m.Groups[2].Value })
     $html = [regex]::Replace($html, '(?s)(<!-- #chrome:footer:start -->).*?(<!-- #chrome:footer:end -->)',
       { param($m) $m.Groups[1].Value + "`n" + $ftrCache[$base] + $m.Groups[2].Value })
     # 静态 HTML 里手写的图片路径（首页那几张卡）也按清单校正一遍，

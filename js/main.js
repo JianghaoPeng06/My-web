@@ -1938,15 +1938,11 @@
     /* 图片别被浏览器当成可拖走的东西 */
     stage.addEventListener('dragstart', function (e) { e.preventDefault(); });
 
-    /* 顶栏：还在地图上方时透明地浮着（沉浸）；往下滚出地图才恢复成平常的样子 */
-    var hdr = $('[data-header]');
-    function overMap() { if (hdr) hdr.classList.toggle('is-over-map', stage.getBoundingClientRect().bottom > (hdr.offsetHeight || 72) + 1); }
-    addEventListener('scroll', overMap, { passive: true });
 
     var rt;
-    addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { layout(); overMap(); }, 120); });
+    addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(layout, 120); });
 
-    layout(); overMap();
+    layout();
     cmRelayout = layout;
     function stayOn(slug) {
       if (!slug || !comicOf(slug) || st.sel === slug) return;
