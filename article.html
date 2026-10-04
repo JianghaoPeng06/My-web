@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JasperPeng</title>
+<meta name="robots" content="noindex">
+<!--
+  旧地址的跳转页。文章以前都是 article.html?a=<slug>，现在每篇有自己的页面
+  articles/<slug>/（由 build.ps1 生成）。已经分享出去的旧链接打到这里，
+  立刻换成新地址（location.replace —— 不在浏览器历史里留下这一步，返回键不会卡在这里）。
+  不认识的 slug 或者没带 ?a= 就去首页。
+-->
+<script>
+(function () {
+  var m = /[?&]a=([^&#]+)/.exec(location.search);
+  var slug = m ? decodeURIComponent(m[1]) : '';
+  var file = location.protocol === 'file:';
+  var to = /^[a-z0-9-]+$/i.test(slug) ? 'articles/' + slug + '/' + (file ? 'index.html' : '') : 'home.html';
+  location.replace(to);
+})();
+</script>
+<link rel="icon" href="assets/favicon/favicon.png" type="image/png">
+</head>
+<body>
+<p style="font-family:sans-serif;padding:24px">正在跳转…　如果没有自动跳转，请从 <a href="home.html">首页</a> 进入。</p>
+</body>
+</html>

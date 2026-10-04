@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{TITLE}} — JasperPeng</title>
+<meta name="description" content="{{LEDE}}">
+<link rel="canonical" href="{{URL}}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="JasperPeng">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{LEDE}}">
+<meta property="og:url" content="{{URL}}">
+<meta property="og:image" content="{{IMAGE}}">
+<meta property="article:published_time" content="{{DATE}}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="{{BASE}}css/style.css">
+<link rel="icon" href="{{BASE}}assets/favicon/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="{{BASE}}assets/favicon/favicon.png">
+</head>
+<!--
+  文章页模板 —— 不要直接访问，也不要手改生成出来的 articles/<slug>/index.html。
+  build.ps1 按 js/data.js 里的每篇文章，用这个模板生成 articles/<slug>/index.html，
+  把标题 / 导语 / 封面 / 日期写进页面头部（分享卡片和搜索引擎读的就是这些），
+  正文仍由 main.js 从 data.js 渲染 —— 所以改了 data.js 忘了跑构建，
+  访客看到的正文照样是最新的，只有分享卡片停在上一次构建的样子。
+-->
+<body data-base="{{BASE}}" data-page="article" data-slug="{{SLUG}}">
+
+<a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
+
+<!-- #chrome:header:start -->
+<!-- #chrome:header:end -->
+
+<main id="main">
+
+  <!-- 构建时写好的日期、标题、导语（封面不放在这里，只用作分享卡片的 og:image）：JS 没跑起来也看得到，搜索引擎也读得到。
+       main.js 跑起来后整块换成完整的文章（标签栏、日期、正文）。 -->
+  <article data-article>
+    <header class="article__head read">
+      <p class="article__kicker"><time datetime="{{DATE}}">{{DATE_ZH}}</time><a href="{{BASE}}{{CAT_HREF}}">{{CAT}}</a></p>
+      <h1 class="article__title">{{TITLE}}</h1>
+      <p class="article__lede">{{LEDE}}</p>
+      <p class="article__meta"><span>{{READ}}</span></p>
+    </header>
+  </article>
+
+  <noscript>
+    <div class="wrap notice">
+      <p>这篇文章需要 JavaScript 才能载入正文。你也可以从 <a href="{{BASE}}home.html">首页</a> 浏览全部板块。</p>
+    </div>
+  </noscript>
+
+  <!-- Figma 批注：3 列板块为推荐继续阅读栏，自动放置同类型文章，右上角可访问更多 -->
+  <section class="section section--alt" data-related hidden aria-labelledby="rel-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <div class="sec-head__text">
+          <p class="eyebrow" data-i18n="reading">继续阅读</p>
+          <h2 class="h2" id="rel-title" data-related-title>相关文章</h2>
+        </div>
+        <a class="link-more" href="{{BASE}}home.html" data-related-more><span data-i18n="more">查看更多</span><i class="arr" aria-hidden="true"></i></a>
+      </header>
+      <div class="grid grid--3" data-related-grid></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- #chrome:footer:start -->
+<!-- #chrome:footer:end -->
+
+<button class="to-top" type="button" data-totop aria-label="回到顶部">
+  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg>
+</button>
+
+<script src="{{BASE}}js/assets.js"></script>
+<script src="{{BASE}}js/data.js"></script>
+<script src="{{BASE}}js/main.js" defer></script>
+</body>
+</html>
