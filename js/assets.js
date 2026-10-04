@@ -41,7 +41,7 @@ window.JP_ASSETS = {
   "works/color-notes": "assets/images/works/color-notes.jpg",
   "works/doudou-seasons": "assets/images/works/doudou-seasons.jpg",
   "works/grid-system": "assets/images/works/grid-system.jpg",
-  "works/indian-anklets": "assets/images/works/indian-anklets.JPG",
+  "works/indian-anklets": "assets/images/works/indian-anklets.jpg",
   "works/kyoto": "assets/images/works/kyoto.jpg",
   "works/linework": "assets/images/works/linework.jpg",
   "works/nanjing-station": "assets/images/works/nanjing-station.jpg",

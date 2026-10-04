@@ -848,7 +848,6 @@
   (function posterBleed() {
     var sec = $('.poster'), frame = $('.poster__frame'), hdr = $('[data-header]');
     if (!sec || !frame || reduce) return;
-<<<<<<< HEAD
     var ticking = false, up = 0, headH = 72, padTop = 0;
     var SAFE = 56;   /* 往上长时和上方内容至少隔这么多（原 40，用户要求加大，给不同浏览器的渲染差异留余量） */
     function update() {
@@ -856,13 +855,6 @@
       var t = sec.getBoundingClientRect().top;
       /* 区块顶部有一段 padding，海报本身在它下面：铺满时让海报（不是区块）的顶边贴着顶栏底边 */
       var end = headH + up - padTop, start = end + innerHeight * 0.27;
-=======
-    var ticking = false, up = 0, headH = 72;
-    function update() {
-      ticking = false;
-      var t = sec.getBoundingClientRect().top;
-      var end = headH + up, start = end + innerHeight * 0.27;
->>>>>>> 689b4cbc3492576f7787caa465e1566cb0b027cc
       var x = Math.max(0, Math.min(1, (start - t) / (start - end)));
       var p = 1 - Math.pow(1 - x, 1.6);                         /* 前快后慢 */
       var pr = 1 - Math.pow(1 - Math.min(1, x / 0.75), 1.6);    /* 圆角在 3/4 处就收完 */
@@ -875,19 +867,11 @@
       var r = frame.getBoundingClientRect();
       var ratio = (r.width && r.height) ? r.height / r.width : 9 / 16;   /* 框当前的高宽比（16:9 / 手机 4:3） */
       headH = hdr ? hdr.getBoundingClientRect().height : 72;
-<<<<<<< HEAD
       padTop = parseFloat(getComputedStyle(sec).paddingTop) || 0;
       /* 框的比例不变 → 铺满后多出来的高度 = 多出来的宽度 × 高宽比；理想是其中 45% 往上长 */
       up = Math.round(Math.max(0, vw - w) * ratio * 0.45);
       /* 但往上不能碰到上面的内容：量出海报顶边到上一块内容底边（hero 的文字、按钮、史莱姆球，
          不算它的底部留白）的距离，最多往上长到「这段距离 − SAFE 安全距离」，剩下的全往下长。
-=======
-<<<<<<< HEAD
-      /* 框的比例不变 → 铺满后多出来的高度 = 多出来的宽度 × 高宽比；理想是其中 45% 往上长 */
-      up = Math.round(Math.max(0, vw - w) * ratio * 0.45);
-      /* 但往上不能碰到上面的内容：量出海报顶边到上一块内容底边（hero 的文字、按钮、史莱姆球，
-         不算它的底部留白）的距离，最多往上长到「这段距离 − 40px 安全距离」，剩下的全往下长。
->>>>>>> 689b4cbc3492576f7787caa465e1566cb0b027cc
          以前没有这一步，宽屏上（1920 宽理想值约 170px，而留白只有约 96px）海报会盖住上面的内容（用户反馈）。 */
       var prev = sec.previousElementSibling;
       if (prev) {
@@ -895,19 +879,9 @@
         var contentBottom = pr.bottom - (parseFloat(getComputedStyle(prev).paddingBottom) || 0);
         var vis = $('.hero__visual', prev);              /* 史莱姆球那一格，算进上方内容里 */
         if (vis) contentBottom = Math.max(contentBottom, vis.getBoundingClientRect().bottom);
-<<<<<<< HEAD
         var room = sec.getBoundingClientRect().top + padTop - contentBottom - SAFE;   /* 海报顶边 = 区块顶 + padding */
         up = Math.max(0, Math.min(up, Math.floor(room)));
       }
-=======
-        var room = sec.getBoundingClientRect().top - contentBottom - 40;
-        up = Math.max(0, Math.min(up, Math.floor(room)));
-      }
-=======
-      /* 框的比例不变 → 铺满后多出来的高度 = 多出来的宽度 × 高宽比；其中 45% 往上长 */
-      up = Math.round(Math.max(0, vw - w) * ratio * 0.45);
->>>>>>> c6eab5bf14277f1d474e95af228eb1f36b63b1ee
->>>>>>> 689b4cbc3492576f7787caa465e1566cb0b027cc
       sec.style.setProperty('--bleed', Math.max(0, (vw - w) / 2) + 'px');
       sec.style.setProperty('--up', up + 'px');
       update();
