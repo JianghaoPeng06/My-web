@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>漫画 — JasperPeng</title>
+<meta name="description" content="JasperPeng 的条漫。">
+<meta name="robots" content="noindex">
+<!-- 条漫阅读页：Figma「条漫屏幕大小 / 条漫实际大小」—— 黑底，中间一栏 520 宽，竖着往下读。
+     沉浸阅读，不放顶栏和页脚（用户 2026-10-05 选的；和扉页一样是例外）。
+     离开靠浏览器返回键，或者读到底部的「下一话 / 回到章节地图」。
+     哪一话由地址里的 ?c=<slug> 决定，内容来自 js/data.js 的 COMICS + js/assets.js 的页面清单。 -->
+<meta name="theme-color" content="#000000">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="icon" href="../../assets/favicon/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../../assets/favicon/favicon.png">
+</head>
+<body class="reader" data-base="../../" data-page="comic-read">
+
+<main id="main" class="reader__main">
+  <header class="reader__head" data-reader-head></header>
+  <div class="reader__strip" data-reader-strip></div>
+  <nav class="reader__end" data-reader-end aria-label="章节导航"></nav>
+  <noscript><p class="reader__note">阅读页需要 JavaScript。<a href="../">回到章节地图</a></p></noscript>
+</main>
+
+<script src="../../js/assets.js"></script>
+<script src="../../js/data.js"></script>
+<script src="../../js/main.js" defer></script>
+</body>
+</html>

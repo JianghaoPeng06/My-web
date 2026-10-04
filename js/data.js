@@ -35,7 +35,7 @@
   /* 网站版本号 —— 显示在每页页脚「JasperPeng©2026」后面。
      由站长自己决定什么时候改、改成多少；改完保存、刷新即可，
      再双击「刷新图片.cmd」把它写进静态页面（忘了也不要紧，页面打开时会自动对上）。 */
-  var VERSION = 'v2.0.0';
+  var VERSION = 'v2.1.0';
 
   /* 四语字段构造器 */
   function L(zhs, zht, en, ja) { return { 'zh-Hans': zhs, 'zh-Hant': zht, en: en, ja: ja }; }
@@ -89,7 +89,8 @@
                   'Graphic, layout and system design — practice and guidelines.', 'グラフィック・レイアウト・システム設計の実践と規範。') },
         { slug: 'illustrations', label: L('插画', '插畫', 'Illustrations', 'イラスト'),
           desc: L('插画作品与系列创作。', '插畫作品與系列創作。', 'Illustration works and series.', 'イラスト作品とシリーズ。') },
-        { slug: 'comics',        label: L('漫画', '漫畫', 'Comics', 'コミック'),
+        /* 「漫画」不再是文章列表，直接进章节地图页 comics/（2026-10-05，Figma「漫画」画板） */
+        { slug: 'comics',        label: L('漫画', '漫畫', 'Comics', 'コミック'), to: 'comics/',
           desc: L('短篇漫画与图像叙事实验。', '短篇漫畫與圖像敘事實驗。',
                   'Short comics and experiments in visual narrative.', '短編漫画と視覚的な語りの実験。') },
         { slug: 'art',           label: L('艺术', '藝術', 'Art', 'アート'),
@@ -299,6 +300,36 @@
   ];
 
   /* ---------------------------------------------------------
+     漫画 · 章节地图（comics/，固定深色）
+     ---------------------------------------------------------
+     每一项是地图上的一个章节，点开 ▶ 进入竖向条漫 comics/read/?c=<slug>。
+
+     kind   'chapter' 正篇 → 六边形；'side' 番外 → 平行四边形
+     x, y   在地图上的大致位置（章节中心点，单位是 Figma 画板上的像素）。
+            地图背后是一张三角网格（边长 110、一行高约 95），格子会自动吸附到最近的网格位置，
+            所以不用算得很准。参考：Chapter 1 在 (640, 356)，Side Story 1 在 (365, 642)
+            —— 往左下错开一格半、往下三行，引导线就是「先水平、再斜下」那一折
+     from   从哪个章节连线过来（写那个章节的 slug）；第一个章节不写
+     label  章节号（地图上格子下方那行字）
+     title  章节名（选中放大时，格子里显示的那句）
+            这两项固定用英文、不随界面语言翻译（用户 2026-10-05 要求），所以用 P() 写
+
+     封面：assets/images/comics/<slug>.jpg —— 盖掉同名文件即可，和文章封面一样。
+     条漫页面：按顺序命名 01、02、03… 放进 assets/comics/<slug>/，
+     然后双击「刷新图片.cmd」。每张图宽度建议 1040 像素（显示宽度 520 的两倍，手机上清楚），
+     高度随意，竖着拼起来就是整话。
+     加新章节 = 这里加一条 + 放封面 + 放页面。
+     --------------------------------------------------------- */
+  var COMICS = [
+    { slug: 'chapter-1', kind: 'chapter', x: 640, y: 356,
+      label: P('Chapter 1'),
+      title: P('Meet New Friends') },
+    { slug: 'side-story-1', kind: 'side', x: 365, y: 642, from: 'chapter-1',
+      label: P('Side Story 1'),
+      title: P('Edge of the tower') }
+  ];
+
+  /* ---------------------------------------------------------
      文章
      title / lede 四语；body 目前只有中文，见文件末尾说明。
      date 存 ISO 值，由 Intl 按语言格式化。
@@ -396,20 +427,6 @@
     body: [
       { t: 'p', v: '刚开始画的时候总想把轮廓封死，觉得线连不上就是没画完。后来发现，受光那一侧的线断掉，形体反而更透气，也更像有光照在上面。' },
       { t: 'p', v: '规律大致是：背光处线重且连续，受光处线轻甚至断开。这不是省事，是让线条承担明暗的职责。' }
-    ]});
-
-  /* ===== Works · Comics ===== */
-  add({ slug: 'paper-strip', section: 'works', cat: 'comics', date: '2026-08-10', read: 2, weight: 3,
-    title: L('四格：关于等一班不会来的车', '四格：關於等一班不會來的車',
-             'Four panels: waiting for a train that never comes', '四コマ：来ない電車を待つ'),
-    lede:  L('没有对白，只有站台的灯从亮到暗。', '沒有對白，只有月台的燈從亮到暗。',
-             'No dialogue — only the platform lights going from bright to dark.',
-             '台詞はない。ホームの灯りが明から暗へ変わるだけ。'),
-    tags: [L('作品','作品','Works','ワークス'), L('漫画','漫畫','Comics','コミック')],
-    body: [
-      { t: 'p', v: '四格，没有对白，只有站台的灯从亮到暗。第一格灯全亮，第二格灭了一半，第三格只剩指示牌，第四格什么都没有。' },
-      { t: 'figure', cap: '第三格 · 原稿' },
-      { t: 'p', v: '不写字是故意的。一旦写了"末班车已过"，这四格就变成了通知；不写，它才是等待本身。' }
     ]});
 
   /* ===== Works · Art ===== */
@@ -890,12 +907,18 @@
   });
   /* 立绘（Figma 批注要求 PNG 透明背景） */
   CHARACTERS.forEach(function (c) { c.art = assetOf('characters', c.slug); });
+  /* 漫画：封面走同一套清单；条漫页面由 build.ps1 扫 assets/comics/<slug>/ 写进 JP_COMIC_PAGES */
+  var PAGES = w.JP_COMIC_PAGES || {};
+  COMICS.forEach(function (c) {
+    c.cover = assetOf('comics', c.slug);
+    c.pages = PAGES[c.slug] || [];
+  });
 
   function dirOf(key) {
     for (var i = 0; i < SECTIONS.length; i++) if (SECTIONS[i].key === key) return SECTIONS[i].dir;
     return 'works';
   }
 
-  w.JP = { SECTIONS: SECTIONS, ARTICLES: A, CHARACTERS: CHARACTERS, MAIL: MAIL, VERSION: VERSION, asset: assetOf };
+  w.JP = { SECTIONS: SECTIONS, ARTICLES: A, CHARACTERS: CHARACTERS, COMICS: COMICS, MAIL: MAIL, VERSION: VERSION, asset: assetOf };
 
 })(window);

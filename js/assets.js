@@ -18,6 +18,8 @@ window.JP_ASSETS = {
   "characters/strawberry-sheet": "assets/images/characters/strawberry-sheet.jpg",
   "characters/tong": "assets/images/characters/tong.jpg",
   "characters/xiahua": "assets/images/characters/xiahua.jpg",
+  "comics/chapter-1": "assets/images/comics/chapter-1.jpg",
+  "comics/side-story-1": "assets/images/comics/side-story-1.jpg",
   "research/archive-plan": "assets/images/research/archive-plan.jpg",
   "research/image-read": "assets/images/research/image-read.jpg",
   "research/site-launch": "assets/images/research/site-launch.png",
@@ -47,7 +49,11 @@ window.JP_ASSETS = {
   "works/nanjing-station": "assets/images/works/nanjing-station.jpg",
   "works/negative-space": "assets/images/works/negative-space.jpg",
   "works/osaka": "assets/images/works/osaka.jpg",
-  "works/paper-strip": "assets/images/works/paper-strip.jpg",
   "works/tongtong-mask": "assets/images/works/tongtong-mask.jpg",
   "works/type-scale": "assets/images/works/type-scale.jpg"
+};
+/* 条漫页面：assets/comics/<章节 slug>/ 里的图，按文件名排好序 */
+window.JP_COMIC_PAGES = {
+  "chapter-1": ["assets/comics/chapter-1/01.png"],
+  "side-story-1": ["assets/comics/side-story-1/01.png"]
 };

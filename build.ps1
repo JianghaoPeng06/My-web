@@ -577,6 +577,19 @@ foreach ($d in (Get-ChildItem (Join-Path $root 'assets\images') -Directory)) {
 }
 $rows = @()
 foreach ($k in $manifest.Keys) { $rows += ('  "' + $k + '": "' + $manifest[$k].Path + '"') }
+# 条漫页面：assets/comics/<章节 slug>/ 里的图片按文件名排序（01、02、…、10 按数字排），
+# 就是这一话从上到下的顺序。放进去之后双击「刷新图片.cmd」才会出现在阅读页里。
+$comicRows = @(); $comicPages = 0
+$comicRoot = Join-Path $root 'assets\comics'
+if (Test-Path $comicRoot) {
+    foreach ($d in (Get-ChildItem $comicRoot -Directory)) {
+        $files = @(Get-ChildItem $d.FullName -File | Where-Object { $IMG_EXT -contains $_.Extension.ToLower() } |
+                   Sort-Object @{ Expression = { [regex]::Replace($_.BaseName, '\d+', { param($n) $n.Value.PadLeft(8, '0') }) } })
+        if (-not $files.Count) { continue }
+        $list = ($files | ForEach-Object { '"assets/comics/' + $d.Name + '/' + $_.Name + '"' }) -join ', '
+        $comicRows += ('  "' + $d.Name + '": [' + $list + ']'); $comicPages += $files.Count
+    }
+}
 $assetsJs = @"
 /* 由 build.ps1 自动生成 —— 不要手改。
    换图：把你的图存成同名文件盖掉 assets/images/<板块目录>/<slug>.*，
@@ -586,6 +599,10 @@ $assetsJs = @"
 window.JP_ASSETS = {
 $($rows -join ",`n")
 };
+/* 条漫页面：assets/comics/<章节 slug>/ 里的图，按文件名排好序 */
+window.JP_COMIC_PAGES = {
+$($comicRows -join ",`n")
+};
 "@
 [System.IO.File]::WriteAllText((Join-Path $root 'js\assets.js'), $assetsJs, $U8)
 
@@ -593,7 +610,7 @@ $($rows -join ",`n")
 $regLines = @()
 foreach ($k in $phNew.Keys) { $regLines += ($k + "`t" + $phNew[$k]) }
 [System.IO.File]::WriteAllLines($PH_REG, [string[]]$regLines, $U8)
-Write-Host "图片清单：$($manifest.Count) 条 → js/assets.js（占位图 $($phNew.Count) 张在册）"
+Write-Host "图片清单：$($manifest.Count) 条 → js/assets.js（占位图 $($phNew.Count) 张在册；条漫 $($comicRows.Count) 话共 $comicPages 页）"
 
 # ---------- 3. 分类页 ----------
 $tpl = Get-Content -Raw -Encoding UTF8 (Join-Path $root 'category.html')
@@ -677,7 +694,7 @@ Write-Host "文章页：$($arts.Count) 个 → articles/<slug>/"
 
 # ---------- 3c. sitemap.xml / robots.txt ----------
 # 告诉搜索引擎全站有哪些页面。Cloudflare Pages 会把 xxx.html 跳到 xxx，所以这里写跳转后的地址。
-$urls = @("$SITE/", "$SITE/home", "$SITE/characters/")
+$urls = @("$SITE/", "$SITE/home", "$SITE/characters/", "$SITE/comics/")
 foreach ($s in $dirSecs) { foreach ($c in $s.Cats) { if (-not $c.To) { $urls += "$SITE/$($s.Dir)/$($c.Slug)/" } } }
 $sm = @('<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
 foreach ($u in $urls) { $sm += "  <url><loc>$u</loc></url>" }

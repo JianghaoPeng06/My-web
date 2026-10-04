@@ -7,7 +7,7 @@
 
    01 工具    02 页头滚动   03 下拉面板   04 移动导航
    05 搜索    06 入场动画   07 星体（史莱姆）  08 文章页（08b 插图放大）
-   09 分类页  10 角色页     11 语言       12 跳转过渡
+   09 分类页  10 角色页（10b 漫画地图 10c 条漫阅读）  11 语言  12 跳转过渡
    ============================================================= */
 (function () {
   'use strict';
@@ -154,28 +154,32 @@
       charsReading:'角色相关文章', emptyTitle:'这个分类还没有内容', emptyDesc:'先去看看其他板块，或者回到首页。',
       category:'分类', viewRes:'查看资源', all:'全部', year:'年份', version:'版本', region:'地图', explore:'Explore',
       pinned:'置顶', tagLabel:'标签', inTitle:'标题', inBody:'正文', zoomClose:'关闭', zoomHint:'双击或滚轮放大 · 拖动查看细节', searchTip:'可搜标题、标签、分类、正文；空格分隔多个关键词',
-      nfTitle:'这个页面不存在', nfDesc:'链接可能已经失效，或者地址输错了。', nfSearch:'搜索', share:'分享', copied:'链接已复制', author:'作者' },
+      nfTitle:'这个页面不存在', nfDesc:'链接可能已经失效，或者地址输错了。', nfSearch:'搜索', share:'分享', copied:'链接已复制', author:'作者',
+      comicsHint:'拖动浏览，点开章节开始阅读', comicsRead:'开始阅读', comicsBack:'回到章节地图', comicsNext:'下一话', comicsEnd:'本话完', comicsEmpty:'这一话的页面还没有上传。', comicsMissing:'没有找到这一话' },
     'zh-Hant': { skip:'跳到主要內容', archive:'檔案', archiveTitle:'最近更新', posterCap:'新的網站上線！', home:'首頁', toHome:'回到首頁', more:'查看更多', reading:'繼續閱讀', otherIn:' 的其他文章',
       count:' 篇內容', soon:'尚未開放', search:'搜尋文章、作品、角色…', noResult:'找不到相關內容',
       bodyOriginal:'正文保持寫作時的原文，未作翻譯。', notFound:'找不到這篇文章', notFoundDesc:'連結可能已失效，或這篇內容尚未發布。',
       charsReading:'角色相關文章', emptyTitle:'這個分類還沒有內容', emptyDesc:'先看看其他版塊，或回到首頁。',
       category:'分類', viewRes:'檢視資源', all:'全部', year:'年份', version:'版本', region:'地圖', explore:'Explore',
       pinned:'置頂', tagLabel:'標籤', inTitle:'標題', inBody:'正文', zoomClose:'關閉', zoomHint:'雙擊或滾輪放大 · 拖動查看細節', searchTip:'可搜尋標題、標籤、分類、正文；以空格分隔多個關鍵字',
-      nfTitle:'這個頁面不存在', nfDesc:'連結可能已經失效，或者網址輸入錯誤。', nfSearch:'搜尋', share:'分享', copied:'連結已複製', author:'作者' },
+      nfTitle:'這個頁面不存在', nfDesc:'連結可能已經失效，或者網址輸入錯誤。', nfSearch:'搜尋', share:'分享', copied:'連結已複製', author:'作者',
+      comicsHint:'拖動瀏覽，點開章節開始閱讀', comicsRead:'開始閱讀', comicsBack:'回到章節地圖', comicsNext:'下一話', comicsEnd:'本話完', comicsEmpty:'這一話的頁面還沒有上傳。', comicsMissing:'找不到這一話' },
     en: { skip:'Skip to content', archive:'Archive', archiveTitle:'Recently published', posterCap:'New website launched!', home:'Home', toHome:'Back to home', more:'View more', reading:'Keep reading', otherIn:' — more',
       count:' items', soon:'Coming soon', search:'Search articles, works, characters…', noResult:'No results found',
       bodyOriginal:'The article text is kept in the language it was written in, untranslated.', notFound:'Article not found', notFoundDesc:'The link may have expired, or this piece is not published yet.',
       charsReading:'Reading on the characters', emptyTitle:'Nothing here yet', emptyDesc:'Try another section, or head back home.',
       category:'Category', viewRes:'View resources', all:'All', year:'Year', version:'Version', region:'Region', explore:'Explore',
       pinned:'Pinned', tagLabel:'Tag', inTitle:'Title', inBody:'Text', zoomClose:'Close', zoomHint:'Double-click or scroll to zoom · drag to pan', searchTip:'Search titles, tags, categories and text; separate keywords with spaces',
-      nfTitle:'This page doesn’t exist', nfDesc:'The link may have expired, or the address was mistyped.', nfSearch:'Search', share:'Share', copied:'Link copied', author:'Author' },
+      nfTitle:'This page doesn’t exist', nfDesc:'The link may have expired, or the address was mistyped.', nfSearch:'Search', share:'Share', copied:'Link copied', author:'Author',
+      comicsHint:'Drag to explore · open a chapter to start reading', comicsRead:'Start reading', comicsBack:'Back to the chapter map', comicsNext:'Next', comicsEnd:'End of chapter', comicsEmpty:'The pages for this chapter haven’t been uploaded yet.', comicsMissing:'Chapter not found' },
     ja: { skip:'本文へスキップ', archive:'アーカイブ', archiveTitle:'最近の更新', posterCap:'新サイトが公開されました！', home:'ホーム', toHome:'ホームへ戻る', more:'もっと見る', reading:'続けて読む', otherIn:' の他の記事',
       count:' 件', soon:'準備中', search:'記事・作品・キャラクターを検索…', noResult:'該当する内容が見つかりません',
       bodyOriginal:'本文は執筆時の言語のまま、翻訳していません。', notFound:'記事が見つかりません', notFoundDesc:'リンクが無効か、まだ公開されていない可能性があります。',
       charsReading:'キャラクター関連の記事', emptyTitle:'まだコンテンツがありません', emptyDesc:'他のセクションを見るか、ホームへ戻ってください。',
       category:'カテゴリ', viewRes:'リソースを見る', all:'すべて', year:'年', version:'版', region:'地域', explore:'Explore',
       pinned:'固定', tagLabel:'タグ', inTitle:'タイトル', inBody:'本文', zoomClose:'閉じる', zoomHint:'ダブルクリック・ホイールで拡大 · ドラッグで移動', searchTip:'タイトル・タグ・カテゴリ・本文を検索。スペースで複数キーワード',
-      nfTitle:'このページは存在しません', nfDesc:'リンクが無効になったか、アドレスが間違っている可能性があります。', nfSearch:'検索', share:'共有', copied:'リンクをコピーしました', author:'著者' }
+      nfTitle:'このページは存在しません', nfDesc:'リンクが無効になったか、アドレスが間違っている可能性があります。', nfSearch:'検索', share:'共有', copied:'リンクをコピーしました', author:'著者',
+      comicsHint:'ドラッグで移動、章を開いて読む', comicsRead:'読む', comicsBack:'チャプターマップへ', comicsNext:'次の話', comicsEnd:'この話はここまで', comicsEmpty:'この話のページはまだアップロードされていません。', comicsMissing:'この話が見つかりません' }
   };
   var LANG = 'zh-Hans';
   try { LANG = localStorage.getItem('jp-lang') || 'zh-Hans'; } catch (e) {}
@@ -232,16 +236,12 @@
 
   /* ---------- 02 页头滚动状态（单一 rAF 节流）---------- */
   (function headerScroll() {
-    var hdr = $('[data-header]'), toTop = $('[data-totop]'), bar = $('[data-progress] span');
+    var hdr = $('[data-header]'), toTop = $('[data-totop]');
     var ticking = false;
     function update() {
       var y = scrollY;
       if (hdr) hdr.classList.toggle('is-scrolled', y > 8);
       if (toTop) toTop.classList.toggle('is-on', y > 640);
-      if (bar) {
-        var max = document.documentElement.scrollHeight - innerHeight;
-        bar.style.width = (max > 0 ? Math.min(100, y / max * 100) : 0) + '%';
-      }
       ticking = false;
     }
     addEventListener('scroll', function () {
@@ -425,7 +425,7 @@
     function setOpen(on) {
       burger.setAttribute('aria-expanded', String(on));
       burger.setAttribute('aria-label', on ? '关闭菜单' : '打开菜单');
-      BODY.classList.toggle('is-locked', on);
+      document.documentElement.classList.toggle('is-locked', on);
       if (on) { drawer.hidden = false; requestAnimationFrame(function () { drawer.classList.add('is-on'); }); }
       else {
         drawer.classList.remove('is-on');
@@ -438,6 +438,11 @@
     });
     addEventListener('resize', function () { if (isDesktop() && burger.getAttribute('aria-expanded') === 'true') setOpen(false); });
     $$('a', drawer).forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+    /* 点菜单下面的空白处也收起（用户 2026-10-05：点空白没法返回）。
+       菜单铺满整屏，列表下面那片空白就是抽屉本身（或者 nav / ul 的空余部分），点到的不是任何一项就收起 */
+    drawer.addEventListener('click', function (e) {
+      if (!e.target.closest('a, button, .mnav__panel, .menu__soon')) setOpen(false);
+    });
 
     $$('[data-acc]', drawer).forEach(function (h) {
       var panel = h.nextElementSibling;
@@ -627,9 +632,9 @@
       if (on) {
         overlay.hidden = false; input.value = q || ''; render(input.value.trim());
         requestAnimationFrame(function () { overlay.classList.add('is-on'); input.focus(); });
-        BODY.classList.add('is-locked');
+        document.documentElement.classList.add('is-locked');
       } else {
-        overlay.classList.remove('is-on'); BODY.classList.remove('is-locked'); input.value = '';
+        overlay.classList.remove('is-on'); document.documentElement.classList.remove('is-locked'); input.value = '';
         setTimeout(function () { overlay.hidden = true; }, 320);
       }
     }
@@ -1091,13 +1096,13 @@
       box.setAttribute('aria-label', alt || caption || t('zoomClose'));
       apply(false);
       box.hidden = false;
-      BODY.classList.add('is-locked');
+      document.documentElement.classList.add('is-locked');
       requestAnimationFrame(function () { box.classList.add('is-on'); closeBtn.focus(); });
     }
     function close() {
       if (!box || box.hidden) return;
       box.classList.remove('is-on', 'is-zoomed');
-      BODY.classList.remove('is-locked');
+      document.documentElement.classList.remove('is-locked');
       setTimeout(function () { box.hidden = true; img.removeAttribute('src'); }, 260);
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
@@ -1463,6 +1468,556 @@
     select(new URLSearchParams(location.search).get('c') || CHARACTERS[0].slug, false);
   }
 
+  /* ---------- 10b 漫画：章节地图（comics/）----------
+     Figma「漫画」「选中某一章节」+ 两条说明，审美和逻辑参考 Phigros 的章节图：
+     · 整张图可以自由拖动，但有边界 —— 拖出去会被拉住、松手弹回，免得找不回章节
+     · 点一个章节：放大并居中，格子里变暗、露出章节名和 ▶；再点格子或 ▶ 进入阅读；点空白处 / Esc 关闭
+     · 和 Phigros 一样，一切都长在一张三角网格上：六边形 = 网格上的 6 个三角，
+       平行四边形的斜边也是 60°；引导线只走网格线（水平 + 60° 斜线），拐点落在网格交点上。
+       网格和章节在同一层，一起拖动（用户 2026-10-05：引导线要根据三角形背景来，不然突兀）
+     · 氛围：当前章节封面虚化铺底、远处一层淡淡的穹顶网格（半速视差，给纵深）、
+       随机点亮的浅色三角、往上飘的光尘、连线上流过的光点、格子上扫过的流光、扫描线
+     data.js 的 x, y 是大致位置（Figma 画板像素），这里吸附到最近的网格位置；窄屏整体等比缩小。 */
+  var COMICS = D.COMICS || [];
+  /* 网格三角边长。Figma 六边形高 191、斜边正好 60°（高 95.5 斜出 54）→ 一行高 95.26、边长 110 */
+  var CM_S = 110, CM_TH = CM_S * Math.sqrt(3) / 2;
+  /* 六边形 3 个边长宽；番外平行四边形「3×2」：上边 3 个边长、2 行高，带上斜出的一格共 4 个边长宽（用户 2026-10-05） */
+  var CM_SIZE  = { chapter: [CM_S * 3, CM_TH * 2], side: [CM_S * 4, CM_TH * 2] };
+  var CM_LABEL = 50;                                          /* 格子下方「Chapter 1」那一行占的高度 */
+  var CM_O = { x: 0, y: 0 };                                  /* 网格原点（第一章左顶点所在的交点） */
+  var cmBound = false, cmRelayout = function () {};
+
+  function comicOf(s) { for (var i = 0; i < COMICS.length; i++) if (COMICS[i].slug === s) return COMICS[i]; return null; }
+  /* 地图 ↔ 阅读页的浏览器历史（用户 2026-10-05 报的 bug：看完漫画点「回到章节地图」，再按返回又回到了漫画里）。
+     规矩：从地图进阅读页只占一条历史；「下一话」原地替换；「回到章节地图」真的退回去，不新开一页。
+     这里在这个标签页的 sessionStorage 里记两件事：
+       jp-cmap-via   阅读页是不是从地图点进来的（是 → 回地图用 history.back()）
+       jp-cmap-last  最后读的是哪一话（回到地图时就停在那一话上，读了「下一话」也对得上） */
+  function cmStore(k, v) {
+    try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); }
+    catch (e) { return null; }
+  }
+  function readUrl(slug) { return url('comics/read/' + (FILE ? 'index.html' : '') + '?c=' + encodeURIComponent(slug)); }
+  function cmShape(kind) {
+    var S = CM_S, H = CM_TH, f = function (a) { return a.map(function (v) { return v.toFixed(2); }).join(','); };
+    return (kind === 'side'
+      ? [[0, 2 * H], [S, 0], [4 * S, 0], [3 * S, 2 * H]]                                   /* 平行四边形：上边 3 格、两行高、斜边 60° */
+      : [[S / 2, 0], [2.5 * S, 0], [3 * S, H], [2.5 * S, 2 * H], [S / 2, 2 * H], [0, H]]  /* 六边形：网格上的 6 个三角 */
+    ).map(f).join(' ');
+  }
+  /* 网格交点：第 r 行的点在 x = 原点 + (k + r 是奇数 ? 0.5 : 0) × 边长 */
+  function cmPar(r) { return ((r % 2) + 2) % 2 / 2; }
+  /* 把 data.js 里的大致位置吸附到网格上：六边形的左顶点、平行四边形的左下角都要落在交点上 */
+  function cmSnap() {
+    if (!COMICS.length) return;
+    var c0 = COMICS[0];
+    CM_O.x = c0.x - (CM_SIZE[c0.kind] || CM_SIZE.chapter)[0] / 2; CM_O.y = c0.y;
+    COMICS.forEach(function (c) {
+      var half = (CM_SIZE[c.kind] || CM_SIZE.chapter)[0] / 2;            /* 中心到左顶点（左下角）的水平距离 */
+      var r = Math.round((c.y - CM_O.y) / CM_TH), lead = c.kind === 'side' ? cmPar(r + 1) : cmPar(r);
+      var k = Math.round((c.x - half - CM_O.x) / CM_S - lead);
+      c.gx = CM_O.x + (k + lead) * CM_S + half; c.gy = CM_O.y + r * CM_TH;
+    });
+  }
+  /* 格子的几个关键交点（相对中心）。平行四边形左右两边是斜的，L / R 取斜边中点，也是网格交点 */
+  var CM_ANCHOR = {
+    chapter: { L: [-1.5, 0], R: [1.5, 0], TL: [-1, -1], TR: [1, -1], BL: [-1, 1], BR: [1, 1] },
+    side:    { L: [-1.5, 0], R: [1.5, 0], TL: [-1, -1], TR: [2, -1], BL: [-2, 1], BR: [1, 1] }
+  };
+  function cmAnchor(c, which) {
+    var a = (CM_ANCHOR[c.kind] || CM_ANCHOR.chapter)[which];
+    return [c.gx + a[0] * CM_S, c.gy + a[1] * CM_TH];
+  }
+  /* 文字摆在格子「视觉上的中线」上，而不是外框中心：
+     平行四边形是斜的，底边中点比外框中心偏左半格；格子里那行章节名在 87% 高处，那一高度的中点偏左 0.37 格 */
+  var CM_TEXT = { chapter: { label: 0, sub: 0 }, side: { label: -.5, sub: -.37 } };
+  /* 引导线（照 Figma 的走法，但只走网格线）：从上一章朝向这一章那一侧的顶点出发 →
+     沿水平网格线走 → 拐上 60° 斜网格线 → 落在这一章朝上一章那一侧的上角。
+     起点、拐点、终点都是网格交点，所以线和背景三角严丝合缝。
+     这一章在上一章上面时（目前没有），斜线往上走，落到它的下角。 */
+  function cmLink(p, c) {
+    var dir = c.gx < p.gx ? -1 : 1, down = c.gy >= p.gy;
+    var A = cmAnchor(p, dir < 0 ? 'L' : 'R');
+    var T = cmAnchor(c, down ? (dir < 0 ? 'TL' : 'TR') : (dir < 0 ? 'BL' : 'BR'));
+    var rows = Math.round(Math.abs(T[1] - A[1]) / CM_TH);
+    /* 斜段朝着前进方向斜：每走一行，x 往前进方向挪半个边长 */
+    var bx = T[0] - dir * rows * CM_S / 2;
+    if ((bx - A[0]) * dir >= -.5) return [A, [bx, A[1]], T];
+    /* 水平段放不下（这一章离得太近）：先斜着走到那一行，再水平走过去 */
+    var cx = A[0] + dir * rows * CM_S / 2;
+    return [A, [cx, T[1]], T];
+  }
+
+  /* 背景网格，两层：
+     · 近处：和章节同一套坐标的三角网格（跟着拖动 1:1 移动，章节和引导线都长在它上面），
+       按格子编号做个伪随机，点亮少数几块浅色三角（Phigros 背景里那种）
+     · 远处：更大、更淡的一层，按「从球面内侧看」往外弯（桶形畸变），只跟半速 —— 给纵深，不和近处的线打架
+     两层都是中间亮、四周淡。只在平移、尺寸变化时重画，不是每帧都画。 */
+  function cmGrid(cv) {
+    var ctx = cv.getContext('2d'), W = 0, H = 0, dpr = 1, R3 = Math.sqrt(3);
+    function hash(i, j, k) { var h = Math.sin(i * 127.1 + j * 311.7 + k * 74.7) * 43758.5453; return h - Math.floor(h); }
+    /* 远处那层：画一张平的三角网，再做桶形畸变 */
+    function far(ox, oy) {
+      var S = 170, TH = S * R3 / 2, K = .12;
+      function warp(x, y) {
+        /* 离中心越远收得越多，但最多收到 0.72 —— 不封底的话屏幕外很远的点系数会变成负数，
+           线被翻折穿过画面中心，聚成一簇放射线（踩过） */
+        var nx = (x - W / 2) / (W / 2), ny = (y - H / 2) / (H / 2), f = Math.max(.72, 1 - K * (nx * nx * .55 + ny * ny));
+        return [W / 2 + nx * f * W / 2, H / 2 + ny * f * H / 2];
+      }
+      function seg(x0, y0, x1, y1) {
+        var n = 16, p = warp(x0, y0); ctx.moveTo(p[0], p[1]);
+        for (var k = 1; k <= n; k++) { p = warp(x0 + (x1 - x0) * k / n, y0 + (y1 - y0) * k / n); ctx.lineTo(p[0], p[1]); }
+      }
+      var gx = ((ox % S) + S) % S, gy = ((oy % (TH * 2)) + TH * 2) % (TH * 2);
+      var top = gy - TH * 4, bottom = H + TH * 4, left = gx - S * 4, right = W + S * 4, span = (bottom - top) / R3;
+      ctx.beginPath();
+      for (var y = top; y <= bottom; y += TH) seg(left, y, right, y);
+      for (var x = left - span; x <= right + span; x += S) { seg(x, top, x + span, bottom); seg(x + span, top, x, bottom); }
+      ctx.strokeStyle = 'rgba(170,195,255,.10)'; ctx.lineWidth = 1; ctx.stroke();
+    }
+    /* 近处那层：世界坐标里的网格，换算到屏幕 = 世界 × s + 平移 */
+    function near(px, py, s) {
+      var S = CM_S * s, TH = CM_TH * s, X0 = CM_O.x * s + px, Y0 = CM_O.y * s + py;
+      var r0 = Math.floor(-Y0 / TH) - 1, r1 = Math.ceil((H - Y0) / TH) + 1, r, k;
+      /* 浅色三角块：第 r 行和第 r+1 行之间，每格一个朝下、一个朝上的三角 */
+      var k0 = Math.floor(-X0 / S) - 2, k1 = Math.ceil((W - X0) / S) + 2;
+      for (r = r0; r < r1; r++) {
+        var ya = Y0 + r * TH, yb = ya + TH, pa = cmPar(r), pb = cmPar(r + 1);
+        for (k = k0; k < k1; k++) {
+          for (var up = 0; up < 2; up++) {
+            var hv = hash(k, r, up);
+            if (hv > .07) continue;
+            var x1, x3, y1, y3;
+            if (!up) { x1 = X0 + (k + pa) * S; y1 = ya; y3 = yb; }
+            else     { x1 = X0 + (k + pb) * S; y1 = yb; y3 = ya; }
+            x3 = x1 + S / 2;
+            ctx.fillStyle = 'rgba(185,212,255,' + (.03 + hv * 1.15).toFixed(3) + ')';
+            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 + S, y1); ctx.lineTo(x3, y3); ctx.closePath(); ctx.fill();
+          }
+        }
+      }
+      /* 线：每一行一条水平线，再加穿过第 0 行每个交点的两组 60° 斜线，延长到画布上下边 */
+      ctx.beginPath();
+      for (r = r0; r <= r1; r++) { var y = Y0 + r * TH; ctx.moveTo(0, y); ctx.lineTo(W, y); }
+      var dTop = (0 - Y0) / R3, dBot = (H - Y0) / R3;
+      var ka = Math.floor((-X0 - Math.abs(dTop) - Math.abs(dBot)) / S) - 1, kb = Math.ceil((W - X0 + Math.abs(dTop) + Math.abs(dBot)) / S) + 1;
+      for (k = ka; k <= kb; k++) {
+        var xr = X0 + k * S;
+        ctx.moveTo(xr + dTop, 0); ctx.lineTo(xr + dBot, H);
+        ctx.moveTo(xr - dTop, 0); ctx.lineTo(xr - dBot, H);
+      }
+      ctx.strokeStyle = 'rgba(205,225,255,.26)'; ctx.lineWidth = 1; ctx.stroke();
+    }
+    return {
+      size: function (w, h) {
+        dpr = Math.min(2, devicePixelRatio || 1); W = w; H = h;
+        cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+        cv.style.width = w + 'px'; cv.style.height = h + 'px';
+      },
+      draw: function (px, py, s) {
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+        far(px * .45, py * .45);
+        near(px, py, s);
+        /* 四周淡出：只留中间一圈亮的，像 Phigros 那样往远处隐去 */
+        ctx.globalCompositeOperation = 'destination-in';
+        var g = ctx.createRadialGradient(W / 2, H * .52, Math.min(W, H) * .12, W / 2, H * .52, Math.max(W, H) * .7);
+        g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(.55, 'rgba(0,0,0,.6)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'source-over';
+      }
+    };
+  }
+
+  /* 光尘：一层慢慢往上飘、忽明忽暗的小光点和小三角。地图滚出屏幕 / 标签页切走时暂停 */
+  function cmDust(cv, stage) {
+    var ctx = cv.getContext('2d'), W = 0, H = 0, dpr = 1, ps = [], raf = 0, on = false, last = 0;
+    function spawn(p, anywhere) {
+      p.x = Math.random() * W; p.y = anywhere ? Math.random() * H : H + 10;
+      p.r = .6 + Math.random() * 1.8; p.v = 6 + Math.random() * 18;        /* 每秒往上几像素 */
+      p.drift = (Math.random() - .5) * 8; p.ph = Math.random() * 6.28; p.tw = .6 + Math.random() * 1.6;
+      p.tri = Math.random() < .18; p.rot = Math.random() * 6.28; p.vr = (Math.random() - .5) * .6;
+      return p;
+    }
+    function frame(t) {
+      var dt = Math.min(.05, (t - last) / 1000 || 0); last = t;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < ps.length; i++) {
+        var p = ps[i];
+        p.y -= p.v * dt; p.x += p.drift * dt; p.rot += p.vr * dt;
+        if (p.y < -10) spawn(p, false);
+        var a = (.35 + .65 * Math.abs(Math.sin(t / 1000 * p.tw + p.ph))) * Math.min(1, p.y / (H * .25));
+        if (p.tri) {
+          var s = p.r * 3.2;
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+          ctx.strokeStyle = 'rgba(200,225,255,' + (a * .5).toFixed(3) + ')'; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(0, -s); ctx.lineTo(s * .87, s * .5); ctx.lineTo(-s * .87, s * .5); ctx.closePath(); ctx.stroke();
+          ctx.restore();
+        } else {
+          ctx.fillStyle = 'rgba(210,235,255,' + (a * .85).toFixed(3) + ')';
+          ctx.shadowColor = 'rgba(140,200,255,.9)'; ctx.shadowBlur = 6;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    function run(v) {
+      if (v === on || reduce) return;
+      on = v; cancelAnimationFrame(raf);
+      if (on) { last = performance.now(); raf = requestAnimationFrame(frame); }
+    }
+    var vis = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { vis = es[0].isIntersecting; run(vis && !document.hidden); }).observe(stage);
+    document.addEventListener('visibilitychange', function () { run(vis && !document.hidden); });
+    return {
+      size: function (w, h) {
+        dpr = Math.min(2, devicePixelRatio || 1); W = w; H = h;
+        cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+        cv.style.width = w + 'px'; cv.style.height = h + 'px';
+        var n = Math.round(Math.min(90, w * h / 16000));
+        ps = []; for (var i = 0; i < n; i++) ps.push(spawn({}, true));
+        if (reduce) { frame(performance.now()); cancelAnimationFrame(raf); }   /* 减少动态效果：只画一帧静止的 */
+        else run(vis && !document.hidden);
+      }
+    };
+  }
+
+  function renderComics() {
+    var stage = $('[data-cmap]');
+    if (!stage || !COMICS.length) return;
+    var world = $('[data-cmap-world]', stage), links = $('[data-cmap-links]', stage), art = $('[data-cmap-art]', stage);
+    /* 页面结构对不上：浏览器按返回键时会直接拿缓存里的旧版页面（不重新下载），旧页面配新脚本，
+       地图画不出来，只剩一片深蓝（用户 2026-10-05 报的「蓝屏」）。这时自动刷新一次拿新页面；
+       同一个地址只刷一次，万一还是不对就算了，不会一直刷 */
+    if (!world || !links || !art || !$('[data-cmap-grid]', stage) || !$('[data-cmap-dust]', stage)) {
+      if (cmStore('jp-cmap-reload') !== location.href) { cmStore('jp-cmap-reload', location.href); location.reload(); }
+      return;
+    }
+    cmStore('jp-cmap-reload', null);
+
+    /* 面包屑：作品 > 漫画 */
+    var works = secOf('works'), cat = catOf(works, 'comics');
+    paintCrumbs(crumbHTML([{ label: T(works.label), href: url('home.html#works') }, { label: T(cat ? cat.label : '') }]));
+    document.title = 'Comics — JasperPeng';
+    var cnt = $('[data-cmap-count]', stage);
+    if (cnt) {
+      var nc = COMICS.filter(function (c) { return c.kind !== 'side'; }).length, ns = COMICS.length - nc;
+      cnt.textContent = nc + (nc > 1 ? ' Chapters' : ' Chapter') + (ns ? ' · ' + ns + (ns > 1 ? ' Side Stories' : ' Side Story') : '');
+    }
+
+    /* ---- 背景：每一章的封面都虚化好放着，选中哪章就淡入哪章（Phigros 换章节时背景跟着换）---- */
+    art.innerHTML = COMICS.map(function (c, i) {
+      return '<img src="' + esc(url(c.cover)) + '" alt="" data-art="' + esc(c.slug) + '"' + (i === 0 ? ' class="is-on"' : '') + ' decoding="async">';
+    }).join('');
+
+    /* ---- 节点（先吸附到网格上）---- */
+    cmSnap();
+    $$('.cnode', world).forEach(function (n) { n.remove(); });
+    COMICS.forEach(function (c, idx) {
+      var sz = CM_SIZE[c.kind] || CM_SIZE.chapter, pts = cmShape(c.kind);
+      var poly = pts.split(' ').map(function (xy) { var a = xy.split(','); return (a[0] / sz[0] * 100).toFixed(2) + '% ' + (a[1] / sz[1] * 100).toFixed(2) + '%'; }).join(', ');
+      var n = document.createElement('div');
+      n.className = 'cnode cnode--' + (c.kind === 'side' ? 'side' : 'chapter');
+      n.setAttribute('data-comic', c.slug);
+      n.style.left = c.gx + 'px'; n.style.top = c.gy + 'px';
+      n.style.setProperty('--w', sz[0] + 'px'); n.style.setProperty('--h', sz[1] + 'px');
+      var tx = CM_TEXT[c.kind] || CM_TEXT.chapter;
+      n.style.setProperty('--lx', (tx.label * CM_S).toFixed(1) + 'px'); n.style.setProperty('--sx', (tx.sub * CM_S).toFixed(1) + 'px');
+      n.style.setProperty('--d', (idx * 1.7).toFixed(1) + 's');                /* 每个格子的流光错开 */
+      n.innerHTML =
+        '<div class="cnode__body">' +
+          '<button class="cnode__tile" type="button" aria-expanded="false" aria-label="' + esc(T(c.label) + ' · ' + T(c.title)) + '">' +
+            '<span class="cnode__clip" style="clip-path:polygon(' + poly + ')">' +
+              '<img src="' + esc(url(c.cover)) + '" alt="" draggable="false" decoding="async">' +
+              '<span class="cnode__shade"></span>' +
+              '<span class="cnode__sheen"></span>' +
+              '<span class="cnode__sub">' + esc(T(c.title)) + '</span>' +
+            '</span>' +
+            '<svg class="cnode__edge" viewBox="0 0 ' + sz[0] + ' ' + sz[1] + '" aria-hidden="true"><polygon points="' + pts + '"/></svg>' +
+          '</button>' +
+          '<a class="cnode__play" href="' + esc(readUrl(c.slug)) + '" tabindex="-1" aria-label="' + esc(t('comicsRead') + ' · ' + T(c.label)) + '">' +
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.6c0-1.2 1.3-1.9 2.3-1.3l11 7.4c.9.6.9 2 0 2.6l-11 7.4c-1 .6-2.3-.1-2.3-1.3z"/></svg></a>' +
+        '</div>' +
+        /* 章节号不跟着格子放大（Figma「选中」画板里它还是原来的字号），只跟着往下让位 */
+        '<p class="cnode__label">' + esc(T(c.label)) + '</p>';
+      world.appendChild(n);
+    });
+
+    /* ---- 连线：一条发光的底线 + 一段沿线流过去的光（流光）+ 拐点上的小菱形 ---- */
+    links.innerHTML = COMICS.filter(function (c) { return c.from && comicOf(c.from); }).map(function (c, i) {
+      var pts = cmLink(comicOf(c.from), c), len = 0;
+      for (var k = 1; k < pts.length; k++) len += Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]);
+      var p = pts.map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' '), key = esc(c.from) + ' ' + esc(c.slug);
+      return '<g data-link="' + key + '" style="--len:' + len.toFixed(0) + ';--ld:' + (i * .9).toFixed(1) + 's">' +
+               '<polyline class="cmap__line" points="' + p + '"/>' +
+               '<polyline class="cmap__flow" points="' + p + '"/>' +
+               '<rect class="cmap__knot" x="' + (pts[1][0] - 4).toFixed(1) + '" y="' + (pts[1][1] - 4).toFixed(1) + '" width="8" height="8" transform="rotate(45 ' + pts[1][0].toFixed(1) + ' ' + pts[1][1].toFixed(1) + ')"/>' +
+             '</g>';
+    }).join('');
+    patchDirLinks();
+
+    if (cmBound) { cmRelayout(); return; }
+    cmBound = true;
+
+    var grid = cmGrid($('[data-cmap-grid]', stage)), dust = cmDust($('[data-cmap-dust]', stage), stage);
+
+    /* ---- 视图状态：平移 (px, py) + 整体缩放 s ---- */
+    var st = { px: 0, py: 0, s: 1, sel: null, W: 0, H: 0, box: null, vx: 0, vy: 0, raf: 0, gq: 0 };
+    function contentBox() {
+      var b = { l: Infinity, t: Infinity, r: -Infinity, b: -Infinity };
+      COMICS.forEach(function (c) {
+        var sz = CM_SIZE[c.kind] || CM_SIZE.chapter;
+        b.l = Math.min(b.l, c.gx - sz[0] / 2); b.r = Math.max(b.r, c.gx + sz[0] / 2);
+        b.t = Math.min(b.t, c.gy - sz[1] / 2); b.b = Math.max(b.b, c.gy + sz[1] / 2 + CM_LABEL);
+      });
+      return b;
+    }
+    /* 边界（Figma 说明 2：不是无边无际的）：
+       章节图比视窗小 → 只能在视窗中间 60% 的范围里挪，永远整个看得见；
+       章节图比视窗大 → 能一直拖到最左 / 最右（最上 / 最下）那一章，再多留 20% 就拉不动了。 */
+    function span(size, lo, hi) {
+      var a = size * .8 - hi, b = size * .2 - lo;
+      return a < b ? [a, b] : [b, a];
+    }
+    function range() {
+      var b = st.box, s = st.s, x = span(st.W, b.l * s, b.r * s), y = span(st.H, b.t * s, b.b * s);
+      return { x0: x[0], x1: x[1], y0: y[0], y1: y[1] };
+    }
+    function clampTo(v, lo, hi) { return lo > hi ? (lo + hi) / 2 : Math.max(lo, Math.min(hi, v)); }
+    /* 拖出边界时阻力越来越大（橡皮筋），松手再弹回 */
+    function rubber(v, lo, hi) {
+      if (lo > hi) lo = hi = (lo + hi) / 2;
+      if (v < lo) return lo - Math.pow(lo - v, .7) * 1.6;
+      if (v > hi) return hi + Math.pow(v - hi, .7) * 1.6;
+      return v;
+    }
+    function apply() {
+      world.style.transform = 'translate3d(' + st.px.toFixed(1) + 'px,' + st.py.toFixed(1) + 'px,0) scale(' + st.s + ')';
+      /* 背景网格跟着重画（近处那层 1:1，远处那层半速）。同一帧里只重画一次 */
+      if (!st.gq) st.gq = requestAnimationFrame(function () { st.gq = 0; grid.draw(st.px, st.py, st.s); });
+    }
+    /* 选中 / 关闭时滑到目标位置：逐帧补间（背景网格要跟着同步重画） */
+    function animateTo(px, py) {
+      cancelAnimationFrame(st.raf);
+      if (reduce) { st.px = px; st.py = py; apply(); return; }
+      var x0 = st.px, y0 = st.py, t0 = performance.now(), dur = 620;
+      (function step(now) {
+        var k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 4);
+        st.px = x0 + (px - x0) * e; st.py = y0 + (py - y0) * e; apply();
+        if (k < 1) st.raf = requestAnimationFrame(step);
+      })(t0);
+    }
+    /* 窗口尺寸一变就重新摆：全部章节居中（选中了就让选中的那章居中）。
+       以前试过「保持原来的视野中心」，窗口被临时压得很小再恢复时，边界一夹，视野就慢慢漂走了。 */
+    function layout() {
+      var r = stage.getBoundingClientRect();
+      st.W = r.width; st.H = r.height; st.box = contentBox();
+      grid.size(st.W, st.H); dust.size(st.W, st.H);
+      var bw = st.box.r - st.box.l, bh = st.box.b - st.box.t;
+      /* 宽屏 1:1（和 Figma 一样大）；放不下就整体缩小，留一圈呼吸（上面让出标题的位置） */
+      st.s = Math.min(1, (st.W - 48) / bw, (st.H - 200) / bh);
+      cancelAnimationFrame(st.raf);
+      if (st.sel) { focusOn(st.sel, false); return; }
+      st.px = st.W / 2 - (st.box.l + st.box.r) / 2 * st.s;
+      st.py = st.H * .54 - (st.box.t + st.box.b) / 2 * st.s;
+      apply();
+    }
+
+    /* ---- 选中 / 关闭 ---- */
+    function nodeOf(slug) { return $('.cnode[data-comic="' + slug + '"]', world); }
+    function showArt(slug) { $$('[data-art]', art).forEach(function (im) { im.classList.toggle('is-on', im.getAttribute('data-art') === slug); }); }
+    function focusOn(slug, anim) {
+      var c = comicOf(slug), n = nodeOf(slug);
+      if (!c || !n) return;
+      var sz = CM_SIZE[c.kind] || CM_SIZE.chapter;
+      /* 放大到 Figma「选中」画板的大小（约 1.85 倍），窄屏上以放得下为准 */
+      var k = Math.max(1, Math.min(1.85, (st.W * .86) / (sz[0] * st.s), (st.H * .5) / (sz[1] * st.s)));
+      n.style.setProperty('--k', k);
+      var px = st.W / 2 - c.gx * st.s, py = st.H * .5 - c.gy * st.s;
+      if (anim) animateTo(px, py); else { cancelAnimationFrame(st.raf); st.px = px; st.py = py; apply(); }
+    }
+    function select(slug, still) {
+      if (st.sel === slug) return;
+      if (st.sel) unmark(st.sel);
+      st.sel = slug;
+      var n = nodeOf(slug);
+      n.classList.add('is-sel'); stage.classList.add('is-focus');
+      $('.cnode__tile', n).setAttribute('aria-expanded', 'true');
+      $('.cnode__play', n).removeAttribute('tabindex');
+      $$('[data-link]', links).forEach(function (l) { l.classList.toggle('is-on', (' ' + l.getAttribute('data-link') + ' ').indexOf(' ' + slug + ' ') > -1); });
+      showArt(slug);
+      focusOn(slug, !still);
+      /* 地址跟着变（能直接分享某一章），但不堆浏览器历史 —— 和角色页同一个做法 */
+      history.replaceState(null, '', '?c=' + slug);
+    }
+    function unmark(slug) {
+      var n = nodeOf(slug);
+      if (!n) return;
+      n.classList.remove('is-sel');
+      $('.cnode__tile', n).setAttribute('aria-expanded', 'false');
+      $('.cnode__play', n).setAttribute('tabindex', '-1');
+    }
+    function close(still) {
+      if (!st.sel) return;
+      unmark(st.sel); st.sel = null;
+      stage.classList.remove('is-focus');
+      $$('[data-link]', links).forEach(function (l) { l.classList.remove('is-on'); });
+      cancelAnimationFrame(st.raf);
+      var g = range();
+      if (!still) animateTo(clampTo(st.px, g.x0, g.x1), clampTo(st.py, g.y0, g.y1));
+      history.replaceState(null, '', location.pathname);
+    }
+
+    /* ---- 拖动（鼠标、触屏同一套 pointer 事件）+ 惯性 ---- */
+    var drag = null, moved = false, hint = $('[data-cmap-hint]', stage);
+    stage.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0) return;
+      cancelAnimationFrame(st.raf);
+      drag = { x: e.clientX, y: e.clientY, px: st.px, py: st.py, t: performance.now(), id: e.pointerId };
+      moved = false; st.vx = st.vy = 0;
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (!moved) {
+        if (Math.abs(dx) + Math.abs(dy) < 6) return;        /* 6px 以内算点击，不算拖 */
+        moved = true;
+        try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+        stage.classList.add('is-drag');
+        if (hint) hint.classList.add('is-gone');             /* 会拖了，提示就收起来 */
+        if (st.sel) close(true);                             /* 拖动就是在看别处，先收起选中 */
+        drag.x = e.clientX; drag.y = e.clientY; drag.px = st.px; drag.py = st.py; dx = dy = 0;
+      }
+      var now = performance.now(), g = range();
+      var nx = rubber(drag.px + dx, g.x0, g.x1), ny = rubber(drag.py + dy, g.y0, g.y1);
+      /* 松手后的惯性速度（每帧多少像素）。两次事件挨得太近时算出来会大得离谱，
+         所以 dt 至少按 8ms 算，再封顶 40 —— 不然轻轻一拖就甩到边界上（实测踩过） */
+      var dt = Math.max(8, now - drag.t), cap = function (v) { return Math.max(-40, Math.min(40, v)); };
+      st.vx = cap(.8 * (nx - st.px) / dt * 16 + .2 * st.vx); st.vy = cap(.8 * (ny - st.py) / dt * 16 + .2 * st.vy);
+      drag.t = now; st.px = nx; st.py = ny; apply();
+    });
+    function endDrag() {
+      if (!drag) return;
+      var idle = performance.now() - drag.t;
+      drag = null;
+      stage.classList.remove('is-drag');
+      if (!moved) return;
+      if (idle > 80) st.vx = st.vy = 0;                      /* 停住了再松手：不甩 */
+      /* 惯性滑行；越界的部分用弹簧拉回 */
+      (function glide() {
+        var g = range();
+        st.vx *= .92; st.vy *= .92;
+        st.px += st.vx; st.py += st.vy;
+        var tx = clampTo(st.px, g.x0, g.x1), ty = clampTo(st.py, g.y0, g.y1);
+        if (tx !== st.px) { st.vx *= .5; st.px += (tx - st.px) * .18; }
+        if (ty !== st.py) { st.vy *= .5; st.py += (ty - st.py) * .18; }
+        apply();
+        if (Math.abs(st.vx) > .1 || Math.abs(st.vy) > .1 || Math.abs(tx - st.px) > .5 || Math.abs(ty - st.py) > .5) st.raf = requestAnimationFrame(glide);
+        else { st.px = tx; st.py = ty; apply(); }
+      })();
+    }
+    stage.addEventListener('pointerup', endDrag);
+    stage.addEventListener('pointercancel', endDrag);
+
+    /* ---- 点击：点格子 = 选中（已选中再点 = 开始阅读）；点空白 = 关闭 ---- */
+    stage.addEventListener('click', function (e) {
+      if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; return; }
+      var play = e.target.closest('.cnode__play');
+      if (play) { cmStore('jp-cmap-via', '1'); return; }     /* ▶ 是普通链接，照常跳转 */
+      var tile = e.target.closest('.cnode__tile');
+      if (tile) {
+        var slug = tile.closest('.cnode').getAttribute('data-comic');
+        if (st.sel === slug) { cmStore('jp-cmap-via', '1'); location.href = readUrl(slug); return; }
+        select(slug); return;
+      }
+      close();
+    }, true);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    /* 图片别被浏览器当成可拖走的东西 */
+    stage.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+    /* 顶栏：还在地图上方时透明地浮着（沉浸）；往下滚出地图才恢复成平常的样子 */
+    var hdr = $('[data-header]');
+    function overMap() { if (hdr) hdr.classList.toggle('is-over-map', stage.getBoundingClientRect().bottom > (hdr.offsetHeight || 72) + 1); }
+    addEventListener('scroll', overMap, { passive: true });
+
+    var rt;
+    addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { layout(); overMap(); }, 120); });
+
+    layout(); overMap();
+    cmRelayout = layout;
+    function stayOn(slug) {
+      if (!slug || !comicOf(slug) || st.sel === slug) return;
+      stage.classList.add('no-anim');
+      select(slug, true);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { stage.classList.remove('no-anim'); }); });
+    }
+    /* 从阅读页回来（返回键或「回到章节地图」）、或者分享出来的 ?c= 链接：直接停在那一章，不做动画。
+       刚读过的那一话优先 —— 读了「下一话」再回来，停的是后读的那一话 */
+    function arrive() {
+      /* 只有「从地图进了阅读页、现在退回来」才用刚读的那一话；之后从菜单再点进漫画，就是干净的总览 */
+      var last = cmStore('jp-cmap-via') === '1' ? cmStore('jp-cmap-last') : null;
+      cmStore('jp-cmap-via', null); cmStore('jp-cmap-last', null);
+      stayOn(last && comicOf(last) ? last : new URLSearchParams(location.search).get('c'));
+    }
+    arrive();
+    /* 浏览器按返回键时可能直接把整页从缓存里恢复（不重新跑脚本），这时也要对一遍 */
+    addEventListener('pageshow', function (e) { if (e.persisted) { arrive(); layout(); } });
+  }
+
+  /* ---------- 10c 条漫阅读（comics/read/?c=<slug>）----------
+     Figma「条漫屏幕大小 / 条漫实际大小」：黑底，中间一栏 520 宽，图一张接一张竖着排。
+     没有顶栏页脚（沉浸阅读）。页面来自 assets/comics/<slug>/，由 build.ps1 写进 js/assets.js。 */
+  function renderReader() {
+    var strip = $('[data-reader-strip]');
+    if (!strip) return;
+    var head = $('[data-reader-head]'), end = $('[data-reader-end]');
+    var slug = new URLSearchParams(location.search).get('c');
+    var c = comicOf(slug), mapUrl = url('comics/' + (FILE ? 'index.html' : ''));
+    if (!c) {
+      head.innerHTML = '<p class="reader__kicker"><a href="' + esc(mapUrl) + '">' + esc(T(catOf(secOf('works'), 'comics').label)) + '</a></p>' +
+                       '<h1 class="reader__title">' + esc(t('comicsMissing')) + '</h1>';
+      end.innerHTML = '<a class="reader__btn" href="' + esc(mapUrl) + '">' + esc(t('comicsBack')) + '</a>';
+      return;
+    }
+    document.title = T(c.label) + ' · ' + T(c.title) + ' — JasperPeng';
+    cmStore('jp-cmap-last', c.slug);
+    head.innerHTML = '<p class="reader__kicker"><a href="' + esc(mapUrl + '?c=' + encodeURIComponent(c.slug)) + '" data-to-map>' + esc(T(catOf(secOf('works'), 'comics').label)) + '</a>' +
+                     '<span aria-hidden="true">/</span>' + esc(T(c.label)) + '</p>' +
+                     '<h1 class="reader__title">' + esc(T(c.title)) + '</h1>';
+    strip.innerHTML = c.pages.length
+      ? c.pages.map(function (p, i) {
+          /* 前两张立刻加载，后面的滚到附近再加载 */
+          return '<img src="' + esc(url(p)) + '" alt="' + esc(T(c.label) + ' — ' + (i + 1)) + '"' + (i > 1 ? ' loading="lazy"' : '') + ' decoding="async">';
+        }).join('')
+      : '<p class="reader__note">' + esc(t('comicsEmpty')) + '</p>';
+    var i = COMICS.indexOf(c), next = COMICS[i + 1];
+    end.innerHTML = '<p class="reader__fin">' + esc(t('comicsEnd')) + '</p>' +
+      (next ? '<a class="reader__btn reader__btn--next" href="' + esc(readUrl(next.slug)) + '" data-next><span>' + esc(t('comicsNext')) + '</span>' +
+              esc(T(next.label) + ' · ' + T(next.title)) + '</a>' : '') +
+      '<a class="reader__btn" href="' + esc(mapUrl + '?c=' + encodeURIComponent(c.slug)) + '" data-to-map>' + esc(t('comicsBack')) + '</a>';
+
+    /* 换一话：替换当前这条历史，不往后堆 —— 读到第几话，按一次返回都是回地图 */
+    $$('[data-next]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;   /* 新标签页打开之类的照常 */
+        e.preventDefault(); location.replace(a.href);
+      });
+    });
+    /* 回地图：从地图点进来的就真的退回去（地图那页还在历史里，退回去不会多出一条）；
+       从分享链接直接打开的，没有地图可退，就把阅读页原地换成地图 */
+    $$('[data-to-map]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+        e.preventDefault();
+        if (cmStore('jp-cmap-via') === '1' && history.length > 1) history.back();
+        else location.replace(a.href);
+      });
+    });
+  }
+
 
 
   function i18n() {
@@ -1502,6 +2057,8 @@
     if (PAGE === 'article')          renderArticle();
     else if (PAGE === 'category')    renderCategory();
     else if (PAGE === 'characters')  renderCharacters();
+    else if (PAGE === 'comics')      renderComics();
+    else if (PAGE === 'comic-read')  renderReader();
     else                             rerenderStaticCards();
     i18n();
   }
@@ -1604,6 +2161,8 @@
   if (PAGE === 'article')          renderArticle();
   else if (PAGE === 'category')    renderCategory();
   else if (PAGE === 'characters')  renderCharacters();
+  else if (PAGE === 'comics')      renderComics();
+  else if (PAGE === 'comic-read')  renderReader();
   else                             { renderRecent(); rerenderStaticCards(); }
   /* 首页那几张卡是手写在 home.html 里的静态 HTML，元信息（分类名 / 阅读时长）
      以前只在「换语言」时才由 rerenderStaticCards() 重写 —— 于是首次打开

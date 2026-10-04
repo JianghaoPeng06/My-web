@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Characters — JasperPeng</title>
-<meta name="description" content="原创角色的设定、关系与他们各自的说话方式。">
-<link rel="canonical" href="https://jasperpeng.uk/characters/">
-<meta property="og:url" content="https://jasperpeng.uk/characters/">
+<title>漫画 — JasperPeng</title>
+<meta name="description" content="条漫章节地图：拖动浏览，点开章节开始阅读。">
+<link rel="canonical" href="https://jasperpeng.uk/comics/">
+<meta property="og:url" content="https://jasperpeng.uk/comics/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Characters — JasperPeng">
+<meta property="og:title" content="漫画 — JasperPeng">
+<meta property="og:image" content="https://jasperpeng.uk/assets/images/comics/chapter-1.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<!-- Figma 批注：为使读者沉浸，角色页固定为深色模式 -->
-<meta name="theme-color" content="#0B0B0C">
+<!-- 漫画页和角色页一样固定深色（Figma「漫画」画板底色 #070024） -->
+<meta name="theme-color" content="#070024">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="icon" href="../assets/favicon/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="../assets/favicon/favicon.png">
 </head>
-<body class="chars" data-base="../" data-page="characters">
+<body class="comics" data-base="../" data-page="comics">
 
 <a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
 
@@ -130,42 +131,34 @@
   </div>
 </div><!-- #chrome:header:end -->
 
-<main id="main">
+<main id="main" class="cmap-main">
 
-  <div class="wrap">
-    <!-- 筛选器 · Figma「全部 / 年份 / 版本 / 地图」，用于角色变多后快速定位 -->
-    <nav class="chars__filters" aria-label="角色筛选">
-      <button class="chars__filter" type="button" data-char-filter="all"     aria-pressed="true"  data-i18n="all">全部</button>
-      <button class="chars__filter" type="button" data-char-filter="year"    aria-pressed="false" data-i18n="year">年份</button>
-      <button class="chars__filter" type="button" data-char-filter="version" aria-pressed="false" data-i18n="version">版本</button>
-      <button class="chars__filter" type="button" data-char-filter="region"  aria-pressed="false" data-i18n="region">地图</button>
-    </nav>
-    <!-- 选定维度后出现的取值胶囊，再点一次可取消 -->
-    <nav class="chars__values" aria-label="筛选取值" data-char-values hidden></nav>
-
-    <!-- 立绘缩略图条 · Figma 85×145，当前项带白框
-         点击原地切换 + 同步地址，浏览器返回键可逐个退回 -->
-    <div class="chars__strip" data-char-strip role="tablist" aria-label="角色列表"></div>
-
-    <!-- 选中角色的展示区 -->
-    <section class="chars__stage" data-char-stage aria-live="polite"></section>
-
-    <!-- 角色板块的文章。「原创角色」分类不再有自己的列表页（直接跳到本页），
-         这一栏就是那些文章的去处，免得内容掉出站点。 -->
-    <section class="chars__reading" data-char-reading hidden aria-labelledby="chars-reading-title">
-      <header class="sec-head">
-        <div class="sec-head__text">
-          <p class="eyebrow" data-t="s.characters.kicker">浏览角色</p>
-          <h2 class="h2" id="chars-reading-title" data-i18n="charsReading">角色相关文章</h2>
-        </div>
-      </header>
-      <div class="list" data-char-reading-list></div>
-    </section>
-  </div>
+  <!-- 章节地图（Figma「漫画」「选中某一章节」两块画板 + 说明_6），审美参考 Phigros：
+       · 铺满整屏，顶栏透明地浮在上面（沉浸，用户 2026-10-05 要求）；往下滚出地图后顶栏恢复正常
+       · 可以自由拖动，但有边界，拖太远会弹回来，免得找不回章节
+       · 点一个章节：它放大并居中，里面变暗、露出章节名和 ▶；点空白处关闭
+       · 正篇六边形、番外平行四边形，折线连起来；章节名固定英文
+       图层从下到上：虚化的封面 → 穹顶三角网格（canvas）→ 粒子（canvas）→ 章节 → 扫描线 / 暗角 → 标题和提示
+       章节数据在 js/data.js 的 COMICS，行为在 main.js 10b，样式在 style.css 18b -->
+  <section class="cmap" data-cmap aria-label="Comics · chapter map">
+    <div class="cmap__art" data-cmap-art aria-hidden="true"></div>
+    <canvas class="cmap__grid" data-cmap-grid aria-hidden="true"></canvas>
+    <canvas class="cmap__dust" data-cmap-dust aria-hidden="true"></canvas>
+    <div class="cmap__world" data-cmap-world>
+      <svg class="cmap__links" data-cmap-links aria-hidden="true"></svg>
+    </div>
+    <div class="cmap__fx" aria-hidden="true"></div>
+    <header class="cmap__head">
+      <h1 class="cmap__title">Comics</h1>
+      <p class="cmap__count" data-cmap-count></p>
+    </header>
+    <p class="cmap__hint" data-cmap-hint><i aria-hidden="true"></i><span data-i18n="comicsHint">拖动浏览，点开章节开始阅读</span></p>
+  </section>
 
   <noscript>
-    <div class="wrap chars__empty">
-      <p>角色页需要 JavaScript 才能切换角色。你也可以从 <a href="../home.html">首页</a> 浏览全部板块。</p>
+    <div class="wrap cmap-noscript">
+      <p>章节地图需要 JavaScript。也可以直接阅读：
+        <a href="read/?c=chapter-1">Chapter 1</a> · <a href="read/?c=side-story-1">Side Story 1</a></p>
     </div>
   </noscript>
 
