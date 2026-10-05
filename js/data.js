@@ -35,7 +35,13 @@
   /* 网站版本号 —— 显示在每页页脚「JasperPeng©2026」后面。
      由站长自己决定什么时候改、改成多少；改完保存、刷新即可，
      再双击「刷新图片.cmd」把它写进静态页面（忘了也不要紧，页面打开时会自动对上）。 */
-  var VERSION = 'v2.1.1';
+  var VERSION = 'v2.2.0';
+
+  /* 留言板（2026-10-05）。入口是首页史莱姆球上方那枚玻璃胶囊「留言板（限时）」，点进去是 messages/。
+     「限时」只是写在胶囊上的字，不会自己消失 —— 站长哪天不想要了，再把胶囊和页面一起删掉。
+     env  Twikoo 后台地址，部署到 Cloudflare 之后填，例如 'https://comment.jasperpeng.uk'；
+          空着时留言板页面显示「即将开放」，不会出现坏掉的表单。改完保存、刷新就生效。 */
+  var BOARD = { env: '' };
 
   /* 四语字段构造器 */
   function L(zhs, zht, en, ja) { return { 'zh-Hans': zhs, 'zh-Hant': zht, en: en, ja: ja }; }
@@ -919,6 +925,6 @@
     return 'works';
   }
 
-  w.JP = { SECTIONS: SECTIONS, ARTICLES: A, CHARACTERS: CHARACTERS, COMICS: COMICS, MAIL: MAIL, VERSION: VERSION, asset: assetOf };
+  w.JP = { SECTIONS: SECTIONS, ARTICLES: A, CHARACTERS: CHARACTERS, COMICS: COMICS, VERSION: VERSION, BOARD: BOARD };
 
 })(window);

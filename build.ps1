@@ -5,7 +5,7 @@
 #
 #  依据 js/data.js，按顺序做四件事：
 #  1. 占位图：某个 slug 一张真图都没有时，生成真实的 <slug>.png
-#     （图源取自 my web figma.svg 里内嵌的照片）
+#     （纯色，按板块取底色）
 #     已经有真图就跳过，绝不覆盖
 #  2. 图片清单 js/assets.js：扫 assets/images/**，记下每个 slug 实际存在的文件
 #     同一 slug 多种格式时 png > jpg > jpeg > webp > avif > gif > svg > placeholder
@@ -136,6 +136,7 @@ for ($i = 0; $i -lt $secs.Count; $i++) {
                 Label = (Get-Loc $ln ($lb.Index + $lb.Length - 1))
                 Soon  = ($ln -match 'soon:\s*true')
                 Mail  = ($ln -match "href:\s*'mailto:'")
+                To    = ([regex]::Match($ln, "to:\s*'([^']+)'")).Groups[1].Value   # 站内页面，比如留言板 'messages/'
             }
         }
     }
@@ -170,6 +171,13 @@ function LinkFor($to, $sec, $base) {
     return $to
 }
 
+# 联系方式的链接：站内页面（to:）按层级加前缀，邮件走 mailto
+function ContactHref($l, $base) {
+    if ($l.To)   { return $base + $l.To }
+    if ($l.Mail) { return "mailto:$mail" }
+    return '#'
+}
+
 # 分类的链接：带 to: 的走 to（不生成自己的页面），否则走 <目录>/<slug>/
 function CatHref($sec, $cat, $base) {
     if ($cat.To) { return $base + $cat.To }
@@ -195,8 +203,7 @@ function Build-Header($base) {
                 if ($l.Soon) {
                     $left += "<li><span class=""menu__soon"" data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)<em data-i18n=""soon"">暂未开放</em></span></li>"
                 } else {
-                    $h = if ($l.Mail) { "mailto:$mail" } else { '#' }
-                    $left += "<li><a href=""$h"" data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)<i class=""arr"" aria-hidden=""true""></i></a></li>"
+                    $left += "<li><a href=""$(ContactHref $l $base)"" data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)<i class=""arr"" aria-hidden=""true""></i></a></li>"
                 }
                 $li++
             }
@@ -255,7 +262,7 @@ function Build-Header($base) {
             $li = 0
             foreach ($l in $s.Links) {
                 if ($l.Soon) { $inner += "<span class=""menu__soon"" data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)<em data-i18n=""soon"">暂未开放</em></span>" }
-                else { $inner += "<a href=""mailto:$mail"" data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)</a>" }
+                else { $inner += "<a href=""$(ContactHref $l $base)"" data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)</a>" }
                 $li++
             }
         }
@@ -356,7 +363,7 @@ function Build-Footer($base) {
     $li = 0
     foreach ($l in $contact.Links) {
         if ($l.Soon) { $cc += "<span class=""ftr__soon"" data-t=""l.contact.$li.label"">$(Esc $l.Label)<em data-i18n=""soon"">暂未开放</em></span>" }
-        else { $cc += "<a href=""mailto:$mail"" data-t=""l.contact.$li.label"">$(Esc $l.Label)</a>" }
+        else { $cc += "<a href=""$(ContactHref $l $base)"" data-t=""l.contact.$li.label"">$(Esc $l.Label)</a>" }
         $li++
     }
     $ni = 0
@@ -386,8 +393,8 @@ $(Build-Bar)`n    </div>
 # 占位图就是真实的 <slug>.png —— 换图 = 用自己的图盖掉同名文件，
 # 不用先删占位图，也不用记什么特殊后缀。
 #
-# 图源是 my web figma.svg 里内嵌的三张照片：构建时解出来落地成真实 PNG 文件，
-# 代码里不留 base64。万一取不到（svg 被挪走了）就退回一张纯色 PNG，构建不中断。
+# 占位图是一张按板块取底色的纯色 PNG。以前是从 my web figma.svg 里解出内嵌的照片当图源，
+# 2026-10-06 那份 19.5MB 的旧设计稿挪出了网站文件夹（它会被一起公开发布），图源这一步也就删了。
 #
 # 麻烦在于「png 占位图」和「png 真图」同名，光看文件名分不出来。
 # 所以生成时把 SHA256 记进 assets/images/.placeholders.txt：
@@ -396,7 +403,6 @@ $(Build-Bar)`n    </div>
 Add-Type -AssemblyName System.Drawing
 
 $IMG_EXT   = @('.png', '.jpg', '.jpeg', '.webp', '.avif', '.gif', '.svg')   # 靠前的优先
-$LEGACY_PH = '.placeholder.svg'                                            # 上一版的占位图，遇到就清掉
 
 # --- 占位图登记表 ---
 $PH_REG = Join-Path $root 'assets\images\.placeholders.txt'
@@ -423,78 +429,27 @@ function Is-Placeholder([string]$key, [string]$full) {
     return $true
 }
 
-# --- 从 Figma 稿里取图源 ---
-$seedImgs = @(); $seedsLoaded = $false
-function Get-Seeds {
-    if ($script:seedsLoaded) { return $script:seedImgs }
-    $script:seedsLoaded = $true
-    $svg = Join-Path $root 'my web figma.svg'
-    if (Test-Path $svg) {
-        try {
-            $txt = [System.IO.File]::ReadAllText($svg)
-            $mk  = 'data:image/jpeg;base64,'
-            $i   = $txt.IndexOf($mk)
-            while ($i -ge 0) {
-                $s = $i + $mk.Length
-                $e = $txt.IndexOf('"', $s)
-                if ($e -lt 0) { break }
-                try {
-                    $b  = [Convert]::FromBase64String($txt.Substring($s, $e - $s))
-                    $ms = New-Object System.IO.MemoryStream(,$b)
-                    $script:seedImgs += [System.Drawing.Image]::FromStream($ms)
-                } catch { }
-                $i = $txt.IndexOf($mk, $e)
-            }
-            $txt = $null
-        } catch { }
-    }
-    if ($script:seedImgs.Count -eq 0) { Write-Host "  （没能从 my web figma.svg 取到图源，占位图退回纯色）" }
-    return $script:seedImgs
-}
-
-# 哪个板块用第几张图源；取不到图源时用哪个底色
-$phSeed = @{ 'works' = 0; 'research' = 1; 'universe' = 0; 'characters' = 2; 'resources' = 1 }
+# 各板块占位图的底色
 $phBg   = @{ 'works' = '#EFEDE9'; 'research' = '#ECEEF2'; 'universe' = '#EBEFEC'
              'characters' = '#F0ECEE'; 'resources' = '#EDEEEF' }
 
-# mode: cover = 居中裁切铺满（卡片是 1:1）；contain = 完整放进去（立绘不许裁）
-function Save-Png($src, [int]$w, [int]$h, [string]$mode, [string]$out, [string]$bg) {
+# 生成一张纯色 PNG
+function Save-Blank([int]$w, [int]$h, [string]$out, [string]$bg) {
     $bmp = New-Object System.Drawing.Bitmap($w, $h, [System.Drawing.Imaging.PixelFormat]::Format24bppRgb)
     $g   = [System.Drawing.Graphics]::FromImage($bmp)
-    $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
-    $g.PixelOffsetMode   = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
     $g.Clear([System.Drawing.ColorTranslator]::FromHtml($bg))
-    if ($src) {
-        if ($mode -eq 'cover') {
-            $dr = $w / $h
-            if (($src.Width / $src.Height) -gt $dr) { $sh = $src.Height; $sw = [int]($sh * $dr) }
-            else                                    { $sw = $src.Width;  $sh = [int]($sw / $dr) }
-            $sx = [int](($src.Width - $sw) / 2); $sy = [int](($src.Height - $sh) / 2)
-            $g.DrawImage($src, (New-Object System.Drawing.Rectangle(0, 0, $w, $h)),
-                               (New-Object System.Drawing.Rectangle($sx, $sy, $sw, $sh)),
-                               [System.Drawing.GraphicsUnit]::Pixel)
-        } else {
-            $k  = [Math]::Min($w / $src.Width, $h / $src.Height)
-            $dw = [int]($src.Width * $k); $dh = [int]($src.Height * $k)
-            $g.DrawImage($src, [int](($w - $dw) / 2), [int](($h - $dh) / 2), $dw, $dh)
-        }
-    }
     $g.Dispose()
     $bmp.Save($out, [System.Drawing.Imaging.ImageFormat]::Png)
     $bmp.Dispose()
 }
 
 # ---------- 1. 占位图 ----------
-$made = 0; $kept = 0; $real = 0; $swept = 0
+$made = 0; $kept = 0; $real = 0
 
 # kind: card = 400×400 方图（卡片全是 1:1）；portrait = 600×800 立绘
 function Ensure-Cover([string]$dirName, [string]$slug, [string]$kind) {
     $dirFull = Join-Path $root ('assets\images\' + $dirName)
     New-Item -ItemType Directory -Force -Path $dirFull | Out-Null
-
-    # 上一版的 <slug>.placeholder.svg：现在占位图是 png，遇到就清掉，别留孤儿文件
-    $legacy = Join-Path $dirFull ($slug + $LEGACY_PH)
-    if (Test-Path $legacy) { [System.IO.File]::Delete($legacy); $script:swept++ }
 
     # 有真图就什么都不做（登记在册、哈希还对得上的那张 png 不算真图）
     foreach ($e in $IMG_EXT) {
@@ -506,16 +461,10 @@ function Ensure-Cover([string]$dirName, [string]$slug, [string]$kind) {
     $png = Join-Path $dirFull ($slug + '.png')
     if (Test-Path $png) { return 'kept' }      # 走到这儿说明它就是占位图
 
-    $seeds = Get-Seeds
-    $src   = $null
-    if ($seeds.Count) {
-        $si = 0; if ($phSeed.ContainsKey($dirName)) { $si = $phSeed[$dirName] }
-        $src = $seeds[[Math]::Min($si, $seeds.Count - 1)]
-    }
-    if ($kind -eq 'portrait') { Save-Png $src 600 800 'cover' $png '#FFFFFF' }
+    if ($kind -eq 'portrait') { Save-Blank 600 800 $png '#F0ECEE' }
     else {
         $bg = '#EDEDED'; if ($phBg.ContainsKey($dirName)) { $bg = $phBg[$dirName] }
-        Save-Png $src 400 400 'cover' $png $bg
+        Save-Blank 400 400 $png $bg
     }
     $hashCache.Remove($png)
     $phNew[$dirName + '/' + $slug + '.png'] = (Hash-Of $png)
@@ -553,22 +502,13 @@ if ($posterRel) {
     if ($posterRank -ge $IMG_EXT.Count) { $kept++ } else { $real++ }
 } else {
     $posterPng = Join-Path $root 'assets\images\poster.png'
-    $seeds = Get-Seeds
-    $src = $null; if ($seeds.Count) { $src = $seeds[[Math]::Min(1, $seeds.Count - 1)] }
-    Save-Png $src 1280 720 'cover' $posterPng '#EDEDED'
+    Save-Blank 1280 720 $posterPng '#EDEDED'
     $hashCache.Remove($posterPng)
     $phNew['poster.png'] = (Hash-Of $posterPng)
     $posterRel = 'assets/images/poster.png'
     $made++
 }
-# 上一版的 poster.svg：只有在它不是当前这张海报时才清掉
-$posterSvg = Join-Path $root 'assets\images\poster.svg'
-if ((Test-Path $posterSvg) -and $posterRel -ne 'assets/images/poster.svg') {
-    [System.IO.File]::Delete($posterSvg); $swept++
-}
-
-$sweptMsg = if ($swept) { "；清掉旧的 .placeholder.svg $swept 个" } else { '' }
-Write-Host "占位图：新建 $made，保留 $kept；已换成真图 $real$sweptMsg"
+Write-Host "占位图：新建 $made，保留 $kept；已换成真图 $real"
 
 # ---------- 2. 图片清单 ----------
 # 扫出 assets/images 下每个 slug 真实存在的文件，写成 js/assets.js。
@@ -706,7 +646,7 @@ Write-Host "文章页：$($arts.Count) 个 → articles/<slug>/"
 
 # ---------- 3c. sitemap.xml / robots.txt ----------
 # 告诉搜索引擎全站有哪些页面。Cloudflare Pages 会把 xxx.html 跳到 xxx，所以这里写跳转后的地址。
-$urls = @("$SITE/", "$SITE/home", "$SITE/characters/", "$SITE/comics/")
+$urls = @("$SITE/", "$SITE/home", "$SITE/characters/", "$SITE/comics/", "$SITE/messages/")
 foreach ($s in $dirSecs) { foreach ($c in $s.Cats) { if (-not $c.To) { $urls += "$SITE/$($s.Dir)/$($c.Slug)/" } } }
 $sm = @('<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
 foreach ($u in $urls) { $sm += "  <url><loc>$u</loc></url>" }
@@ -782,9 +722,7 @@ Get-ChildItem $root -Recurse -Filter *.html |
     $html = [regex]::Replace($html, '((?:\.\./)*)assets/images/([^"/]+)/([^"]+?)"', {
         param($mm)
         $pfx = $mm.Groups[1].Value; $dir = $mm.Groups[2].Value; $file = $mm.Groups[3].Value
-        # 上一版写的是 <slug>.placeholder.svg，这里一并认出来，迁移到新占位图
-        if ($file.ToLower().EndsWith($LEGACY_PH)) { $stem = $file.Substring(0, $file.Length - $LEGACY_PH.Length) }
-        else { $stem = [System.IO.Path]::GetFileNameWithoutExtension($file) }
+        $stem = [System.IO.Path]::GetFileNameWithoutExtension($file)
         $key = $dir + '/' + $stem
         if ($manifest.Contains($key)) { return $pfx + $manifest[$key].Path + '"' }
         return $mm.Value

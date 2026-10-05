@@ -7,7 +7,7 @@
 
    01 工具    02 页头滚动   03 下拉面板   04 移动导航
    05 搜索    06 入场动画   07 星体（史莱姆）  08 文章页（08b 插图放大）
-   09 分类页  10 角色页（10b 漫画地图 10c 条漫阅读）  11 语言  12 跳转过渡
+   09 分类页  10 角色页（10b 漫画地图 10c 条漫阅读 10d 留言板）  11 语言  12 跳转过渡
    ============================================================= */
 (function () {
   'use strict';
@@ -19,6 +19,12 @@
   var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* 轻量模式（2026-10-05，有设备打开网站卡顿，漫画页尤其）：CPU ≤ 4 核、内存 ≤ 4GB、或开了省流量的设备，
+     一直在动的装饰（光尘、流光、呼吸辉光、史莱姆球里的彩光漂移、首页海报滚动放大）都停下来，
+     画面停在静止的样子；拖动、点击、史莱姆球的按拖照常。样式见 style.css 22 的 .is-lite */
+  var LITE = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4 ||
+             !!(navigator.connection && navigator.connection.saveData);
+  if (LITE) document.documentElement.classList.add('is-lite');
   var isDesktop = function () { return matchMedia('(min-width: 901px)').matches; };
   var BODY = document.body;
   var BASE = BODY.getAttribute('data-base') || '';
@@ -152,34 +158,42 @@
       count:' 篇内容', soon:'暂未开放', search:'搜索文章、作品、角色…', noResult:'没有找到相关内容',
       bodyOriginal:'正文保持写作时的原文，未作翻译。', notFound:'没有找到这篇文章', notFoundDesc:'链接可能已经失效，或者这篇内容还没有发布。',
       charsReading:'角色相关文章', emptyTitle:'这个分类还没有内容', emptyDesc:'先去看看其他板块，或者回到首页。',
-      category:'分类', viewRes:'查看资源', all:'全部', year:'年份', version:'版本', region:'地图', explore:'Explore',
-      pinned:'置顶', tagLabel:'标签', inTitle:'标题', inBody:'正文', zoomClose:'关闭', zoomHint:'双击或滚轮放大 · 拖动查看细节', searchTip:'可搜标题、标签、分类、正文；空格分隔多个关键词',
+      category:'分类', viewRes:'查看资源', all:'全部', year:'年份', version:'版本', region:'地图',
+      pinned:'置顶', zoomClose:'关闭', zoomHint:'双击或滚轮放大 · 拖动查看细节', searchTip:'可搜标题、标签、分类、正文；空格分隔多个关键词',
       nfTitle:'这个页面不存在', nfDesc:'链接可能已经失效，或者地址输错了。', nfSearch:'搜索', share:'分享', copied:'链接已复制', author:'作者',
-      comicsHint:'拖动浏览，点开章节开始阅读', comicsRead:'开始阅读', comicsBack:'回到章节地图', comicsNext:'下一话', comicsEnd:'本话完', comicsEmpty:'这一话的页面还没有上传。', comicsMissing:'没有找到这一话' },
+      comicsHint:'拖动浏览，点开章节开始阅读', comicsRead:'开始阅读', comicsBack:'回到章节地图', comicsNext:'下一话', comicsEnd:'本话完', comicsEmpty:'这一话的页面还没有上传。', comicsMissing:'没有找到这一话',
+      msgTitle:'留言板', msgLede:'想说什么都可以，在这里留下你的话。', msgSoon:'留言板即将开放', msgSoonDesc:'后台还在搭建中。想说什么，可以先发邮件给我。', msgMail:'发邮件', msgFail:'留言板暂时连不上', msgFailDesc:'可能是网络问题，稍后再试；着急的话可以先发邮件给我。',
+      boardLimited:'（限时）' },
     'zh-Hant': { skip:'跳到主要內容', archive:'檔案', archiveTitle:'最近更新', posterCap:'新的網站上線！', home:'首頁', toHome:'回到首頁', more:'查看更多', reading:'繼續閱讀', otherIn:' 的其他文章',
       count:' 篇內容', soon:'尚未開放', search:'搜尋文章、作品、角色…', noResult:'找不到相關內容',
       bodyOriginal:'正文保持寫作時的原文，未作翻譯。', notFound:'找不到這篇文章', notFoundDesc:'連結可能已失效，或這篇內容尚未發布。',
       charsReading:'角色相關文章', emptyTitle:'這個分類還沒有內容', emptyDesc:'先看看其他版塊，或回到首頁。',
-      category:'分類', viewRes:'檢視資源', all:'全部', year:'年份', version:'版本', region:'地圖', explore:'Explore',
-      pinned:'置頂', tagLabel:'標籤', inTitle:'標題', inBody:'正文', zoomClose:'關閉', zoomHint:'雙擊或滾輪放大 · 拖動查看細節', searchTip:'可搜尋標題、標籤、分類、正文；以空格分隔多個關鍵字',
+      category:'分類', viewRes:'檢視資源', all:'全部', year:'年份', version:'版本', region:'地圖',
+      pinned:'置頂', zoomClose:'關閉', zoomHint:'雙擊或滾輪放大 · 拖動查看細節', searchTip:'可搜尋標題、標籤、分類、正文；以空格分隔多個關鍵字',
       nfTitle:'這個頁面不存在', nfDesc:'連結可能已經失效，或者網址輸入錯誤。', nfSearch:'搜尋', share:'分享', copied:'連結已複製', author:'作者',
-      comicsHint:'拖動瀏覽，點開章節開始閱讀', comicsRead:'開始閱讀', comicsBack:'回到章節地圖', comicsNext:'下一話', comicsEnd:'本話完', comicsEmpty:'這一話的頁面還沒有上傳。', comicsMissing:'找不到這一話' },
+      comicsHint:'拖動瀏覽，點開章節開始閱讀', comicsRead:'開始閱讀', comicsBack:'回到章節地圖', comicsNext:'下一話', comicsEnd:'本話完', comicsEmpty:'這一話的頁面還沒有上傳。', comicsMissing:'找不到這一話',
+      msgTitle:'留言板', msgLede:'想說什麼都可以，在這裡留下你的話。', msgSoon:'留言板即將開放', msgSoonDesc:'後台還在搭建中。想說什麼，可以先寄信給我。', msgMail:'寄信', msgFail:'留言板暫時連不上', msgFailDesc:'可能是網路問題，稍後再試；著急的話可以先寄信給我。',
+      boardLimited:'（限時）' },
     en: { skip:'Skip to content', archive:'Archive', archiveTitle:'Recently published', posterCap:'New website launched!', home:'Home', toHome:'Back to home', more:'View more', reading:'Keep reading', otherIn:' — more',
       count:' items', soon:'Coming soon', search:'Search articles, works, characters…', noResult:'No results found',
       bodyOriginal:'The article text is kept in the language it was written in, untranslated.', notFound:'Article not found', notFoundDesc:'The link may have expired, or this piece is not published yet.',
       charsReading:'Reading on the characters', emptyTitle:'Nothing here yet', emptyDesc:'Try another section, or head back home.',
-      category:'Category', viewRes:'View resources', all:'All', year:'Year', version:'Version', region:'Region', explore:'Explore',
-      pinned:'Pinned', tagLabel:'Tag', inTitle:'Title', inBody:'Text', zoomClose:'Close', zoomHint:'Double-click or scroll to zoom · drag to pan', searchTip:'Search titles, tags, categories and text; separate keywords with spaces',
+      category:'Category', viewRes:'View resources', all:'All', year:'Year', version:'Version', region:'Region',
+      pinned:'Pinned', zoomClose:'Close', zoomHint:'Double-click or scroll to zoom · drag to pan', searchTip:'Search titles, tags, categories and text; separate keywords with spaces',
       nfTitle:'This page doesn’t exist', nfDesc:'The link may have expired, or the address was mistyped.', nfSearch:'Search', share:'Share', copied:'Link copied', author:'Author',
-      comicsHint:'Drag to explore · open a chapter to start reading', comicsRead:'Start reading', comicsBack:'Back to the chapter map', comicsNext:'Next', comicsEnd:'End of chapter', comicsEmpty:'The pages for this chapter haven’t been uploaded yet.', comicsMissing:'Chapter not found' },
+      comicsHint:'Drag to explore · open a chapter to start reading', comicsRead:'Start reading', comicsBack:'Back to the chapter map', comicsNext:'Next', comicsEnd:'End of chapter', comicsEmpty:'The pages for this chapter haven’t been uploaded yet.', comicsMissing:'Chapter not found',
+      msgTitle:'Message Board', msgLede:'Say anything you like — leave a message here.', msgSoon:'The message board is opening soon', msgSoonDesc:'It’s still being set up. In the meantime, feel free to send me an email.', msgMail:'Send an email', msgFail:'Can’t reach the message board right now', msgFailDesc:'It may be a network issue — please try again later, or send me an email.',
+      boardLimited:' (limited)' },
     ja: { skip:'本文へスキップ', archive:'アーカイブ', archiveTitle:'最近の更新', posterCap:'新サイトが公開されました！', home:'ホーム', toHome:'ホームへ戻る', more:'もっと見る', reading:'続けて読む', otherIn:' の他の記事',
       count:' 件', soon:'準備中', search:'記事・作品・キャラクターを検索…', noResult:'該当する内容が見つかりません',
       bodyOriginal:'本文は執筆時の言語のまま、翻訳していません。', notFound:'記事が見つかりません', notFoundDesc:'リンクが無効か、まだ公開されていない可能性があります。',
       charsReading:'キャラクター関連の記事', emptyTitle:'まだコンテンツがありません', emptyDesc:'他のセクションを見るか、ホームへ戻ってください。',
-      category:'カテゴリ', viewRes:'リソースを見る', all:'すべて', year:'年', version:'版', region:'地域', explore:'Explore',
-      pinned:'固定', tagLabel:'タグ', inTitle:'タイトル', inBody:'本文', zoomClose:'閉じる', zoomHint:'ダブルクリック・ホイールで拡大 · ドラッグで移動', searchTip:'タイトル・タグ・カテゴリ・本文を検索。スペースで複数キーワード',
+      category:'カテゴリ', viewRes:'リソースを見る', all:'すべて', year:'年', version:'版', region:'地域',
+      pinned:'固定', zoomClose:'閉じる', zoomHint:'ダブルクリック・ホイールで拡大 · ドラッグで移動', searchTip:'タイトル・タグ・カテゴリ・本文を検索。スペースで複数キーワード',
       nfTitle:'このページは存在しません', nfDesc:'リンクが無効になったか、アドレスが間違っている可能性があります。', nfSearch:'検索', share:'共有', copied:'リンクをコピーしました', author:'著者',
-      comicsHint:'ドラッグで移動、章を開いて読む', comicsRead:'読む', comicsBack:'チャプターマップへ', comicsNext:'次の話', comicsEnd:'この話はここまで', comicsEmpty:'この話のページはまだアップロードされていません。', comicsMissing:'この話が見つかりません' }
+      comicsHint:'ドラッグで移動、章を開いて読む', comicsRead:'読む', comicsBack:'チャプターマップへ', comicsNext:'次の話', comicsEnd:'この話はここまで', comicsEmpty:'この話のページはまだアップロードされていません。', comicsMissing:'この話が見つかりません',
+      msgTitle:'メッセージボード', msgLede:'なんでも気軽に、ここにメッセージを残してください。', msgSoon:'メッセージボードはまもなく公開', msgSoonDesc:'ただいま準備中です。それまではメールでどうぞ。', msgMail:'メールを送る', msgFail:'メッセージボードに接続できません', msgFailDesc:'ネットワークの問題かもしれません。時間をおいて再度お試しいただくか、メールでどうぞ。',
+      boardLimited:'（期間限定）' }
   };
   var LANG = 'zh-Hans';
   try { LANG = localStorage.getItem('jp-lang') || 'zh-Hans'; } catch (e) {}
@@ -852,7 +866,7 @@
      「减少动态效果」打开时不启用（一直是卡片）。 */
   (function posterBleed() {
     var sec = $('.poster'), frame = $('.poster__frame'), hdr = $('[data-header]');
-    if (!sec || !frame || reduce) return;
+    if (!sec || !frame || reduce || LITE) return;   /* 轻量模式也不启用：滚动时每帧改 margin、重新排版，很吃力 */
     var ticking = false, up = 0, headH = 72, padTop = 0;
     var SAFE = 56;   /* 往上长时和上方内容至少隔这么多（原 40，用户要求加大，给不同浏览器的渲染差异留余量） */
     function update() {
@@ -1611,7 +1625,7 @@
     }
     return {
       size: function (w, h) {
-        dpr = Math.min(2, devicePixelRatio || 1); W = w; H = h;
+        dpr = LITE ? 1 : Math.min(2, devicePixelRatio || 1); W = w; H = h;   /* 轻量模式 1 倍分辨率，拖动时重画更轻 */
         cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
         cv.style.width = w + 'px'; cv.style.height = h + 'px';
       },
@@ -1632,7 +1646,17 @@
 
   /* 光尘：一层慢慢往上飘、忽明忽暗的小光点和小三角。地图滚出屏幕 / 标签页切走时暂停 */
   function cmDust(cv, stage) {
-    var ctx = cv.getContext('2d'), W = 0, H = 0, dpr = 1, ps = [], raf = 0, on = false, last = 0;
+    /* 省资源（2026-10-05）：以前每颗光点都用 canvas 的 shadowBlur 现画辉光（很贵）、2 倍分辨率、最多 90 颗、每秒 60 帧，
+       现在预先画好一颗带辉光的点（sprite）反复贴、1 倍分辨率、最多 48 颗、每秒 30 帧 */
+    var ctx = cv.getContext('2d'), W = 0, H = 0, dpr = 1, ps = [], raf = 0, on = false, last = 0, drawn = 0;
+    var dot = document.createElement('canvas'); dot.width = dot.height = 24;
+    (function () {
+      var g = dot.getContext('2d'), rg = g.createRadialGradient(12, 12, 0, 12, 12, 12);
+      rg.addColorStop(0, 'rgba(235,245,255,1)'); rg.addColorStop(.18, 'rgba(210,235,255,.95)');
+      rg.addColorStop(.42, 'rgba(140,200,255,.35)'); rg.addColorStop(1, 'rgba(140,200,255,0)');
+      g.fillStyle = rg; g.fillRect(0, 0, 24, 24);
+    })();
+    var still = reduce || LITE;
     function spawn(p, anywhere) {
       p.x = Math.random() * W; p.y = anywhere ? Math.random() * H : H + 10;
       p.r = .6 + Math.random() * 1.8; p.v = 6 + Math.random() * 18;        /* 每秒往上几像素 */
@@ -1641,7 +1665,9 @@
       return p;
     }
     function frame(t) {
-      var dt = Math.min(.05, (t - last) / 1000 || 0); last = t;
+      if (!still && t - drawn < 32) { raf = requestAnimationFrame(frame); return; }   /* 每秒最多画 30 帧 */
+      drawn = t;
+      var dt = Math.min(.08, (t - last) / 1000 || 0); last = t;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
       for (var i = 0; i < ps.length; i++) {
         var p = ps[i];
@@ -1655,16 +1681,16 @@
           ctx.beginPath(); ctx.moveTo(0, -s); ctx.lineTo(s * .87, s * .5); ctx.lineTo(-s * .87, s * .5); ctx.closePath(); ctx.stroke();
           ctx.restore();
         } else {
-          ctx.fillStyle = 'rgba(210,235,255,' + (a * .85).toFixed(3) + ')';
-          ctx.shadowColor = 'rgba(140,200,255,.9)'; ctx.shadowBlur = 6;
-          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
-          ctx.shadowBlur = 0;
+          var d = p.r * 7;
+          ctx.globalAlpha = a * .9;
+          ctx.drawImage(dot, p.x - d / 2, p.y - d / 2, d, d);
+          ctx.globalAlpha = 1;
         }
       }
       raf = requestAnimationFrame(frame);
     }
     function run(v) {
-      if (v === on || reduce) return;
+      if (v === on || still) return;
       on = v; cancelAnimationFrame(raf);
       if (on) { last = performance.now(); raf = requestAnimationFrame(frame); }
     }
@@ -1673,12 +1699,12 @@
     document.addEventListener('visibilitychange', function () { run(vis && !document.hidden); });
     return {
       size: function (w, h) {
-        dpr = Math.min(2, devicePixelRatio || 1); W = w; H = h;
-        cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+        dpr = 1; W = w; H = h;                  /* 光点本来就是糊的，1 倍分辨率看不出差别 */
+        cv.width = Math.round(w); cv.height = Math.round(h);
         cv.style.width = w + 'px'; cv.style.height = h + 'px';
-        var n = Math.round(Math.min(90, w * h / 16000));
+        var n = Math.round(Math.min(48, w * h / 24000));
         ps = []; for (var i = 0; i < n; i++) ps.push(spawn({}, true));
-        if (reduce) { frame(performance.now()); cancelAnimationFrame(raf); }   /* 减少动态效果：只画一帧静止的 */
+        if (still) { frame(performance.now()); cancelAnimationFrame(raf); }   /* 减少动态效果 / 轻量模式：只画一帧静止的 */
         else run(vis && !document.hidden);
       }
     };
@@ -1751,6 +1777,7 @@
       for (var k = 1; k < pts.length; k++) len += Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]);
       var p = pts.map(function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); }).join(' '), key = esc(c.from) + ' ' + esc(c.slug);
       return '<g data-link="' + key + '" style="--len:' + len.toFixed(0) + ';--ld:' + (i * .9).toFixed(1) + 's">' +
+               '<polyline class="cmap__halo" points="' + p + '"/><polyline class="cmap__halo" points="' + p + '"/>' +
                '<polyline class="cmap__line" points="' + p + '"/>' +
                '<polyline class="cmap__flow" points="' + p + '"/>' +
                '<rect class="cmap__knot" x="' + (pts[1][0] - 4).toFixed(1) + '" y="' + (pts[1][1] - 4).toFixed(1) + '" width="8" height="8" transform="rotate(45 ' + pts[1][0].toFixed(1) + ' ' + pts[1][1].toFixed(1) + ')"/>' +
@@ -1963,6 +1990,44 @@
     addEventListener('pageshow', function (e) { if (e.persisted) { arrive(); layout(); } });
   }
 
+  /* ---------- 10d 留言板（messages/）----------
+     留言的收发和保存交给 Twikoo（部署在站长自己的 Cloudflare 上）。后台地址在 data.js 的 BOARD.env：
+     · 空着 → 显示「即将开放」+ 发邮件按钮，不加载任何外部脚本
+     · 填了 → 加载 Twikoo 的前端脚本，把留言区画进 #tcomment；连不上就显示「暂时连不上」
+     界面语言跟着网站当前语言走（Twikoo 自己的按钮、提示也会切换） */
+  var TWIKOO_JS = 'https://cdn.jsdelivr.net/npm/twikoo@2.0.12/dist/twikoo.min.js';
+  var BOARD = D.BOARD || {};
+  function renderMessages() {
+    var board = $('[data-msg-board]');
+    if (!board) return;
+    var closed = $('[data-msg-closed]', board), box = $('[data-msg-twikoo]', board);
+    var env = BOARD.env || '';
+    document.title = t('msgTitle') + ' — JasperPeng';
+    paintCrumbs(crumbHTML([{ label: T(secOf('contact').label) }, { label: t('msgTitle') }]));
+    /* 换掉那块提示的文案。改的是 data-i18n 的键而不是直接写字 ——
+       直接写字的话，紧接着跑的 i18n() 会按原来的键把它改回「即将开放」 */
+    function say(titleKey, descKey) {
+      var a = $('[data-msg-closed-title]', closed), b = $('[data-msg-closed-desc]', closed);
+      a.setAttribute('data-i18n', titleKey); a.textContent = t(titleKey);
+      b.setAttribute('data-i18n', descKey);  b.textContent = t(descKey);
+    }
+    function fail() { box.hidden = true; closed.hidden = false; say('msgFail', 'msgFailDesc'); }
+    if (!env) { closed.hidden = false; return; }
+    if (box.getAttribute('data-ready')) return;          /* 换语言时 rerender() 会再进来一次，别重复加载 */
+    box.setAttribute('data-ready', '1');
+    box.hidden = false;
+    var sc = document.createElement('script');
+    sc.src = TWIKOO_JS; sc.async = true;
+    sc.onload = function () {
+      try {
+        var p = window.twikoo.init({ envId: env, el: '#tcomment', lang: TWIKOO_LANG[LANG] || 'zh-CN' });
+        if (p && p.catch) p.catch(fail);
+      } catch (e) { fail(); }
+    };
+    sc.onerror = fail;
+    document.head.appendChild(sc);
+  }
+
   /* ---------- 10c 条漫阅读（comics/read/?c=<slug>）----------
      Figma「条漫屏幕大小 / 条漫实际大小」：黑底，中间一栏 520 宽，图一张接一张竖着排。
      没有顶栏页脚（沉浸阅读）。页面来自 assets/comics/<slug>/，由 build.ps1 写进 js/assets.js。 */
@@ -2055,6 +2120,7 @@
     else if (PAGE === 'characters')  renderCharacters();
     else if (PAGE === 'comics')      renderComics();
     else if (PAGE === 'comic-read')  renderReader();
+    else if (PAGE === 'messages')    renderMessages();
     else                             rerenderStaticCards();
     i18n();
   }
@@ -2159,6 +2225,7 @@
   else if (PAGE === 'characters')  renderCharacters();
   else if (PAGE === 'comics')      renderComics();
   else if (PAGE === 'comic-read')  renderReader();
+  else if (PAGE === 'messages')    renderMessages();
   else                             { renderRecent(); rerenderStaticCards(); }
   /* 首页那几张卡是手写在 home.html 里的静态 HTML，元信息（分类名 / 阅读时长）
      以前只在「换语言」时才由 rerenderStaticCards() 重写 —— 于是首次打开

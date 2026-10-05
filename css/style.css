@@ -386,9 +386,8 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
   transition: color var(--t-fast) var(--e-io);
 }
 .menu__list a:hover { color: var(--accent); }
-.menu__list a:hover .arr { transform: translateX(3px); }
 .menu__list a .arr { width: 14px; opacity: 0; transition: opacity var(--t-fast), transform var(--t) var(--e-out); }
-.menu__list a:hover .arr { opacity: .7; }
+.menu__list a:hover .arr { transform: translateX(3px); opacity: .7; }
 .menu__soon { color: var(--text-faint); cursor: default; }
 .menu__soon em {
   font-style: normal; font-size: 11px; padding: 2px 8px;
@@ -461,10 +460,9 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
 .sr:hover, .sr.is-sel { background: var(--bg-2); }
 .sr__thumb { width: 40px; height: 40px; flex: none; border-radius: var(--r-xs); background: var(--placeholder); object-fit: cover; }
 .sr__t { display: block; font-size: var(--fs-small); font-weight: 500; }
-.sr__c { display: block; font-size: 12px; color: var(--text-muted); }
 .sr__text { min-width: 0; }
 .sr__t mark, .sr__snip mark, .sr__tag mark { background: color-mix(in srgb, var(--star) 32%, transparent); color: inherit; border-radius: 3px; padding-inline: 1px; }
-.sr__c { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.sr__c { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--text-muted); }
 .sr__tag { display: inline-flex; padding: 1px 7px; border-radius: var(--r-pill); background: var(--bg-2); color: var(--text-2); font-size: 11px; }
 .sr:hover .sr__tag, .sr.is-sel .sr__tag { background: var(--surface); }
 .sr__snip { margin-top: 3px; color: var(--text-muted); font-size: 12px; line-height: 1.5;
@@ -480,10 +478,10 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
 .sr__empty { padding: 36px; text-align: center; color: var(--text-muted); font-size: var(--fs-small); }
 
 /* ---------- 10 Hero ---------- */
-.hero { padding-block: clamp(40px, 6vw, 88px) clamp(48px, 6vw, 96px); }
+.hero { position: relative; padding-block: clamp(76px, 8vw, 104px) clamp(48px, 6vw, 96px); --hero-gap: clamp(28px, 4vw, 64px); }   /* 顶部多留一行给留言板胶囊（原来 clamp(40px, 6vw, 88px)） */
 .hero__inner {
   display: grid; grid-template-columns: 1.05fr .95fr;
-  align-items: center; gap: clamp(28px, 4vw, 64px);
+  align-items: center; gap: var(--hero-gap);
 }
 .hero__title {
   display: flex; flex-direction: column;
@@ -497,6 +495,62 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
 /* 星体 —— Figma：420 正圆 / #4BB6EC / 透明度 0.1 / 2px 模糊
    球内四团彩光被圆形裁住，光在球里流动 */
 .hero__visual { display: grid; place-items: center; width: 100%; aspect-ratio: 1; max-height: min(64vh, 560px); }
+
+/* 留言板入口（2026-10-05）：只在首页，紧贴顶栏下方悬浮的 iOS 式玻璃胶囊「留言板（限时）」。
+   位置：顶边离顶栏 14px，左边缘对齐顶栏「JasperPeng」标志的左边线（两者都在版心左边线上），电脑手机一样。
+   （试过对准史莱姆球那一栏的中线、手机居中 —— 用户要靠左对齐标志）
+   玻璃 = 半透明底 + 背景模糊提饱和 + 顶边一道高光 + 很淡的投影；按下去轻轻一缩（iOS 的按压反馈）。
+   「（限时）」只是字，不会自己消失 */
+.board-pill {
+  position: absolute; top: 14px; left: 0; z-index: 3;
+  transform-origin: left center;
+  display: inline-flex; align-items: center; gap: 9px;
+  height: 42px; padding: 0 16px 0 14px; border-radius: var(--r-pill);
+  color: var(--text); font-size: 14px; font-weight: 500; letter-spacing: .01em; white-space: nowrap;
+  background: linear-gradient(135deg, rgba(255,255,255,.62), rgba(255,255,255,.22));
+  border: 1px solid rgba(255,255,255,.7);
+  backdrop-filter: blur(16px) saturate(190%); -webkit-backdrop-filter: blur(16px) saturate(190%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),          /* 顶边高光 */
+    inset 0 -1px 1px rgba(255,255,255,.35),       /* 底边回光 */
+    0 8px 24px rgba(30,40,80,.14), 0 1px 3px rgba(30,40,80,.1);
+  transition: transform .4s var(--e-out), box-shadow .3s var(--e-io), background .3s var(--e-io);
+  animation: pillIn .8s var(--e-out) backwards .25s;   /* 只管开始前；用 both 的话动画结束后会一直按住 transform，悬停上浮和按压都失效 */
+}
+/* 左上角一团柔光：玻璃表面的反光 */
+.board-pill::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(120% 140% at 18% -20%, rgba(255,255,255,.75), transparent 55%);
+  mix-blend-mode: soft-light;
+}
+.board-pill > * { position: relative; }
+.board-pill__dot {
+  width: 7px; height: 7px; border-radius: 50%; background: #34C759;           /* iOS 的绿：「正在开放」 */
+  box-shadow: 0 0 0 3px rgba(52,199,89,.18); animation: pillDot 2.4s var(--e-io) infinite;
+}
+.board-pill em { font-style: normal; color: var(--text-muted); }
+.board-pill .arr { width: 14px; opacity: .55; transition: transform var(--t) var(--e-out), opacity var(--t-fast); }
+@media (hover: hover) and (pointer: fine) {
+  .board-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.35),
+                0 14px 32px rgba(30,40,80,.18), 0 2px 6px rgba(30,40,80,.1);
+  }
+  .board-pill:hover .arr { transform: translateX(3px); opacity: .85; }
+}
+.board-pill:active { transform: scale(.96); transition-duration: .12s; }
+.board-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@keyframes pillIn { from { opacity: 0; transform: translateY(-8px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes pillDot { 0%, 100% { box-shadow: 0 0 0 3px rgba(52,199,89,.18); } 50% { box-shadow: 0 0 0 5px rgba(52,199,89,.06); } }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .board-pill {
+    background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.05));
+    border-color: rgba(255,255,255,.2);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.32), inset 0 -1px 1px rgba(255,255,255,.08),
+                0 8px 24px rgba(0,0,0,.45), 0 1px 3px rgba(0,0,0,.3);
+  }
+  :root:not([data-theme="light"]) .board-pill::before { background: radial-gradient(120% 140% at 18% -20%, rgba(255,255,255,.28), transparent 55%); mix-blend-mode: normal; }
+}
 /* 外晕 inset -12%，总尺寸是星体的 124%。星体按 80% 收，
    让外晕正好落在列内，不会溢出视口。 */
 /* 牵引（跟随指针）挂在 .star 上，沉浮挂在 .star__body / .star__glow 上 ——
@@ -773,6 +827,10 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
 }
 .nf__lede { margin-top: var(--sp-md); }
 .nf__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: var(--sp-lg); }
+/* 文章页 / 分类页 <noscript> 里那句「需要 JavaScript」。这条以前被一行坏掉的 `$1: …` 吞掉了一直没生效，
+   2026-10-05 全站扫描时又被误当成没人用删掉；其实 articles/*、分类页都在用，按原来的值补回 */
+.notice { padding-block: var(--sp-2xl); color: var(--text-muted); }
+.notice a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- 17 文章页 ---------- */
 /* 文章版心。588 对齐 openai.com 的正文宽度（2026-10-04 用户确认），17px 下每行约 34 个汉字。
@@ -1014,8 +1072,11 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 /* 底：当前章节的封面，大幅虚化压暗（Phigros 换章节时背景跟着换）。只做透明度过渡，模糊本身不动 */
 .cmap__art { position: absolute; inset: -6%; z-index: 0; pointer-events: none; }
 .cmap__art img {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  filter: blur(40px) saturate(1.3) brightness(.5); opacity: 0;
+  /* 省资源（2026-10-05，有设备打开漫画页卡到动不了）：以前是整屏大小的图直接 blur(40px)，
+     现在先缩到 1/8 大小模糊 5px，再放大 8 倍 —— 放大本身就会糊开，看起来几乎一样，模糊的计算量约是原来的 1/64 */
+  position: absolute; left: 0; top: 0; width: 12.5%; height: 12.5%; object-fit: cover;
+  transform: scale(8); transform-origin: 0 0;
+  filter: blur(5px) saturate(1.3) brightness(.5); opacity: 0;
   transition: opacity 1.1s var(--e-io);
 }
 .cmap__art img.is-on { opacity: .5; }
@@ -1024,7 +1085,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 
 .cmap__grid, .cmap__dust { position: absolute; left: 0; top: 0; pointer-events: none; }
 .cmap__grid { z-index: 1; }
-.cmap__dust { z-index: 3; mix-blend-mode: screen; }
+.cmap__dust { z-index: 3; }   /* 以前有 mix-blend-mode: screen，每帧都要和下面所有图层混合一次，去掉了 */
 .cmap__world { position: absolute; left: 0; top: 0; z-index: 2; transform-origin: 0 0; will-change: transform; }
 
 /* 最上面一层：扫描线（Phigros 画面里那种细横纹）+ 四周暗角 */
@@ -1053,8 +1114,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
   position: absolute; z-index: 5; left: 50%; bottom: max(28px, env(safe-area-inset-bottom));
   transform: translateX(-50%); display: flex; align-items: center; gap: 10px;
   padding: 8px 16px; border-radius: var(--r-pill);
-  background: rgba(10,4,40,.42); border: 1px solid rgba(180,200,255,.18);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  background: rgba(10,4,40,.66); border: 1px solid rgba(180,200,255,.18);   /* 不用背景模糊：背后的光尘一直在动，模糊每帧都要重算 */
   color: rgba(225,232,255,.78); font-size: 12px; letter-spacing: .04em; white-space: nowrap;
   pointer-events: none; transition: opacity .6s var(--e-io), transform .6s var(--e-out);
 }
@@ -1074,8 +1134,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .cmap-bar .ftr__copy, .cmap-bar .lang__btn {
   display: inline-flex; align-items: center; gap: 8px; height: auto;
   padding: 8px 16px; border-radius: var(--r-pill);
-  background: rgba(10,4,40,.42); border: 1px solid rgba(180,200,255,.18);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  background: rgba(10,4,40,.66); border: 1px solid rgba(180,200,255,.18);   /* 同上，不用背景模糊 */
   color: rgba(225,232,255,.78); font-size: 12px; letter-spacing: .04em; white-space: nowrap;
 }
 .cmap-bar .ftr__ver { display: inline; margin-left: 0; color: rgba(190,205,255,.55); }
@@ -1083,8 +1142,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .cmap-bar .lang__btn:hover, .cmap-bar .lang.is-open .lang__btn { border-color: rgba(190,215,255,.4); background: rgba(16,8,58,.6); color: #fff; }
 .cmap-bar .lang__btn .ico { width: 14px; height: 14px; }
 .cmap-bar .lang__menu {
-  background: rgba(10,5,44,.82); border-color: rgba(180,200,255,.18);
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  background: rgba(10,5,44,.92); border-color: rgba(180,200,255,.18);
 }
 .cmap-bar .lang__menu button:hover { background: rgba(140,180,255,.12); }
 @media (max-width: 640px) {
@@ -1099,17 +1157,18 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .cmap__links { position: absolute; left: 0; top: 0; width: 1px; height: 1px; max-width: none; overflow: visible; pointer-events: none; }   /* max-width: none —— 全局的 svg { max-width:100% } 会把它压成 0 宽，0 宽的 svg 浏览器不画 */
 .cmap__line {
   fill: none; stroke: rgba(235,242,255,.9); stroke-width: 2.5; stroke-linejoin: miter;
-  filter: drop-shadow(0 0 3px rgba(150,200,255,.9)) drop-shadow(0 0 10px rgba(110,160,255,.45));
 }
 .cmap__flow {
   fill: none; stroke: #fff; stroke-width: 3.5; stroke-linecap: round;
   stroke-dasharray: 34 calc(var(--len) * 1px + 200px);
   stroke-dashoffset: 34;
-  filter: drop-shadow(0 0 6px #BFE4FF) drop-shadow(0 0 14px rgba(140,200,255,.8));
   animation: cmFlow 3.2s linear infinite; animation-delay: var(--ld, 0s);
 }
 @keyframes cmFlow { to { stroke-dashoffset: calc(var(--len) * -1px - 40px); } }
-.cmap__knot { fill: #EAF4FF; filter: drop-shadow(0 0 5px rgba(160,210,255,.95)); }
+/* 辉光：同一条线再画两遍，宽、淡 —— 代替以前的 filter: drop-shadow（省资源，见上） */
+.cmap__halo { fill: none; stroke: rgba(130,180,255,.16); stroke-width: 12; stroke-linejoin: round; stroke-linecap: round; }
+.cmap__halo + .cmap__halo { stroke: rgba(160,205,255,.28); stroke-width: 5; }
+.cmap__knot { fill: #EAF4FF; stroke: rgba(160,210,255,.45); stroke-width: 6; paint-order: stroke; }
 [data-link] { transition: opacity var(--t) var(--e-io); }
 .cmap.is-focus [data-link]:not(.is-on) { opacity: .2; }
 
@@ -1121,13 +1180,12 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .cnode__tile {
   position: absolute; left: calc(var(--w) / -2); top: calc(var(--h) / -2);
   width: var(--w); height: var(--h); padding: 0; border: 0; background: none; cursor: pointer;
-  filter: drop-shadow(0 4px 4px rgba(0,0,0,.25)) drop-shadow(0 0 12px rgba(120,190,255,.32));
-  transition: transform var(--t) var(--e-out), filter var(--t) var(--e-io);
+  transition: transform var(--t) var(--e-out);
+  pointer-events: none;   /* 点击区域 = 形状本身，见下面 .cnode__clip */
 }
 /* 点击区域 = 格子的形状本身（用户 2026-10-05：点格子四角的空白也会误触进入阅读）。
    按钮本身是个长方形框，所以按钮不接指针，只让裁成六边形 / 平行四边形的那一层接 ——
    clip-path 外面的部分点不中，落到地图上就算「点空白」。键盘 Tab 仍然能选中按钮 */
-.cnode__tile { pointer-events: none; }
 .cnode__clip { position: absolute; inset: 0; overflow: hidden; background: var(--placeholder); pointer-events: auto; cursor: pointer; }
 .cnode__clip img { width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; transition: transform .8s var(--e-out), filter .5s var(--e-io); }
 /* 平时也压一点点暗、偏冷，和 Phigros 的格子一个调子；选中后格子里更暗，突出章节名（Figma 说明 2） */
@@ -1147,10 +1205,14 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
   position: absolute; inset: -10% -40%; pointer-events: none;
   background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,.08) 44%, rgba(220,240,255,.42) 50%, rgba(255,255,255,.08) 56%, transparent 62%);
   transform: translateX(-70%); animation: cmSheen 6.5s var(--e-io) infinite; animation-delay: var(--d, 0s);
-  mix-blend-mode: screen;
+  will-change: transform;   /* 以前还有 mix-blend-mode: screen，每帧都要混合一次，去掉了 */
 }
 @keyframes cmSheen { 0%, 62% { transform: translateX(-70%); } 86%, 100% { transform: translateX(70%); } }
-.cnode__edge { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.cnode__edge {
+  position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none;
+  /* 格子的辉光画在这条静止的外框上（以前在整个格子上，里面的流光一动就得重算） */
+  filter: drop-shadow(0 0 10px rgba(120,190,255,.45));
+}
 .cnode__edge polygon {
   fill: none; stroke: rgba(230,240,255,.9); stroke-width: 1.4; vector-effect: non-scaling-stroke;
   transition: stroke var(--t) var(--e-io);
@@ -1176,13 +1238,11 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .cnode.is-sel .cnode__edge polygon { stroke: #fff; }
 .cnode.is-sel .cnode__clip img { transform: scale(1.05); }
 /* 选中的格子外圈辉光一明一暗地呼吸 */
-.cnode.is-sel .cnode__tile { animation: cmGlow 2.8s var(--e-io) infinite; }
-@keyframes cmGlow {
-  0%, 100% { filter: drop-shadow(0 4px 4px rgba(0,0,0,.25)) drop-shadow(0 0 14px rgba(130,190,255,.45)); }
-  50%      { filter: drop-shadow(0 4px 4px rgba(0,0,0,.25)) drop-shadow(0 0 28px rgba(150,205,255,.75)); }
-}
+/* 选中的格子外圈辉光呼吸：只动外框这一层的透明度（合成器直接做，不重算辉光）；以前是逐帧改 filter 的模糊半径 */
+.cnode.is-sel .cnode__edge { filter: drop-shadow(0 0 18px rgba(150,205,255,.7)); animation: cmGlow 2.8s var(--e-io) infinite; will-change: opacity; }
+@keyframes cmGlow { 0%, 100% { opacity: .7; } 50% { opacity: 1; } }
 @media (hover: hover) and (pointer: fine) {
-  .cnode:not(.is-sel) .cnode__tile:hover { transform: scale(1.04); filter: drop-shadow(0 4px 4px rgba(0,0,0,.25)) drop-shadow(0 0 20px rgba(150,205,255,.6)); }
+  .cnode:not(.is-sel) .cnode__tile:hover { transform: scale(1.04); }
   .cnode:not(.is-sel) .cnode__tile:hover .cnode__edge polygon { stroke: #fff; }
   .cnode:not(.is-sel) .cnode__tile:hover .cnode__clip img { filter: brightness(1.12); }
   .cnode__play:hover { transform: translate(-50%, -62%) scale(1.12); }
@@ -1222,6 +1282,17 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .reader__btn--next { background: #fff; color: #000; border-color: #fff; font-weight: 500; }
 .reader__btn--next:hover { background: #E6E6E6; border-color: #E6E6E6; }
 .reader__btn--next span { font-size: 12px; font-weight: 400; color: #555; }
+
+/* ---------- 18c 留言板（messages/）----------
+   标题区沿用分类页；下面一栏装 Twikoo 的留言区，宽度收到 760 方便阅读。
+   后台没接通时是「即将开放」那块，样式和分类页的空状态一样（虚线圆角框 + 居中） */
+.msg { max-width: 760px; }
+.msg__closed {
+  display: grid; justify-items: center; gap: 10px; text-align: center;
+  padding: clamp(48px, 7vw, 88px) var(--sp-md);
+  border: 1px dashed var(--border-2); border-radius: var(--r-lg);
+}
+.msg__actions { margin-top: var(--sp-md); }
 
 /* ---------- 19 页脚（Figma Frame 52，每页常驻）---------- */
 .ftr { border-top: 1px solid var(--border); background: var(--bg); padding-block: clamp(36px, 4.6vw, 64px) 84px; }   /* 底部这 84px 是给 fixed 的回顶按钮让位：滚到底时它正好压在 .ftr__bar 那一行上 */
@@ -1385,6 +1456,17 @@ html.js-on .reveal:not(.is-in) { opacity: 0; transform: translateY(22px); transi
 }
 
 /* ---------- 22 偏好设置 ---------- */
+/* 轻量模式（2026-10-05，有设备打开网站会卡，漫画页尤其）：
+   main.js 在 CPU ≤ 4 核、内存 ≤ 4GB、或开了省流量时给 <html> 加 .is-lite。
+   一直在动的装饰全部停下来，画面停在静止的样子；拖动、点击、史莱姆球的按拖照常 */
+.is-lite .cnode__sheen, .is-lite .cmap__flow, .is-lite .cmap__hint i,
+.is-lite .board-pill__dot { animation: none; }
+.is-lite .cnode.is-sel .cnode__edge { animation: none; opacity: 1; }
+.is-lite .star__body i, .is-lite .star__body, .is-lite .star__glow, .is-lite .star__gloss, .is-lite .star__body::before, .is-lite .star__body::after { animation: none !important; }
+.is-lite .hdr, .is-lite .comics .mnav, .is-lite .board-pill { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.is-lite .hdr:not(.is-menu-open) { background: color-mix(in srgb, var(--bg) 94%, transparent); }
+.is-lite .comics .hdr:not(.is-menu-open) { background: linear-gradient(180deg, rgba(4,0,22,.62), rgba(4,0,22,0)); }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {

@@ -3,21 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>漫画 — JasperPeng</title>
-<meta name="description" content="条漫章节地图：拖动浏览，点开章节开始阅读。">
-<link rel="canonical" href="https://jasperpeng.uk/comics/">
-<meta property="og:url" content="https://jasperpeng.uk/comics/">
+<title>留言板 — JasperPeng</title>
+<meta name="description" content="想说什么都可以，在这里留下你的话。">
+<link rel="canonical" href="https://jasperpeng.uk/messages/">
+<meta property="og:url" content="https://jasperpeng.uk/messages/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="漫画 — JasperPeng">
-<meta property="og:image" content="https://jasperpeng.uk/assets/images/comics/chapter-1.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<!-- 漫画页和角色页一样固定深色（Figma「漫画」画板底色 #070024） -->
-<meta name="theme-color" content="#070024">
+<meta property="og:title" content="留言板 — JasperPeng">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="icon" href="../assets/favicon/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="../assets/favicon/favicon.png">
 </head>
-<body class="comics" data-base="../" data-page="comics">
+<body data-base="../" data-page="messages">
 
 <a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
 
@@ -131,43 +128,55 @@
   </div>
 </div><!-- #chrome:header:end -->
 
-<main id="main" class="cmap-main">
+<main id="main">
 
-  <!-- 章节地图（Figma「漫画」「选中某一章节」两块画板 + 说明_6），审美参考 Phigros：
-       · 铺满整屏，顶栏透明地浮在上面（沉浸，用户 2026-10-05 要求）；往下滚出地图后顶栏恢复正常
-       · 可以自由拖动，但有边界，拖太远会弹回来，免得找不回章节
-       · 点一个章节：它放大并居中，里面变暗、露出章节名和 ▶；点空白处关闭
-       · 正篇六边形、番外平行四边形，折线连起来；章节名固定英文
-       图层从下到上：虚化的封面 → 穹顶三角网格（canvas）→ 粒子（canvas）→ 章节 → 扫描线 / 暗角 → 标题和提示
-       章节数据在 js/data.js 的 COMICS，行为在 main.js 10b，样式在 style.css 18b -->
-  <section class="cmap" data-cmap aria-label="Comics · chapter map">
-    <div class="cmap__art" data-cmap-art aria-hidden="true"></div>
-    <canvas class="cmap__grid" data-cmap-grid aria-hidden="true"></canvas>
-    <canvas class="cmap__dust" data-cmap-dust aria-hidden="true"></canvas>
-    <div class="cmap__world" data-cmap-world>
-      <svg class="cmap__links" data-cmap-links aria-hidden="true"></svg>
+  <!-- 留言板（「联系」菜单里的「留言板」，2026-10-05）。版式沿用分类页的标题区。
+       留言的收发和保存交给 Twikoo（部署在站长自己的 Cloudflare 上），后台地址写在 js/data.js 的 COMMENTS_ENV；
+       没填之前显示「即将开放」。行为在 main.js 10d，样式在 style.css 18c -->
+  <section class="cat-hero wrap">
+    <p class="eyebrow" data-t="s.contact.kicker">联系</p>
+    <h1 class="h1" data-i18n="msgTitle">留言板</h1>
+    <p class="lede" style="margin-top:var(--sp-md)" data-i18n="msgLede">想说什么都可以，在这里留下你的话。</p>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+    <div class="msg" data-msg-board>
+      <div class="msg__closed" data-msg-closed hidden>
+        <p class="h3" data-msg-closed-title data-i18n="msgSoon">留言板即将开放</p>
+        <p class="lede" data-msg-closed-desc data-i18n="msgSoonDesc">后台还在搭建中。想说什么，可以先发邮件给我。</p>
+        <p class="msg__actions">
+          <a class="btn btn--soft" href="mailto:pengjasper@icloud.com"><span data-i18n="msgMail">发邮件</span><i class="arr" aria-hidden="true"></i></a>
+        </p>
+      </div>
+      <div id="tcomment" class="msg__twikoo" data-msg-twikoo hidden></div>
     </div>
-    <div class="cmap__fx" aria-hidden="true"></div>
-    <header class="cmap__head">
-      <h1 class="cmap__title">Comics</h1>
-      <p class="cmap__count" data-cmap-count></p>
-    </header>
-    <p class="cmap__hint" data-cmap-hint><i aria-hidden="true"></i><span data-i18n="comicsHint">拖动浏览，点开章节开始阅读</span></p>
+    </div>
   </section>
 
   <noscript>
-    <div class="wrap cmap-noscript">
-      <p>章节地图需要 JavaScript。也可以直接阅读：
-        <a href="read/?c=chapter-1">Chapter 1</a> · <a href="read/?c=side-story-1">Side Story 1</a></p>
+    <div class="wrap notice">
+      <p>留言板需要 JavaScript。也可以直接 <a href="mailto:pengjasper@icloud.com">发邮件</a> 给我。</p>
     </div>
   </noscript>
 
 </main>
 
-<!-- 漫画页没有页脚：底部那一大片导航删掉了，只留版权 + 版本号 + 语言选择，
-     做成和「拖动浏览」提示一样的半透明小胶囊，悬浮在地图底部（用户 2026-10-05）。由 build.ps1 生成 -->
-<!-- #chrome:minibar:start -->
-<div class="cmap-bar" data-minibar>
+<!-- #chrome:footer:start -->
+<footer class="ftr">
+  <div class="wrap">
+    <nav class="crumb" aria-label="Breadcrumb" data-crumb>
+      <a href="../home.html">JasperPeng</a>
+    </nav>
+    <div class="ftr__grid">
+      <div class="ftr__col"><h3 class="ftr__head"><button class="ftr__toggle" type="button" aria-expanded="false" data-ftr-acc><span data-t="s.research.kicker">浏览研究</span><i class="chev" aria-hidden="true"></i></button></h3><div class="ftr__panel"><div class="ftr__inner"><a href="../research/news/" data-t="c.research.news.label">动态</a><a href="../research/philosophy/" data-t="c.research.philosophy.label">思考</a></div></div></div>
+      <div class="ftr__col"><h3 class="ftr__head"><button class="ftr__toggle" type="button" aria-expanded="false" data-ftr-acc><span data-t="s.works.kicker">浏览作品</span><i class="chev" aria-hidden="true"></i></button></h3><div class="ftr__panel"><div class="ftr__inner"><a href="../works/artifacts/" data-t="c.works.artifacts.label">手作</a><a href="../works/design/" data-t="c.works.design.label">设计</a><a href="../works/illustrations/" data-t="c.works.illustrations.label">插画</a><a href="../comics/" data-t="c.works.comics.label">漫画</a><a href="../works/art/" data-t="c.works.art.label">艺术</a><a href="../works/photos/" data-t="c.works.photos.label">摄影</a></div></div></div>
+      <div class="ftr__col"><h3 class="ftr__head"><button class="ftr__toggle" type="button" aria-expanded="false" data-ftr-acc><span data-t="s.universe.kicker">浏览世界观</span><i class="chev" aria-hidden="true"></i></button></h3><div class="ftr__panel"><div class="ftr__inner"><a href="../universe/maps/" data-t="c.universe.maps.label">地图</a><a href="../universe/terrain/" data-t="c.universe.terrain.label">地形</a><a href="../universe/metro/" data-t="c.universe.metro.label">轨道交通</a><a href="../universe/architecture/" data-t="c.universe.architecture.label">建筑</a><a href="../universe/scenery/" data-t="c.universe.scenery.label">风景</a></div></div></div>
+      <div class="ftr__col"><h3 class="ftr__head"><button class="ftr__toggle" type="button" aria-expanded="false" data-ftr-acc><span data-t="s.characters.kicker">浏览角色</span><i class="chev" aria-hidden="true"></i></button></h3><div class="ftr__panel"><div class="ftr__inner"><a href="../characters/" data-t="c.characters.oc.label">原创角色</a><a href="../characters/" data-t="c.characters.character.label">角色</a><a href="../characters/illustrations/" data-t="c.characters.illustrations.label">角色插画</a><a href="../characters/guidebook/" data-t="c.characters.guidebook.label">设定集</a></div></div></div>
+      <div class="ftr__col"><h3 class="ftr__head"><button class="ftr__toggle" type="button" aria-expanded="false" data-ftr-acc><span data-t="s.about.kicker">关于我</span><i class="chev" aria-hidden="true"></i></button></h3><div class="ftr__panel"><div class="ftr__inner"><a href="../resources/resources/" data-t="c.about.resources.label">资源</a><a href="../resources/guidelines/" data-t="c.about.guidelines.label">规范</a><a href="../resources/misc/" data-t="c.about.misc.label">杂项</a></div></div></div>
+      <div class="ftr__col"><h3 class="ftr__head"><button class="ftr__toggle" type="button" aria-expanded="false" data-ftr-acc><span data-t="s.contact.kicker">联系</span><i class="chev" aria-hidden="true"></i></button></h3><div class="ftr__panel"><div class="ftr__inner"><a href="mailto:pengjasper@icloud.com" data-t="l.contact.0.label">邮件</a><span class="ftr__soon" data-t="l.contact.1.label">X<em data-i18n="soon">暂未开放</em></span><span class="ftr__soon" data-t="l.contact.2.label">Bluesky<em data-i18n="soon">暂未开放</em></span><span class="ftr__soon" data-t="l.contact.3.label">Github<em data-i18n="soon">暂未开放</em></span><h3 data-t="n.contact.0.kicker">关于我</h3><p class="ftr__note" data-t="n.contact.0.text">常驻中国大陆</p><h3 data-t="n.contact.1.kicker">赞助</h3><p class="ftr__note" data-t="n.contact.1.text">暂未开放</p></div></div></div>
+    </div>
+    <div class="ftr__bar">
       <p class="ftr__copy">JasperPeng©2026 <span class="ftr__ver" data-version>v2.2.0</span></p>
       <div class="lang" data-lang>
         <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
@@ -176,9 +185,13 @@
         </button>
         <ul class="lang__menu" role="listbox" data-lang-menu></ul>
       </div>
-</div>
-<!-- #chrome:minibar:end -->
+    </div>
+  </div>
+</footer><!-- #chrome:footer:end -->
 
+<button class="to-top" type="button" data-totop aria-label="回到顶部">
+  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg>
+</button>
 
 <script src="../js/assets.js"></script>
 <script src="../js/data.js"></script>
