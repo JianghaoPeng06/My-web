@@ -1996,6 +1996,7 @@
      · 填了 → 加载 Twikoo 的前端脚本，把留言区画进 #tcomment；连不上就显示「暂时连不上」
      界面语言跟着网站当前语言走（Twikoo 自己的按钮、提示也会切换） */
   var TWIKOO_JS = 'https://cdn.jsdelivr.net/npm/twikoo@2.0.12/dist/twikoo.min.js';
+  var TWIKOO_LANG = { 'zh-Hans': 'zh-CN', 'zh-Hant': 'zh-TW', en: 'en', ja: 'ja-JP' };   /* 网站语言 → Twikoo 的语言代码 */
   var BOARD = D.BOARD || {};
   function renderMessages() {
     var board = $('[data-msg-board]');

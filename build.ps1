@@ -137,6 +137,7 @@ for ($i = 0; $i -lt $secs.Count; $i++) {
                 Soon  = ($ln -match 'soon:\s*true')
                 Mail  = ($ln -match "href:\s*'mailto:'")
                 To    = ([regex]::Match($ln, "to:\s*'([^']+)'")).Groups[1].Value   # 站内页面，比如留言板 'messages/'
+                Href  = ([regex]::Match($ln, "href:\s*'(https?://[^']+)'")).Groups[1].Value   # 站外地址（X / Bluesky / GitHub），新标签页打开
             }
         }
     }
@@ -171,12 +172,15 @@ function LinkFor($to, $sec, $base) {
     return $to
 }
 
-# 联系方式的链接：站内页面（to:）按层级加前缀，邮件走 mailto
+# 联系方式的链接：站外地址（href: 'https://…'）原样用，站内页面（to:）按层级加前缀，邮件走 mailto
 function ContactHref($l, $base) {
+    if ($l.Href) { return $l.Href }
     if ($l.To)   { return $base + $l.To }
     if ($l.Mail) { return "mailto:$mail" }
     return '#'
 }
+# 站外链接在新标签页打开；rel=noopener 让对方页面拿不到 window.opener（标准的安全写法）
+function ContactAttr($l) { if ($l.Href) { return ' target="_blank" rel="noopener"' } return '' }
 
 # 分类的链接：带 to: 的走 to（不生成自己的页面），否则走 <目录>/<slug>/
 function CatHref($sec, $cat, $base) {
@@ -203,7 +207,7 @@ function Build-Header($base) {
                 if ($l.Soon) {
                     $left += "<li><span class=""menu__soon"" data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)<em data-i18n=""soon"">暂未开放</em></span></li>"
                 } else {
-                    $left += "<li><a href=""$(ContactHref $l $base)"" data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)<i class=""arr"" aria-hidden=""true""></i></a></li>"
+                    $left += "<li><a href=""$(ContactHref $l $base)""$(ContactAttr $l) data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)<i class=""arr"" aria-hidden=""true""></i></a></li>"
                 }
                 $li++
             }
@@ -262,7 +266,7 @@ function Build-Header($base) {
             $li = 0
             foreach ($l in $s.Links) {
                 if ($l.Soon) { $inner += "<span class=""menu__soon"" data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)<em data-i18n=""soon"">暂未开放</em></span>" }
-                else { $inner += "<a href=""$(ContactHref $l $base)"" data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)</a>" }
+                else { $inner += "<a href=""$(ContactHref $l $base)""$(ContactAttr $l) data-t=""l.$($s.Key).$li.label"">$(Esc $l.Label)</a>" }
                 $li++
             }
         }
@@ -363,7 +367,7 @@ function Build-Footer($base) {
     $li = 0
     foreach ($l in $contact.Links) {
         if ($l.Soon) { $cc += "<span class=""ftr__soon"" data-t=""l.contact.$li.label"">$(Esc $l.Label)<em data-i18n=""soon"">暂未开放</em></span>" }
-        else { $cc += "<a href=""$(ContactHref $l $base)"" data-t=""l.contact.$li.label"">$(Esc $l.Label)</a>" }
+        else { $cc += "<a href=""$(ContactHref $l $base)""$(ContactAttr $l) data-t=""l.contact.$li.label"">$(Esc $l.Label)</a>" }
         $li++
     }
     $ni = 0

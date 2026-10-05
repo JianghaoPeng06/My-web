@@ -478,7 +478,7 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
 .sr__empty { padding: 36px; text-align: center; color: var(--text-muted); font-size: var(--fs-small); }
 
 /* ---------- 10 Hero ---------- */
-.hero { position: relative; padding-block: clamp(76px, 8vw, 104px) clamp(48px, 6vw, 96px); --hero-gap: clamp(28px, 4vw, 64px); }   /* 顶部多留一行给留言板胶囊（原来 clamp(40px, 6vw, 88px)） */
+.hero { position: relative; padding-block: 14px clamp(48px, 6vw, 96px); --hero-gap: clamp(28px, 4vw, 64px); }   /* 顶部 14px 之下先是留言板胶囊那一行（它真的占位，下面整块跟着往下排）；没胶囊之前是 clamp(40px, 6vw, 88px) */
 .hero__inner {
   display: grid; grid-template-columns: 1.05fr .95fr;
   align-items: center; gap: var(--hero-gap);
@@ -500,11 +500,15 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
    位置：顶边离顶栏 14px，左边缘对齐顶栏「JasperPeng」标志的左边线（两者都在版心左边线上），电脑手机一样。
    （试过对准史莱姆球那一栏的中线、手机居中 —— 用户要靠左对齐标志）
    玻璃 = 半透明底 + 背景模糊提饱和 + 顶边一道高光 + 很淡的投影；按下去轻轻一缩（iOS 的按压反馈）。
-   「（限时）」只是字，不会自己消失 */
+   「（限时）」只是字，不会自己消失。
+   2026-10-06 改成真正占一行（原来是 position: absolute 浮在 hero 上、靠加大 hero 顶部留白躲开内容 ——
+   用户反馈有遮挡，要「整个网页往下移给它留位置」）。现在它在文档流里，下面的文字和史莱姆球整块跟着往下排；
+   和下面「Personal Archive」的距离 = 原来的「留白 − 14 − 42」，所以各宽度下位置和以前一样 */
 .board-pill {
-  position: absolute; top: 14px; left: 0; z-index: 3;
+  position: relative; z-index: 3;
+  width: fit-content; margin-bottom: clamp(20px, calc(8vw - 56px), 48px);
   transform-origin: left center;
-  display: inline-flex; align-items: center; gap: 9px;
+  display: flex; align-items: center; gap: 9px;
   height: 42px; padding: 0 16px 0 14px; border-radius: var(--r-pill);
   color: var(--text); font-size: 14px; font-weight: 500; letter-spacing: .01em; white-space: nowrap;
   background: linear-gradient(135deg, rgba(255,255,255,.62), rgba(255,255,255,.22));
@@ -529,6 +533,30 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
   box-shadow: 0 0 0 3px rgba(52,199,89,.18); animation: pillDot 2.4s var(--e-io) infinite;
 }
 .board-pill em { font-style: normal; color: var(--text-muted); }
+/* 「留言板」后面的 👋（2026-10-06，用户：加个图标让它更容易被注意到）。
+   试过 💬：Windows 上是一个很淡的浅灰气泡，几乎看不见；👋 在各平台都是醒目的黄色，招手也正合「来打个招呼」。
+   每 5 秒招两下手，悬停时再招一次；绕手腕转（transform-origin 在右下）。只动这一个小字的 transform，不带 filter，很省。
+   轻量模式 / 减少动态效果下静止 */
+.board-pill__emoji {
+  display: inline-block; margin-left: 5px; font-size: 1.05em; line-height: 1;
+  transform-origin: 70% 80%; animation: pillWave 5s var(--e-io) 1.6s infinite;
+}
+@keyframes pillWave {
+  0%, 82%, 100% { transform: none; }
+  86% { transform: rotate(-14deg) scale(1.08); }
+  90% { transform: rotate(10deg) scale(1.08); }
+  94% { transform: rotate(-6deg); }
+  97% { transform: rotate(3deg); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .board-pill:hover .board-pill__emoji { animation: pillWaveHover .7s var(--e-out); }
+}
+@keyframes pillWaveHover {
+  0%, 100% { transform: none; }
+  25% { transform: rotate(-16deg) scale(1.12); }
+  50% { transform: rotate(12deg) scale(1.12); }
+  75% { transform: rotate(-5deg); }
+}
 .board-pill .arr { width: 14px; opacity: .55; transition: transform var(--t) var(--e-out), opacity var(--t-fast); }
 @media (hover: hover) and (pointer: fine) {
   .board-pill:hover {
@@ -897,7 +925,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 }
 /* 正文插图可点开放大（main.js 08b）。封面不在 .article__body 里，不受影响 */
 .article__body img.is-zoomable { cursor: zoom-in; transition: transform .6s var(--e-out), opacity var(--t-fast); }
- (hover: hover) and (pointer: fine) {
+@media (hover: hover) and (pointer: fine) {   /* 原来漏了 @media，悬停放大一直没生效（2026-10-06 体检发现） */
   .article__body .fig__media:hover img.is-zoomable { transform: scale(1.02); }
 }
 .article__body img.is-zoomable:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -933,7 +961,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .zoom.is-zoomed .zoom__foot { opacity: 0; }
 .zoom__cap { color: rgba(255,255,255,.88); font-size: var(--fs-small); }
 .zoom__hint { color: rgba(255,255,255,.5); font-size: 12px; }
- (hover: none) { .zoom__hint { display: none; } }
+@media (hover: none) { .zoom__hint { display: none; } }   /* 触屏上不说「滚轮」。原来这行漏了 @media，整条被浏览器丢掉（2026-10-06 体检发现，从第一个提交就这样） */
 
 /* 界面语言 ≠ 正文语言时的一句说明。刻意做得很轻，不抢正文。 */
 .article__body .note-lang {
@@ -1287,12 +1315,281 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
    标题区沿用分类页；下面一栏装 Twikoo 的留言区，宽度收到 760 方便阅读。
    后台没接通时是「即将开放」那块，样式和分类页的空状态一样（虚线圆角框 + 居中） */
 .msg { max-width: 760px; }
+/* 标题区和留言区共用一条居中的 760 窄栏（2026-10-06 用户：电脑上不要靠左）。文字在栏里仍左对齐、两块左缘对齐 —— 同文章页的做法 */
+.wrap--msg { width: min(100% - var(--gutter) * 2, 760px); }
 .msg__closed {
   display: grid; justify-items: center; gap: 10px; text-align: center;
   padding: clamp(48px, 7vw, 88px) var(--sp-md);
   border: 1px dashed var(--border-2); border-radius: var(--r-lg);
 }
 .msg__actions { margin-top: var(--sp-md); }
+
+/* Twikoo 留言区皮肤（2026-10-06，第二版）：照全站的路子 —— 版式和配色向 openai.com 靠，动效和控件向 apple.com 靠。
+   · 发表区 = 一张浅灰圆角卡片，里面是白色输入框；正在输入时整张卡片亮一圈柔光（Apple 的聚焦环）
+   · 排序「最新 / 最早 / 热门」= Apple 分段控件；搜索 / 刷新 / 管理 = 圆形图标按钮
+   · 留言 = 发丝细线分隔、圆头像、靠字重和灰度分层，不用色块；「站长」是强调色小胶囊；回复缩进、左边一条细线
+   · 表情面板 = 毛玻璃弹层；按钮按下去轻轻一缩
+   Twikoo 的样式是运行时插进 <head> 末尾的，同样的写法会被它压住，所以这里一律多套一层 .msg（特异性 +1）；
+   有几处它自己就带 4～6 个类，要再多带一个类才压得住（比如 .tk-meta-input__item、.tk-comments > .tk-submit）。
+   功能一样没动：Twikoo 的结构和脚本原样，这里只换外观。管理面板（齿轮点开）保持它原样的黑色蒙层 —— 只有站长看，关闭按钮写死白色 */
+
+/* —— 皮肤变量：想换颜色 / 圆角，改这几行就行（深色模式在下面那段单独一套）—— */
+.msg {
+  --msg-card:      var(--bg-2);      /* 发表区卡片底色 */
+  --msg-field:     var(--bg);        /* 输入框底色 */
+  --msg-line:      var(--border);    /* 输入框描边、留言之间的细线 */
+  --msg-accent:    var(--accent);    /* 强调色：聚焦光圈、点赞、链接、「站长」标签 */
+  --msg-send-bg:   var(--text);      /* 「发送」按钮底色（悬停变强调色） */
+  --msg-send-fg:   var(--bg);
+  --msg-seg-on:    var(--bg);        /* 分段控件选中那一块 */
+  --msg-r-card:    var(--r-lg);      /* 发表区卡片圆角 26 */
+  --msg-r-field:   14px;             /* 正文输入框圆角（昵称那几个是胶囊） */
+  --msg-avatar:    40px;
+  --msg-ring:      0 0 0 4px color-mix(in srgb, var(--msg-accent) 16%, transparent);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .msg {
+    --msg-seg-on: var(--bg-3);
+    --msg-ring: 0 0 0 4px color-mix(in srgb, var(--msg-accent) 22%, transparent);
+  }
+}
+
+.msg .twikoo { color: var(--text); font-size: var(--fs-small); line-height: 1.6; }
+.msg .twikoo a { color: var(--msg-accent); text-decoration: none; }
+.msg .twikoo a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ===== 发表区 ===== */
+.msg .twikoo .tk-comments > .tk-submit,
+.msg .twikoo .tk-comment .tk-submit {
+  margin-top: 0; padding: clamp(16px, 2.4vw, 24px);
+  background: var(--msg-card); border: 1px solid transparent; border-radius: var(--msg-r-card);
+  transition: border-color var(--t) var(--e-out), box-shadow var(--t) var(--e-out);
+}
+.msg .twikoo .tk-comments > .tk-submit:focus-within { border-color: color-mix(in srgb, var(--msg-accent) 45%, transparent); box-shadow: var(--msg-ring); }
+/* 回复框（点留言上的 💬 出现在那条留言下面）：同一种卡片，小一号 */
+.msg .twikoo .tk-comment .tk-submit { margin-top: 14px; padding: 14px; border-radius: 20px; }
+.msg .twikoo .tk-comment .tk-submit:focus-within { border-color: color-mix(in srgb, var(--msg-accent) 45%, transparent); box-shadow: var(--msg-ring); }
+
+.msg .twikoo .tk-avatar { width: var(--msg-avatar); height: var(--msg-avatar); border-radius: 50%; margin-right: 16px; }
+.msg .twikoo .tk-avatar .tk-avatar-img { height: var(--msg-avatar); line-height: var(--msg-avatar); color: var(--text-faint); }
+.msg .twikoo .tk-avatar.tk-has-avatar { background: var(--bg-3); }
+.msg .twikoo .tk-comment .tk-submit .tk-avatar,
+.msg .twikoo .tk-replies .tk-avatar { width: 28px; height: 28px; margin-right: 12px; }
+.msg .twikoo .tk-comment .tk-submit .tk-avatar .tk-avatar-img,
+.msg .twikoo .tk-replies .tk-avatar .tk-avatar-img { height: 28px; line-height: 28px; }
+
+/* 昵称 / 邮箱 / 网址：标签和输入框合成一枚白色胶囊，标签是框里左边的灰字 */
+.msg .twikoo .tk-meta-input { gap: 10px; margin-bottom: 10px; }
+.msg .twikoo .tk-meta-input .tk-input.tk-meta-input__item {
+  margin: 0; background: var(--msg-field); border: 1px solid var(--msg-line); border-radius: var(--r-pill);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.msg .twikoo .tk-meta-input .tk-input.tk-meta-input__item:hover { border-color: var(--border-2); }
+.msg .twikoo .tk-meta-input .tk-input.tk-meta-input__item:focus-within { border-color: var(--msg-accent); }
+.msg .twikoo .tk-meta-input .tk-input-group__prepend {
+  height: 40px; padding: 0 2px 0 16px; background: transparent; border: 0;
+  font-size: var(--fs-caption); font-weight: 500; color: var(--text-muted);
+}
+.msg .twikoo .tk-meta-input .tk-input__inner {
+  height: 40px; line-height: 40px; padding: 0 16px 0 10px; background: transparent; border: 0; border-radius: var(--r-pill);
+  font-size: var(--fs-caption); color: var(--text);
+}
+.msg .twikoo .tk-input__inner::placeholder { color: var(--text-faint); }
+
+/* 正文 */
+.msg .twikoo .tk-textarea .tk-input__inner {
+  min-height: 132px; padding: 14px 16px 30px; line-height: 1.75; font-size: var(--fs-small); color: var(--text);
+  background: var(--msg-field); border: 1px solid var(--msg-line); border-radius: var(--msg-r-field);
+  transition: border-color var(--t-fast);
+}
+.msg .twikoo .tk-comment .tk-submit .tk-textarea .tk-input__inner { min-height: 96px; }
+.msg .twikoo .tk-textarea .tk-input__inner:hover { border-color: var(--border-2); }
+.msg .twikoo .tk-textarea .tk-input__inner:focus { border-color: var(--msg-accent); }
+.msg .twikoo .tk-input__count { right: 14px; bottom: 9px; font-size: 12px; font-variant-numeric: tabular-nums; color: var(--text-faint); }
+
+/* 底下一行：左边表情 / 图片 / Markdown 图标，右边预览 + 发送 */
+.msg .twikoo .tk-row.actions { margin: 14px 0 0 calc(var(--msg-avatar) + 16px); gap: 8px; }
+.msg .twikoo .tk-comment .tk-submit .tk-row.actions { margin-left: 40px; }
+.msg .twikoo .tk-submit-action-icon {
+  width: 20px; margin-right: 6px; padding: 6px; box-sizing: content-box; border-radius: 50%;
+  color: var(--text-muted); transition: background var(--t-fast), color var(--t-fast);
+}
+.msg .twikoo .tk-submit-action-icon.__markdown { color: var(--text-faint); }
+.msg .twikoo .tk-submit-action-icon svg:hover { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .msg .twikoo .tk-submit-action-icon:hover { background: var(--bg-3); color: var(--text); }
+}
+
+/* ===== 按钮：一律胶囊 ===== */
+.msg .twikoo .tk-button,
+.msg .twikoo .tk-button--small {
+  padding: 0 18px; height: 36px; line-height: 34px; font-size: var(--fs-caption); font-weight: 500; letter-spacing: .01em;
+  border-radius: var(--r-pill); border: 1px solid transparent; background: var(--bg-3); color: var(--text);
+  transition: background var(--t-fast), color var(--t-fast), transform .12s var(--e-press), opacity var(--t-fast);
+}
+.msg .twikoo .tk-button + .tk-button { margin-left: 0; }
+/* 「预览」等次要按钮：白底细边（卡片里是灰底，白色的按钮浮在上面） */
+.msg .twikoo .tk-submit .tk-button:not(.tk-button--primary) { background: var(--msg-field); border-color: var(--msg-line); }
+.msg .twikoo .tk-button:not(.tk-button--primary):not(.tk-button--text):not(.is-disabled):hover,
+.msg .twikoo .tk-button:not(.tk-button--primary):not(.tk-button--text):not(.is-disabled):focus-visible {
+  background: var(--msg-field); color: var(--text); border-color: var(--text-faint);
+}
+.msg .twikoo .tk-button:not(.tk-button--primary):not(.tk-button--text):not(.is-disabled):focus:not(:focus-visible) {
+  color: var(--text); border-color: var(--msg-line);
+}
+.msg .twikoo .tk-button:not(.tk-button--text):not(.is-disabled):active { transform: scale(.965); }
+/* 「发送」= 本站主按钮：黑底白字（深色下白底黑字），悬停变强调色 */
+.msg .twikoo .tk-button--primary { background: var(--msg-send-bg); color: var(--msg-send-fg); border-color: transparent; padding: 0 22px; font-weight: 600; }
+.msg .twikoo .tk-button--primary:not(.is-disabled):hover,
+.msg .twikoo .tk-button--primary:not(.is-disabled):focus-visible { background: var(--msg-accent); color: var(--on-accent); border-color: transparent; }
+.msg .twikoo .tk-button--primary:not(.is-disabled):focus:not(:focus-visible) { background: var(--msg-send-bg); color: var(--msg-send-fg); }
+.msg .twikoo .tk-button--primary:not(.is-disabled):active { background: var(--msg-accent); color: var(--on-accent); }
+.msg .twikoo .tk-button--primary.is-disabled,
+.msg .twikoo .tk-button--primary.is-disabled:hover,
+.msg .twikoo .tk-button--primary.is-disabled:active { background: var(--msg-send-bg); color: var(--msg-send-fg); opacity: .22; border-color: transparent; }
+.msg .twikoo .tk-button--text,
+.msg .twikoo .tk-button--text:not(.is-disabled):hover { background: transparent; color: var(--msg-accent); padding: 0; height: auto; border: 0; }
+.msg .twikoo .tk-button:focus-visible { outline: 2px solid var(--msg-accent); outline-offset: 2px; }
+
+/* 预览出来的那一块 */
+.msg .twikoo .tk-preview-container {
+  margin: 14px 0 0 calc(var(--msg-avatar) + 16px); padding: 14px 16px;
+  background: var(--msg-field); border: 1px dashed var(--border-2); border-radius: var(--msg-r-field);
+}
+
+/* ===== 列表头：「N 条评论」+ 分段控件 + 图标按钮 ===== */
+.msg .twikoo .tk-comments-container { margin-top: clamp(40px, 6vw, 64px); min-height: 0; }
+.msg .twikoo .tk-comments-title {
+  margin-bottom: 4px; padding-bottom: 16px; line-height: 1.2;
+  font-size: clamp(20px, 2vw, 24px); font-weight: 600; letter-spacing: -.02em;
+}
+.msg .twikoo .tk-comments-count span:first-child { font-variant-numeric: tabular-nums; margin-right: .2em; }
+.msg .twikoo .tk-comments-actions { gap: 6px; }
+.msg .twikoo .tk-comments-sort {
+  gap: 2px; margin-right: 6px; padding: 3px; border-radius: var(--r-pill); background: var(--bg-2);
+}
+.msg .twikoo .tk-sort-item {
+  padding: 6px 13px; border-radius: var(--r-pill); font-size: 13px; font-weight: 500; line-height: 1;
+  color: var(--text-muted); transition: background var(--t) var(--e-out), color var(--t-fast), box-shadow var(--t) var(--e-out);
+}
+.msg .twikoo .tk-sort-item:hover { color: var(--text); }
+.msg .twikoo .tk-sort-item:focus { color: var(--text-muted); }
+.msg .twikoo .tk-sort-item:focus-visible { outline: 2px solid var(--msg-accent); outline-offset: 1px; }
+.msg .twikoo .tk-sort-item.__active,
+.msg .twikoo .tk-sort-item.__active:focus {
+  color: var(--text); background: var(--msg-seg-on);
+  box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 2px 8px rgba(0,0,0,.05);
+}
+.msg .twikoo .tk-icon.__comments {
+  width: 32px; height: 32px; padding: 8px; box-sizing: border-box; border-radius: 50%;
+  color: var(--text-muted); transition: background var(--t-fast), color var(--t-fast);
+}
+.msg .twikoo .tk-icon.__comments:hover { background: var(--bg-2); color: var(--text); }
+.msg .twikoo .tk-icon.__comments.__active { background: var(--text); color: var(--bg); border-radius: 50%; }
+
+/* 搜索条（点 🔍 才出现） */
+.msg .twikoo .tk-comments-search { margin: 4px 0 12px; }
+.msg .twikoo .tk-comments-search .tk-input__inner {
+  height: 40px; line-height: 40px; padding: 0 18px; border-radius: var(--r-pill);
+  background: var(--bg-2); border: 1px solid transparent; color: var(--text); font-size: var(--fs-caption);
+}
+.msg .twikoo .tk-comments-search .tk-input__inner:focus { background: var(--msg-field); border-color: var(--msg-accent); box-shadow: var(--msg-ring); }
+.msg .twikoo .tk-comments-search .tk-button { height: 40px; line-height: 38px; }
+
+.msg .twikoo .tk-comments-no { min-height: 160px; color: var(--text-faint); font-size: var(--fs-small); border-top: 1px solid var(--msg-line); }
+
+/* ===== 每条留言 ===== */
+.msg .twikoo .tk-comments-container > .tk-comment { margin: 0; padding: 22px 0; border-top: 1px solid var(--msg-line); }
+.msg .twikoo .tk-meta { gap: 2px 8px; align-items: center; }
+.msg .twikoo .tk-nick { font-size: var(--fs-small); font-weight: 600; letter-spacing: -.005em; color: var(--text); }
+.msg .twikoo .tk-nick-link { color: var(--text); }
+.msg .twikoo .tk-nick-link:hover { color: var(--msg-accent); text-decoration: none; }
+.msg .twikoo .tk-time { font-size: 13px; color: var(--text-faint); }
+.msg .twikoo .tk-time time { font-variant-numeric: tabular-nums; }
+.msg .twikoo .tk-actions button { font-size: 12px; color: var(--msg-accent); }
+
+/* 标签：小胶囊。「站长」用强调色，置顶 / 待审核保留 Twikoo 原来的红 / 黄意思但换成同样的胶囊 */
+.msg .twikoo .tk-tag {
+  display: inline-flex; align-items: center; height: 20px; padding: 0 8px; border: 0; border-radius: var(--r-pill);
+  font-size: 11px; font-weight: 600; letter-spacing: .02em; line-height: 1;
+}
+.msg .twikoo .tk-tag-green { color: var(--msg-accent); background: color-mix(in srgb, var(--msg-accent) 13%, transparent); }
+.msg .twikoo .tk-tag-blue  { color: var(--msg-accent); background: color-mix(in srgb, var(--msg-accent) 13%, transparent); }
+.msg .twikoo .tk-tag-red    { color: #E5484D; background: rgba(229,72,77,.12); }
+.msg .twikoo .tk-tag-yellow { color: #B7791F; background: rgba(245,166,35,.14); }
+
+/* 右上角：点赞 / 回复 / 删除 —— 平时是淡灰，悬停才亮 */
+.msg .twikoo .tk-action { gap: 2px; }
+.msg .twikoo .tk-action-link {
+  margin-left: 0; padding: 6px; border-radius: var(--r-pill); color: var(--text-faint);
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.msg .twikoo .tk-action-icon { width: 16px; height: 16px; color: inherit; }
+.msg .twikoo .tk-action-count { margin-left: 4px; font-size: 12px; font-variant-numeric: tabular-nums; color: inherit; }
+.msg .twikoo .tk-action-link.tk-liked { color: var(--msg-accent); }
+@media (hover: hover) and (pointer: fine) {
+  .msg .twikoo .tk-action-link:hover { background: var(--bg-2); color: var(--text); }
+  .msg .twikoo .tk-action-link.tk-liked:hover { color: var(--msg-accent); }
+}
+
+.msg .twikoo .tk-content { margin-top: 6px; font-size: var(--fs-body); line-height: 1.75; color: var(--text); word-break: normal; overflow-wrap: anywhere; }
+.msg .twikoo .tk-content p { margin: 0; }
+.msg .twikoo .tk-content p + p { margin-top: .6em; }
+.msg .twikoo .tk-content blockquote { margin: .6em 0; padding-left: 14px; border-left: 2px solid var(--border-2); color: var(--text-muted); }
+.msg .twikoo .tk-content code { padding: .1em .4em; border-radius: 6px; background: var(--bg-2); font-size: .9em; }
+.msg .twikoo .tk-content img { border-radius: 12px; }
+.msg .twikoo .tk-replies .tk-content { font-size: var(--fs-small); }
+
+/* 属地 / 系统 / 浏览器：一行淡灰小字 */
+.msg .twikoo .tk-extras { margin-top: 8px; gap: 2px 14px; font-size: 12.5px; color: var(--text-faint); }
+.msg .twikoo .tk-extra { margin: 0; gap: 5px; }
+.msg .twikoo .tk-icon.__comment { opacity: .8; }
+
+/* 回复：往右缩进，左边一条细线 */
+.msg .twikoo .tk-replies { margin-top: 10px; padding-left: 16px; border-left: 2px solid var(--msg-line); }
+.msg .twikoo .tk-replies .tk-comment { margin-top: 14px; }
+.msg .twikoo .tk-expand { margin-top: 8px; padding: 6px 12px; border-radius: var(--r-pill); font-size: 12px; color: var(--text-muted); background: var(--bg-2); }
+.msg .twikoo .tk-expand:hover { color: var(--text); }
+
+/* 分页 */
+.msg .twikoo .tk-pagination { margin-top: 20px; gap: 6px; }
+.msg .twikoo .tk-pagination-pager {
+  min-width: 34px; height: 34px; padding: 0 10px; border-radius: var(--r-pill);
+  font-size: 13px; font-variant-numeric: tabular-nums; color: var(--text-muted); transition: background var(--t-fast), color var(--t-fast);
+}
+.msg .twikoo .tk-pagination-pager:hover { background: var(--bg-2); color: var(--text); }
+.msg .twikoo .tk-pagination-pager.__current { background: var(--text); color: var(--bg); }
+
+/* 最底下「Powered by Twikoo」：留着（开源协议的礼貌），压成一行很淡的小字 */
+.msg .twikoo .tk-footer { margin-top: 8px; font-size: 12px; color: var(--text-faint); opacity: .8; }
+.msg .twikoo .tk-footer a { color: inherit; }
+
+.msg .twikoo .tk-loading-spinner .path { stroke: var(--msg-accent); }
+
+/* ===== 表情面板：毛玻璃弹层 =====
+   Twikoo 只认它自己那几种深色开关（.night / [data-theme=dark] …），本站深色是跟系统走的，所以直接用令牌 */
+.msg .OwO .OwO-body {
+  top: 2.4em; max-width: 420px; overflow: hidden;
+  color: var(--text); border: 1px solid var(--msg-line); border-radius: 18px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: var(--shadow-lg);
+}
+.msg .OwO .OwO-body .OwO-items .OwO-item { border-radius: 8px; transition: background var(--t-fast); }
+.msg .OwO .OwO-body .OwO-items .OwO-item:hover { background: var(--bg-2); box-shadow: none; }
+.msg .OwO .OwO-body .OwO-bar { border-top: 1px solid var(--msg-line); }
+.msg .OwO .OwO-body .OwO-bar .OwO-packages li { border-radius: var(--r-pill); }
+.msg .OwO .OwO-body .OwO-bar .OwO-packages li:hover { background: var(--bg-2); }
+.msg .OwO .OwO-body .OwO-bar .OwO-packages .OwO-package-active { background: var(--bg-3); }
+
+/* 手机：卡片收紧；底下那一行不再给头像让位 */
+@media (max-width: 640px) {
+  .msg .twikoo .tk-comments > .tk-submit { padding: 14px; border-radius: 20px; }
+  .msg .twikoo .tk-row.actions,
+  .msg .twikoo .tk-preview-container { margin-left: 0; }
+  .msg .twikoo .tk-comments-title { flex-wrap: wrap; row-gap: 10px; }
+  .msg .twikoo .tk-comments-container > .tk-comment { padding: 18px 0; }
+}
 
 /* ---------- 19 页脚（Figma Frame 52，每页常驻）---------- */
 .ftr { border-top: 1px solid var(--border); background: var(--bg); padding-block: clamp(36px, 4.6vw, 64px) 84px; }   /* 底部这 84px 是给 fixed 的回顶按钮让位：滚到底时它正好压在 .ftr__bar 那一行上 */
@@ -1460,7 +1757,7 @@ html.js-on .reveal:not(.is-in) { opacity: 0; transform: translateY(22px); transi
    main.js 在 CPU ≤ 4 核、内存 ≤ 4GB、或开了省流量时给 <html> 加 .is-lite。
    一直在动的装饰全部停下来，画面停在静止的样子；拖动、点击、史莱姆球的按拖照常 */
 .is-lite .cnode__sheen, .is-lite .cmap__flow, .is-lite .cmap__hint i,
-.is-lite .board-pill__dot { animation: none; }
+.is-lite .board-pill__dot, .is-lite .board-pill__emoji { animation: none; }
 .is-lite .cnode.is-sel .cnode__edge { animation: none; opacity: 1; }
 .is-lite .star__body i, .is-lite .star__body, .is-lite .star__glow, .is-lite .star__gloss, .is-lite .star__body::before, .is-lite .star__body::after { animation: none !important; }
 .is-lite .hdr, .is-lite .comics .mnav, .is-lite .board-pill { backdrop-filter: none; -webkit-backdrop-filter: none; }
