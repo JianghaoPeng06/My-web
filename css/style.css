@@ -1753,8 +1753,20 @@ html.js-on .reveal:not(.is-in) { opacity: 0; transform: translateY(22px); transi
 }
 
 /* ---------- 22 偏好设置 ---------- */
-/* 轻量模式（2026-10-05，有设备打开网站会卡，漫画页尤其）：
-   main.js 在 CPU ≤ 4 核、内存 ≤ 4GB、或开了省流量时给 <html> 加 .is-lite。
+/* 性能三档（main.js 开头判断；2026-10-14 从两档改成三档，见那里的注释）。
+
+   减配 .is-mid（手机 / 平板 / 4 核 4GB 以下）：动效全留，换省的做法 ——
+   · 史莱姆球：彩光留 3 团（桃 / 蓝 / 粉），去掉 multiply 混合 —— 混合模式套在圆形遮罩里，
+     每一帧都要把整个球重新合成，是手机上最贵的一项；颗粒层（overlay 混合）也去掉。沉浮、高光绕圈、漂移、明灭照常
+   · 毛玻璃：模糊半径调小（滚动时背后每帧都要重新模糊，半径越大越贵）
+   · 漫画页的光尘减半、网格 1.5 倍分辨率在 main.js 里；流光、光点流动、呼吸辉光照常 */
+.is-mid .star__body i { mix-blend-mode: normal; will-change: transform, opacity; }
+.is-mid .star__body i:nth-child(n+4) { display: none; }
+.is-mid .star__body::before { display: none; }
+.is-mid .hdr { backdrop-filter: saturate(160%) blur(12px); -webkit-backdrop-filter: saturate(160%) blur(12px); }
+.is-mid .board-pill { backdrop-filter: blur(10px) saturate(170%); -webkit-backdrop-filter: blur(10px) saturate(170%); }
+
+/* 静止 .is-lite（开了省流量 / 内存 ≤ 2GB）：
    一直在动的装饰全部停下来，画面停在静止的样子；拖动、点击、史莱姆球的按拖照常 */
 .is-lite .cnode__sheen, .is-lite .cmap__flow, .is-lite .cmap__hint i,
 .is-lite .board-pill__dot, .is-lite .board-pill__emoji { animation: none; }

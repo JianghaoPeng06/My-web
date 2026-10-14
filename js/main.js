@@ -19,12 +19,18 @@
   var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* 轻量模式（2026-10-05，有设备打开网站卡顿，漫画页尤其）：CPU ≤ 4 核、内存 ≤ 4GB、或开了省流量的设备，
-     一直在动的装饰（光尘、流光、呼吸辉光、史莱姆球里的彩光漂移、首页海报滚动放大）都停下来，
-     画面停在静止的样子；拖动、点击、史莱姆球的按拖照常。样式见 style.css 22 的 .is-lite */
-  var LITE = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4 ||
-             !!(navigator.connection && navigator.connection.saveData);
+  /* 性能分三档（2026-10-14 改；10-05 第一版只有「轻量 = 全停」）：
+     · 完整：电脑。
+     · 减配 .is-mid：手机 / 平板（触屏为主），或 CPU ≤ 4 核、内存 ≤ 4GB 的设备。动效都保留，换成更省的做法：
+       史莱姆球彩光 5 → 3 团、去掉混合模式和颗粒层；顶栏模糊半径调小；漫画页光尘减半、网格 1.5 倍分辨率。
+     · 静止 .is-lite：开了省流量，或内存 ≤ 2GB（只有 Chrome 系报这个数）。一直在动的装饰全部停下，画面停在静止的样子。
+     第一版用「≤ 4 核或 ≤ 4GB」直接判成全停 —— 手机几乎全中（iPhone 的 Safari 报的核数还不准），用户发现手机上动效全没了。
+     所以「静止」不再看核数，只看省流量和真正的小内存。拖动、点击、史莱姆球的按拖在哪一档都照常。样式见 style.css 22 */
+  var MEM = navigator.deviceMemory || 8, CORES = navigator.hardwareConcurrency || 8;
+  var LITE = !!(navigator.connection && navigator.connection.saveData) || MEM <= 2;
+  var MID = !LITE && (matchMedia('(pointer: coarse)').matches || CORES <= 4 || MEM <= 4);
   if (LITE) document.documentElement.classList.add('is-lite');
+  if (MID)  document.documentElement.classList.add('is-mid');
   var isDesktop = function () { return matchMedia('(min-width: 901px)').matches; };
   var BODY = document.body;
   var BASE = BODY.getAttribute('data-base') || '';
@@ -1625,7 +1631,7 @@
     }
     return {
       size: function (w, h) {
-        dpr = LITE ? 1 : Math.min(2, devicePixelRatio || 1); W = w; H = h;   /* 轻量模式 1 倍分辨率，拖动时重画更轻 */
+        dpr = LITE ? 1 : Math.min(MID ? 1.5 : 2, devicePixelRatio || 1); W = w; H = h;   /* 静止档 1 倍、减配档最多 1.5 倍分辨率，拖动时重画更轻 */
         cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
         cv.style.width = w + 'px'; cv.style.height = h + 'px';
       },
@@ -1702,7 +1708,7 @@
         dpr = 1; W = w; H = h;                  /* 光点本来就是糊的，1 倍分辨率看不出差别 */
         cv.width = Math.round(w); cv.height = Math.round(h);
         cv.style.width = w + 'px'; cv.style.height = h + 'px';
-        var n = Math.round(Math.min(48, w * h / 24000));
+        var n = Math.round(Math.min(MID ? 24 : 48, w * h / (MID ? 36000 : 24000)));   /* 减配档光尘减半 */
         ps = []; for (var i = 0; i < n; i++) ps.push(spawn({}, true));
         if (still) { frame(performance.now()); cancelAnimationFrame(raf); }   /* 减少动态效果 / 轻量模式：只画一帧静止的 */
         else run(vis && !document.hidden);
