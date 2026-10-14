@@ -693,7 +693,7 @@ for ($ri = 0; $ri -lt $recent.Count; $ri++) {
 "@
     }
 }
-$recentHtml = "`n      <div class=""grid grid--3"" data-recent-grid>$cards`n      </div>`n`n      <div class=""list"" style=""margin-top:var(--sp-xl)"" data-recent-list>$items`n      </div>`n"
+$recentHtml = "`n      <div class=""grid grid--3"" data-recent-grid>$cards`n      </div>`n`n      <div class=""list"" style=""margin-top:var(--space-8)"" data-recent-list>$items`n      </div>`n"
 $homePath = Join-Path $root 'home.html'
 $homeHtml = Get-Content -Raw -Encoding UTF8 $homePath
 if ($homeHtml -match '#recent:start') {
