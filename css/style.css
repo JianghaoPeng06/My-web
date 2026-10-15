@@ -790,6 +790,14 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
   transition: transform .45s var(--e-out), box-shadow .45s var(--e-out);
 }
 .card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--e-out); }
+/* 透明底图片（2026-10-16，用户：透明底 PNG 不管是展示还是海报都要保持透明，能透过它看到背景）。
+   各种图框平时垫一层 Oat（--placeholder），是给「图还没加载出来 / 加载失败」时用的；
+   图加载好以后 main.js 给图框加 has-img、给图片加 is-loaded，这里把底色去掉 ——
+   不透明的 JPG 看起来没有任何变化，透明 PNG 的空白处就直接透出后面的页面。
+   纸边细线（::after）和漫画格子的压暗层是盖在图片上面的，照旧保留。 */
+.poster__frame.has-img, .card__media.has-img, .list__media.has-img, .fig__media.has-img,
+.chars__thumb.has-img, .cnode__clip.has-img { background: transparent; }
+.sr__thumb.is-loaded, .reader__strip img.is-loaded { background: transparent; }
 /* 纸边：盖在图片上面的一圈细线（图片本身不加任何滤镜，作品原样） */
 .card__media::after, .list__media::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;

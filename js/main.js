@@ -75,6 +75,18 @@
   document.addEventListener('error', function (e) {
     if (e.target && e.target.tagName === 'IMG') fixImg(e.target);
   }, true);
+  /* 透明底图片（2026-10-16，用户：PNG 的透明底被垫成了灰底，要能透过它看到背景）。
+     图框的 Oat 底色只在「图还没出来 / 加载失败」时垫着；图一加载好，就给图片加 is-loaded、给图框加 has-img，
+     CSS 把底色去掉（style.css「透明底图片」）。load 也不冒泡，同样在捕获阶段接；
+     main.js 跑起来之前就已经加载好的图，启动时补一遍（见文件末尾） */
+  function markImg(img) {
+    if (!img.naturalWidth) return;
+    img.classList.add('is-loaded');
+    if (img.parentNode && img.parentNode.classList) img.parentNode.classList.add('has-img');
+  }
+  document.addEventListener('load', function (e) {
+    if (e.target && e.target.tagName === 'IMG') markImg(e.target);
+  }, true);
 
   /* 每篇文章有自己的页面 articles/<slug>/（build.ps1 生成）。
      旧的 article.html?a=<slug> 还在，但只是个跳转页。 */
@@ -2478,6 +2490,9 @@
   patchDirLinks();
   /* main.js 是 defer，静态 HTML 里的图可能在它跑起来之前就已经失败过一次，
      那时捕获监听还没挂上 —— 这里补一遍。 */
-  $$('img').forEach(function (im) { if (im.complete && im.naturalWidth === 0) fixImg(im); });
+  $$('img').forEach(function (im) {
+    if (!im.complete) return;
+    if (im.naturalWidth === 0) fixImg(im); else markImg(im);
+  });
   document.documentElement.classList.add('js-on');
 })();
