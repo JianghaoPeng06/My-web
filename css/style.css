@@ -774,7 +774,9 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
   margin-inline: calc(var(--bleed) * var(--p, 0) * -1);
   border-radius: calc(var(--r-lg) * (1 - var(--pr, 0)));
 }
-.poster__frame img { width: 100%; height: 100%; object-fit: cover; }
+/* 海报可以是图片，也可以是视频（2026-10-16，用户要求「像 anthropic 那样，动画放完就静止」）：
+   assets/images 里有 poster.mp4 时，build.ps1 把这里换成 <video>，播一次、停在最后一帧（main.js 07a） */
+.poster__frame img, .poster__frame video { width: 100%; height: 100%; object-fit: cover; }
 .poster__cap { margin-top: var(--sp-sm); text-align: right; }
 
 /* ---------- 12 卡片（Figma 通用版式：1:1 图 → 标题 → 元信息）---------- */

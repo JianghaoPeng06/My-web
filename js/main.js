@@ -894,6 +894,38 @@
     }
   })();
 
+  /* ---------- 07a 首页海报是视频时：滚到眼前播一次，播完停在最后一帧 ----------
+     2026-10-16 用户要求「像 anthropic.com 那样，首页动画放完了就静止」。
+     assets/images 里放了 poster.mp4，build.ps1 就把海报换成 <video>（见 build.ps1「首页海报」）；
+     <video> 上的 poster 属性是那张静止图（poster.png，最好就是视频的最后一帧）。
+     · 平时：一打开就开始缓冲；海报露出一半时播放，只播一次（不循环），停在最后一帧。
+       开播前把静止图拿掉，否则观众会先看到完成的画面、再跳回空白从头画。
+     · 没有 JS、「减少动态效果」、静止档（省流量 / 小内存）：不下载视频，一直显示静止图。
+     · 浏览器不让自动播放（比如 iPhone 低电量模式）或视频加载失败：换回静止图。 */
+  (function posterVideo() {
+    var v = $('[data-poster-video]');
+    if (!v || reduce || LITE) return;
+    var still = v.getAttribute('poster');
+    function showStill() { if (still) v.setAttribute('poster', still); }
+    v.removeAttribute('poster');
+    v.muted = true;                       /* iOS 要求静音才能自动播放，属性和 attribute 都要有 */
+    v.preload = 'auto';
+    v.load();
+    v.addEventListener('loadeddata', function () { v.parentNode.classList.add('has-img'); });
+    v.addEventListener('error', showStill);
+    function play() {
+      var p = v.play();
+      if (p && p.catch) p.catch(showStill);
+    }
+    if (!('IntersectionObserver' in window)) return play();
+    var io = new IntersectionObserver(function (es) {
+      if (!es.some(function (e) { return e.isIntersecting; })) return;
+      io.disconnect();
+      play();
+    }, { threshold: 0.5 });
+    io.observe(v);
+  })();
+
   /* ---------- 07b 首页海报：滚动放大铺满 ----------
      照 anthropic.com 首页那张大图实测的节奏（1280×800 下）：
        区块顶部在视口约 30% 处开始，滚到接近顶栏时铺满，前快后慢（ease-out）；圆角比宽度先收完。

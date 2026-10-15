@@ -532,6 +532,16 @@ if ($posterRel) {
     $posterRel = 'assets/images/poster.png'
     $made++
 }
+# 海报也可以是视频（2026-10-16，用户要求「像 anthropic.com 那样，动画放完就静止」）：
+# assets/images 里有 poster.mp4（或 poster.webm）就用视频，上面挑出来的那张图当静止画面
+# （<video> 的 poster 属性：没 JS、减少动态效果、省流量、不能自动播放时显示它，最好就是视频最后一帧）。
+# 删掉视频文件再跑一次，就变回单张图片。播放逻辑在 main.js 07a。
+$VID_EXT   = @('.mp4', '.webm')
+$posterVid = ''
+foreach ($e in $VID_EXT) {
+    if (Test-Path (Join-Path $root ('assets\images\poster' + $e))) { $posterVid = 'assets/images/poster' + $e; break }
+}
+if ($posterVid) { Write-Host "首页海报：视频 $posterVid（静止画面 $posterRel）" } else { Write-Host "首页海报：图片 $posterRel" }
 Write-Host "占位图：新建 $made，保留 $kept；已换成真图 $real"
 
 # ---------- 2. 图片清单 ----------
@@ -753,9 +763,17 @@ Get-ChildItem $root -Recurse -Filter *.html |
     })
     # 手写在静态 HTML 里的旧文章链接（首页那几张卡）article.html?a=<slug> → articles/<slug>/
     $html = [regex]::Replace($html, '((?:\.\./)*)article\.html\?a=([A-Za-z0-9_-]+)', '$1articles/$2/')
-    # 首页海报不在 slug 体系里（assets/images/poster.*），单独换一次。
-    # 静态 HTML 里写的是哪个扩展名都行，一律对齐到上面挑出来的那张。
-    if ($posterRel) { $html = [regex]::Replace($html, 'assets/images/poster\.[A-Za-z0-9]+', $posterRel) }
+    # 首页海报不在 slug 体系里（assets/images/poster.*），单独换一次：
+    # 整个海报框里面重写成图片或视频（上面挑出来的那个），静态 HTML 里原来写的是什么都行。
+    if ($posterRel -and $html -match 'class="poster__frame') {
+        if ($posterVid) {
+            $media = '<video src="' + $posterVid + '" poster="' + $posterRel + '" muted playsinline preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true" width="1280" height="720" data-poster-video></video>'
+        } else {
+            $media = '<img src="' + $posterRel + '" alt="" role="presentation" width="1280" height="720">'
+        }
+        $html = [regex]::Replace($html, '(?s)(<div class="poster__frame[^"]*">\s*).*?(\s*</div>)',
+          { param($m) $m.Groups[1].Value + $media + $m.Groups[2].Value })
+    }
     # 图片清单必须排在 data.js 之前 —— data.js 生成 cover 路径时要读它
     if ($html -notmatch 'js/assets\.js') {
         $html = [regex]::Replace($html, '<script src="([^"]*)js/data\.js"></script>',
