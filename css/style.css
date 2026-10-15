@@ -532,63 +532,56 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
 .sr__empty { padding: 36px; text-align: center; color: var(--text-muted); font-size: var(--fs-small); }
 
 /* ---------- 10 Hero ---------- */
-.hero { position: relative; padding-block: 14px clamp(48px, 6vw, 96px); --hero-gap: clamp(28px, 4vw, 64px); }   /* 顶部 14px 之下先是留言板胶囊那一行（它真的占位，下面整块跟着往下排）；没胶囊之前是 clamp(40px, 6vw, 88px) */
+.hero { position: relative; padding-block: clamp(28px, 3.2vw, 48px) clamp(48px, 6vw, 96px); --hero-gap: clamp(28px, 4vw, 64px); }   /* 2026-10-16 留言板胶囊挪到按钮下面，顶上空出来了（用户：「上面空空的」），整块往上提：顶部留白 clamp(40px, 6vw, 88px) → clamp(28px, 3.2vw, 48px) */
 .hero__inner {
   display: grid; grid-template-columns: 1.05fr .95fr;
   align-items: center; gap: var(--hero-gap);
 }
 .hero__title {
   display: flex; flex-direction: column;
-  /* 美观例外：规范 Display 是 48→80，但这三个词是全站的招牌，旁边还有一颗约 420px 的星体，
-     80px 时字显得单薄、首屏留白过多。放大到 48→104（1280 屏约 89px），手机仍是 48。 */
-  font-size: clamp(3rem, 1.9286rem + 4.5714vw, 6.5rem); line-height: 1.05; letter-spacing: -.01em; font-weight: 700;
+  /* 2026-10-16 改回 v3.1.1 的样子（用户：现在的大小不协调，改回老版本）：老字体（和「JasperPeng」字标同一串 --font-brand，
+     Windows 上是微软雅黑的英文字形、Mac 上是 SF）、56→116 的大字、紧字距 −5.5%、行距 .92、600 粗。
+     越过规范 Display 48→80 / 700 —— 这三个词是全站的招牌，紧凑的大字和旁边的史莱姆球更协调。 */
+  font-family: var(--font-brand);
+  font-size: clamp(56px, 8.6vw, 116px); line-height: .92; letter-spacing: -.055em; font-weight: 600;
 }
 .hero__title span:nth-child(2) { margin-left: .26em; }
 .hero__title span:nth-child(3) { margin-left: .52em; }
 .hero__lede { margin-top: clamp(24px, 2.6vw, 36px); max-width: 46ch; }
-.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(24px, 2.8vw, 36px); }
+.hero__actions {
+  /* 2026-10-16：两颗按钮一行、留言板胶囊在下面一行横跨两颗按钮 —— 整组宽度 = 两颗按钮合起来的宽度（fit-content），左右边都对齐 */
+  display: grid; grid-template-columns: auto auto; gap: 12px; width: fit-content;
+  margin-top: clamp(24px, 2.8vw, 36px);
+}
 
 /* 星体 —— Figma：420 正圆 / #4BB6EC / 透明度 0.1 / 2px 模糊
    球内四团彩光被圆形裁住，光在球里流动 */
 .hero__visual { display: grid; place-items: center; width: 100%; aspect-ratio: 1; max-height: min(64vh, 560px); }
 
-/* 留言板入口（2026-10-05）：只在首页，紧贴顶栏下方悬浮的 iOS 式玻璃胶囊「留言板（限时）」。
-   位置：顶边离顶栏 14px，左边缘对齐顶栏「JasperPeng」标志的左边线（两者都在版心左边线上），电脑手机一样。
-   （试过对准史莱姆球那一栏的中线、手机居中 —— 用户要靠左对齐标志）
-   玻璃 = 半透明底 + 背景模糊提饱和 + 顶边一道高光 + 很淡的投影；按下去轻轻一缩（iOS 的按压反馈）。
-   「（限时）」只是字，不会自己消失。
-   2026-10-06 改成真正占一行（原来是 position: absolute 浮在 hero 上、靠加大 hero 顶部留白躲开内容 ——
-   用户反馈有遮挡，要「整个网页往下移给它留位置」）。现在它在文档流里，下面的文字和史莱姆球整块跟着往下排；
-   和下面「Personal Archive」的距离 = 原来的「留白 − 14 − 42」，所以各宽度下位置和以前一样 */
+/* 留言板入口（2026-10-05）：只在首页的胶囊「留言板（限时）」。
+   位置：2026-10-16 起在 Explore Works / Design Philosophy 两颗按钮下面（用户指定），放在 .hero__actions 里横跨两列：和两颗按钮合起来一样宽、和按钮一样高（48）；页脚「联系」里也有一项「留言板」。
+   以前的位置：先是 position: absolute 浮在顶栏下方（有遮挡），10-06 改成在顶栏下方真正占一行，10-16 挪到现在这里。
+   颜色（2026-10-16，用户：按设计规范改颜色、用主题色，让它明显一点）：不再是玻璃，改成茶芽 ——
+   平时 = 茶芽浅底（100 底 + 700 字 + 400 细边），和上面一黑一白两颗按钮一眼分开，又符合规范「状态 = 茶芽浅底」；
+   悬停 = 浅底加深一档、细边变实（试过茶芽 600 实底白字，用户不喜欢），按下去轻轻一缩。深色模式跟着 --brand-soft 那套自动换。
+   「（限时）」只是字，不会自己消失。 */
 .board-pill {
   position: relative; z-index: 3;
-  width: fit-content; margin-bottom: clamp(20px, calc(8vw - 56px), 48px);
-  transform-origin: left center;
-  display: flex; align-items: center; gap: 9px;
-  height: 42px; padding: 0 16px 0 14px; border-radius: var(--r-pill);
-  color: var(--text); font-size: 14px; font-weight: 500; letter-spacing: .01em; white-space: nowrap;
-  background: linear-gradient(135deg, rgba(255,255,255,.62), rgba(255,255,255,.22));
-  border: 1px solid rgba(255,255,255,.7);
-  backdrop-filter: blur(16px) saturate(190%); -webkit-backdrop-filter: blur(16px) saturate(190%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.95),          /* 顶边高光 */
-    inset 0 -1px 1px rgba(255,255,255,.35),       /* 底边回光 */
-    0 8px 24px rgba(30,40,80,.14), 0 1px 3px rgba(30,40,80,.1);
-  transition: transform .4s var(--e-out), box-shadow .3s var(--e-io), background .3s var(--e-io);
-  animation: pillIn .8s var(--e-out) backwards .25s;   /* 只管开始前；用 both 的话动画结束后会一直按住 transform，悬停上浮和按压都失效 */
+  grid-column: 1 / -1;                                  /* 横跨两颗按钮 */
+  transform-origin: center;
+  display: flex; align-items: center; justify-content: center; gap: 10px;   /* 内容居中，和上面两颗按钮一样 */
+  height: 48px; padding-inline: 28px; border-radius: var(--r-pill);       /* 和首屏按钮同高（48）、同左右留白 */
+  color: var(--brand-soft-text); font-size: var(--fs-ui); font-weight: 500; letter-spacing: .01em; white-space: nowrap;
+  background: var(--brand-soft);
+  border: 1px solid rgba(143, 151, 85, .45);            /* 茶芽 400 · 45% */
+  transition: transform .4s var(--e-out), background var(--t-fast) var(--e-io), color var(--t-fast) var(--e-io), border-color var(--t-fast) var(--e-io);
 }
-/* 左上角一团柔光：玻璃表面的反光 */
-.board-pill::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  background: radial-gradient(120% 140% at 18% -20%, rgba(255,255,255,.75), transparent 55%);
-  mix-blend-mode: soft-light;
-}
-.board-pill > * { position: relative; }
 .board-pill__dot {
-  width: 7px; height: 7px; border-radius: 50%; background: #8F9755;           /* 茶芽 400：「正在开放」（原来是 iOS 的绿，换成品牌色） */
-  box-shadow: 0 0 0 3px rgba(143,151,85,.22); animation: pillDot 2.4s var(--e-io) infinite;
+  width: 7px; height: 7px; border-radius: 50%; background: #7C833D;           /* 茶芽 500：「正在开放」，在浅底上比 400 更看得清 */
+  box-shadow: 0 0 0 3px rgba(143,151,85,.28); animation: pillDot 2.4s var(--e-io) infinite;
+  transition: background var(--t-fast) var(--e-io);
 }
-.board-pill em { font-style: normal; color: var(--text-muted); }
+.board-pill em { font-style: normal; color: inherit; opacity: .72; }
 /* 「留言板」后面的 👋（2026-10-06，用户：加个图标让它更容易被注意到）。
    试过 💬：Windows 上是一个很淡的浅灰气泡，几乎看不见；👋 在各平台都是醒目的黄色，招手也正合「来打个招呼」。
    每 5 秒招两下手，悬停时再招一次；绕手腕转（transform-origin 在右下）。只动这一个小字的 transform，不带 filter，很省。
@@ -613,27 +606,17 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
   50% { transform: rotate(12deg) scale(1.12); }
   75% { transform: rotate(-5deg); }
 }
-.board-pill .arr { width: 14px; opacity: .55; transition: transform var(--t) var(--e-out), opacity var(--t-fast); }
+.board-pill .arr { width: 14px; opacity: .7; transition: transform var(--t) var(--e-out), opacity var(--t-fast); }
 @media (hover: hover) and (pointer: fine) {
-  .board-pill:hover {
-    transform: translateY(-2px);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.35),
-                0 14px 32px rgba(30,40,80,.18), 0 2px 6px rgba(30,40,80,.1);
-  }
-  .board-pill:hover .arr { transform: translateX(3px); opacity: .85; }
+  .board-pill:hover { background: #DCE1AD; border-color: #8F9755; }   /* 悬停 = 浅底加深一档（茶芽 100 → 200）、细边变实（400），字不变 —— 10-16 试过茶芽 600 实底白字，用户不喜欢 */
+  .board-pill:hover .arr { transform: translateX(4px); opacity: 1; }
 }
-.board-pill:active { transform: scale(.96); transition-duration: .12s; }
+.board-pill:active { transform: scale(.965); transition-duration: .12s; }
 .board-pill:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
-@keyframes pillIn { from { opacity: 0; transform: translateY(-8px) scale(.96); } to { opacity: 1; transform: none; } }
-@keyframes pillDot { 0%, 100% { box-shadow: 0 0 0 3px rgba(143,151,85,.22); } 50% { box-shadow: 0 0 0 6px rgba(143,151,85,.06); } }
+@keyframes pillDot { 0%, 100% { box-shadow: 0 0 0 3px rgba(143,151,85,.28); } 50% { box-shadow: 0 0 0 6px rgba(143,151,85,.08); } }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .board-pill {
-    background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.05));
-    border-color: rgba(255,255,255,.2);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.32), inset 0 -1px 1px rgba(255,255,255,.08),
-                0 8px 24px rgba(0,0,0,.45), 0 1px 3px rgba(0,0,0,.3);
-  }
-  :root:not([data-theme="light"]) .board-pill::before { background: radial-gradient(120% 140% at 18% -20%, rgba(255,255,255,.28), transparent 55%); mix-blend-mode: normal; }
+  :root:not([data-theme="light"]) .board-pill__dot { background: #BEC487; }   /* 深色：茶芽 300，在深底上更亮 */
+  @media (hover: hover) and (pointer: fine) { :root:not([data-theme="light"]) .board-pill:hover { background: rgba(143, 151, 85, .3); } }   /* 深色悬停：茶芽 18% → 30% */
 }
 /* 外晕 inset -12%，总尺寸是星体的 124%。星体按 80% 收，
    让外晕正好落在列内，不会溢出视口。 */
@@ -1393,6 +1376,16 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .msg { max-width: 760px; }
 /* 标题区和留言区共用一条居中的 760 窄栏（2026-10-06 用户：电脑上不要靠左）。文字在栏里仍左对齐、两块左缘对齐 —— 同文章页的做法 */
 .wrap--msg { width: min(100% - var(--gutter) * 2, 760px); }
+/* 导语下面的注意提示「注意：使用 QQ 邮箱时可显示对应头像」（2026-10-16）。
+   设计规范 06「状态提示 · 不只靠颜色」：标签样式 —— 24 高胶囊、12 号字 500、+2% 字距、纸色次级底、正文色字，
+   前面一律带图标（线描圆圈感叹号，1.5 粗圆头），颜色只做辅助。手机上字长了会折行，所以高度用 min-height */
+.msg-note {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 24px; padding: 3px 12px; margin-top: var(--sp-sm);
+  border-radius: var(--r-pill); background: var(--bg-2); color: var(--text-2);
+  font-family: var(--font); font-size: var(--fs-label); font-weight: 500; letter-spacing: .02em; line-height: 1.4;
+}
+.msg-note__ico { width: 14px; height: 14px; flex: none; }
 .msg__closed {
   display: grid; justify-items: center; gap: 10px; text-align: center;
   padding: clamp(48px, 7vw, 88px) var(--sp-md);
@@ -1838,11 +1831,12 @@ html.js-on.is-mid .grid > .reveal:not(.is-in), html.js-on.is-mid .list > .reveal
   .lang__btn { height: 36px; padding-inline: 11px; gap: 6px; }
   .sec-head { flex-direction: column; align-items: flex-start; gap: var(--sp-md); }
   .card__title, .list__title { font-size: var(--fs-ui); }   /* 美观例外：手机上卡片两列、每张只有约 160px 宽，列表行旁边还有缩略图，20px 粗体会折成三行；退一档到 UI 16 */
-  .hero__actions .btn { flex: 1 1 100%; }
+  .hero__actions { width: auto; grid-template-columns: 1fr; }   /* 手机：两颗按钮和留言板胶囊都占满一行，上下叠 */
   .to-top { right: 16px; bottom: 16px; }
   .poster__frame { aspect-ratio: 4 / 3; }
 }
 @media (max-width: 430px) {
+  .hero__title { font-size: 17vw; }   /* 手机：和 v3.1.1 一样按屏宽走（375 屏约 64px） */
   .hero__title span:nth-child(2) { margin-left: .18em; }
   .hero__title span:nth-child(3) { margin-left: .36em; }
   .list__link { grid-template-columns: 96px 1fr; gap: var(--sp-sm); }
@@ -1860,7 +1854,6 @@ html.js-on.is-mid .grid > .reveal:not(.is-in), html.js-on.is-mid .list > .reveal
 .is-mid .star__body i:nth-child(n+4) { display: none; }
 .is-mid .star__body::before { display: none; }
 .is-mid .hdr { backdrop-filter: saturate(160%) blur(12px); -webkit-backdrop-filter: saturate(160%) blur(12px); }
-.is-mid .board-pill { backdrop-filter: blur(10px) saturate(170%); -webkit-backdrop-filter: blur(10px) saturate(170%); }
 
 /* 静止 .is-lite（开了省流量 / 内存 ≤ 2GB）：
    一直在动的装饰全部停下来，画面停在静止的样子；拖动、点击、史莱姆球的按拖照常 */
@@ -1868,7 +1861,7 @@ html.js-on.is-mid .grid > .reveal:not(.is-in), html.js-on.is-mid .list > .reveal
 .is-lite .board-pill__dot, .is-lite .board-pill__emoji { animation: none; }
 .is-lite .cnode.is-sel .cnode__edge { animation: none; opacity: 1; }
 .is-lite .star__body i, .is-lite .star__body, .is-lite .star__glow, .is-lite .star__gloss, .is-lite .star__body::before, .is-lite .star__body::after { animation: none !important; }
-.is-lite .hdr, .is-lite .comics .mnav, .is-lite .board-pill { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.is-lite .hdr, .is-lite .comics .mnav { backdrop-filter: none; -webkit-backdrop-filter: none; }
 .is-lite .hdr:not(.is-menu-open) { background: color-mix(in srgb, var(--bg) 94%, transparent); }
 .is-lite .comics .hdr:not(.is-menu-open) { background: linear-gradient(180deg, rgba(4,0,22,.62), rgba(4,0,22,0)); }
 

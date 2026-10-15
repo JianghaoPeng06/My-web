@@ -169,6 +169,7 @@
       nfTitle:'这个页面不存在', nfDesc:'链接可能已经失效，或者地址输错了。', nfSearch:'搜索', share:'分享', copied:'链接已复制', author:'作者',
       comicsHint:'拖动浏览，点开章节开始阅读', comicsRead:'开始阅读', comicsBack:'回到章节地图', comicsNext:'下一话', comicsEnd:'本话完', comicsEmpty:'这一话的页面还没有上传。', comicsMissing:'没有找到这一话',
       msgTitle:'留言板', msgLede:'想说什么都可以，在这里留下你的话。', msgSoon:'留言板即将开放', msgSoonDesc:'后台还在搭建中。想说什么，可以先发邮件给我。', msgMail:'发邮件', msgFail:'留言板暂时连不上', msgFailDesc:'可能是网络问题，稍后再试；着急的话可以先发邮件给我。',
+      msgNote:'注意：使用 QQ 邮箱时可显示对应头像',
       boardLimited:'（限时）' },
     'zh-Hant': { skip:'跳到主要內容', archive:'檔案', archiveTitle:'最近更新', posterCap:'新的網站上線！', home:'首頁', toHome:'回到首頁', more:'查看更多', reading:'繼續閱讀', otherIn:'的其他文章',
       count:' 篇內容', soon:'尚未開放', search:'搜尋文章、作品、角色…', noResult:'找不到相關內容',
@@ -179,6 +180,7 @@
       nfTitle:'這個頁面不存在', nfDesc:'連結可能已經失效，或者網址輸入錯誤。', nfSearch:'搜尋', share:'分享', copied:'連結已複製', author:'作者',
       comicsHint:'拖動瀏覽，點開章節開始閱讀', comicsRead:'開始閱讀', comicsBack:'回到章節地圖', comicsNext:'下一話', comicsEnd:'本話完', comicsEmpty:'這一話的頁面還沒有上傳。', comicsMissing:'找不到這一話',
       msgTitle:'留言板', msgLede:'想說什麼都可以，在這裡留下你的話。', msgSoon:'留言板即將開放', msgSoonDesc:'後台還在搭建中。想說什麼，可以先寄信給我。', msgMail:'寄信', msgFail:'留言板暫時連不上', msgFailDesc:'可能是網路問題，稍後再試；著急的話可以先寄信給我。',
+      msgNote:'注意：使用 QQ 信箱時可顯示對應頭像',
       boardLimited:'（限時）' },
     en: { skip:'Skip to content', archive:'Archive', archiveTitle:'Recently published', posterCap:'New website launched!', home:'Home', toHome:'Back to home', more:'View more', reading:'Keep reading', otherIn:' — more',
       count:' items', soon:'Coming soon', search:'Search articles, works, characters…', noResult:'No results found',
@@ -189,6 +191,7 @@
       nfTitle:'This page doesn’t exist', nfDesc:'The link may have expired, or the address was mistyped.', nfSearch:'Search', share:'Share', copied:'Link copied', author:'Author',
       comicsHint:'Drag to explore · open a chapter to start reading', comicsRead:'Start reading', comicsBack:'Back to the chapter map', comicsNext:'Next', comicsEnd:'End of chapter', comicsEmpty:'The pages for this chapter haven’t been uploaded yet.', comicsMissing:'Chapter not found',
       msgTitle:'Message Board', msgLede:'Say anything you like — leave a message here.', msgSoon:'The message board is opening soon', msgSoonDesc:'It’s still being set up. In the meantime, feel free to send me an email.', msgMail:'Send an email', msgFail:'Can’t reach the message board right now', msgFailDesc:'It may be a network issue — please try again later, or send me an email.',
+      msgNote:'Note: comment with a QQ Mail address and your QQ avatar will be shown',
       boardLimited:' (limited)' },
     ja: { skip:'本文へスキップ', archive:'アーカイブ', archiveTitle:'最近の更新', posterCap:'新サイトが公開されました！', home:'ホーム', toHome:'ホームへ戻る', more:'もっと見る', reading:'続けて読む', otherIn:'の他の記事',
       count:' 件', soon:'準備中', search:'記事・作品・キャラクターを検索…', noResult:'該当する内容が見つかりません',
@@ -199,6 +202,7 @@
       nfTitle:'このページは存在しません', nfDesc:'リンクが無効になったか、アドレスが間違っている可能性があります。', nfSearch:'検索', share:'共有', copied:'リンクをコピーしました', author:'著者',
       comicsHint:'ドラッグで移動、章を開いて読む', comicsRead:'読む', comicsBack:'チャプターマップへ', comicsNext:'次の話', comicsEnd:'この話はここまで', comicsEmpty:'この話のページはまだアップロードされていません。', comicsMissing:'この話が見つかりません',
       msgTitle:'メッセージボード', msgLede:'なんでも気軽に、ここにメッセージを残してください。', msgSoon:'メッセージボードはまもなく公開', msgSoonDesc:'ただいま準備中です。それまではメールでどうぞ。', msgMail:'メールを送る', msgFail:'メッセージボードに接続できません', msgFailDesc:'ネットワークの問題かもしれません。時間をおいて再度お試しいただくか、メールでどうぞ。',
+      msgNote:'ご注意：QQ メールを使うと、QQ のアイコンが表示されます',
       boardLimited:'（期間限定）' }
   };
   /* 没手动选过语言的访客，跟随浏览器 / 系统的语言设置（2026-10-15，用户要求「首先跟随用户，其次用户还能在右下角改」）。
@@ -1102,14 +1106,22 @@
     try { if (sessionStorage.getItem('jp-hero-ink')) return; sessionStorage.setItem('jp-hero-ink', '1'); } catch (e) { return; }
     var lines = $$('span', title);
     if (!lines.length) return;
-    inkPlay(lines, 220, 1500, 120);   /* 一行一行凝出来 */
-    /* 导语和按钮随后落定（规范「纸页落定」：位移 + 一点前倾） */
-    [[$('.hero__lede'), 760], [$('.hero__actions'), 900], [$('.board-pill'), 1040]].forEach(function (p) {
-      if (!p[0]) return;
-      p[0].animate([
+    /* 从扉页点 Explore 进来时，前 1 秒是「按钮变窗、放大铺满」的转场（home.html 的 pagereveal）。
+       墨迹再同时开演，两段重活抢同一段时间，看起来一顿一顿的（2026-10-16 用户：动画不流畅）。
+       所以这种情况整体晚 0.45 秒：窗快铺满时字才开始凝。 */
+    var late = 0;
+    try { var cr = JSON.parse(sessionStorage.getItem('jp-cover-reveal')); if (cr && Date.now() - cr.t < 8000) late = 450; } catch (e) {}
+    inkPlay(lines, 220, 1500, 120 + late);   /* 一行一行凝出来 */
+    /* 导语、两颗按钮、留言板胶囊随后依次落定（规范「纸页落定」：位移 + 一点前倾）。
+       每个元素只挂一段动画：以前是给整组 .hero__actions 挂一段、胶囊自己再挂一段，
+       胶囊挪进按钮组以后（10-16）两段叠在一起、时间又错开，胶囊就晃。 */
+    var fall = [$('.hero__lede')].concat($$('.hero__actions > *'));
+    fall.forEach(function (el, i) {
+      if (!el) return;
+      el.animate([
         { opacity: 0, transform: 'perspective(900px) translateY(' + (MID ? 10 : 18) + 'px) rotateX(' + (MID ? 3 : 6) + 'deg)' },
         { opacity: 1, transform: 'none' }
-      ], { duration: 1000, delay: p[1], easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' });
+      ], { duration: 1000, delay: 760 + late + (i ? 140 + (i - 1) * 70 : 0), easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' });
     });
   }
 
