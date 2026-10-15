@@ -40,7 +40,7 @@
   /* 品牌色的显示逻辑（2026-10-15 第二版，用户：Explore Works 原本黑色、鼠标悬停变成芽色）：
        静止 = 墨与纸 —— 按钮、眉题、链接下划线都是墨色或灰；
        触碰 = 茶芽 —— 悬停 / 按下时出现：按钮变茶芽底、标题和链接变茶芽字、导航下划线用茶芽画出来；
-       状态 = 茶芽浅底 —— 当前分类、置顶、正在开放的小圆点、当前语言；
+       状态 = 茶芽浅底 —— 当前分类、置顶、当前语言；
        品牌记号 = 茶芽 —— 选中文字、焦点光圈、Logo 悬停、引文竖线、墨迹动效。 */
   --brand-btn:       #6B7044;   /* 茶芽 600 · 带白字的按钮 5.2:1 */
   --brand-btn-hover: #545936;   /* 茶芽 700 */
@@ -576,11 +576,6 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
   border: 1px solid rgba(143, 151, 85, .45);            /* 茶芽 400 · 45% */
   transition: transform .4s var(--e-out), background var(--t-fast) var(--e-io), color var(--t-fast) var(--e-io), border-color var(--t-fast) var(--e-io);
 }
-.board-pill__dot {
-  width: 7px; height: 7px; border-radius: 50%; background: #7C833D;           /* 茶芽 500：「正在开放」，在浅底上比 400 更看得清 */
-  box-shadow: 0 0 0 3px rgba(143,151,85,.28); animation: pillDot 2.4s var(--e-io) infinite;
-  transition: background var(--t-fast) var(--e-io);
-}
 .board-pill em { font-style: normal; color: inherit; opacity: .72; }
 /* 「留言板」后面的 👋（2026-10-06，用户：加个图标让它更容易被注意到）。
    试过 💬：Windows 上是一个很淡的浅灰气泡，几乎看不见；👋 在各平台都是醒目的黄色，招手也正合「来打个招呼」。
@@ -613,9 +608,7 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
 }
 .board-pill:active { transform: scale(.965); transition-duration: .12s; }
 .board-pill:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
-@keyframes pillDot { 0%, 100% { box-shadow: 0 0 0 3px rgba(143,151,85,.28); } 50% { box-shadow: 0 0 0 6px rgba(143,151,85,.08); } }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .board-pill__dot { background: #BEC487; }   /* 深色：茶芽 300，在深底上更亮 */
   @media (hover: hover) and (pointer: fine) { :root:not([data-theme="light"]) .board-pill:hover { background: rgba(143, 151, 85, .3); } }   /* 深色悬停：茶芽 18% → 30% */
 }
 /* 外晕 inset -12%，总尺寸是星体的 124%。星体按 80% 收，
@@ -1858,7 +1851,7 @@ html.js-on.is-mid .grid > .reveal:not(.is-in), html.js-on.is-mid .list > .reveal
 /* 静止 .is-lite（开了省流量 / 内存 ≤ 2GB）：
    一直在动的装饰全部停下来，画面停在静止的样子；拖动、点击、史莱姆球的按拖照常 */
 .is-lite .cnode__sheen, .is-lite .cmap__flow, .is-lite .cmap__hint i,
-.is-lite .board-pill__dot, .is-lite .board-pill__emoji { animation: none; }
+.is-lite .board-pill__emoji { animation: none; }
 .is-lite .cnode.is-sel .cnode__edge { animation: none; opacity: 1; }
 .is-lite .star__body i, .is-lite .star__body, .is-lite .star__glow, .is-lite .star__gloss, .is-lite .star__body::before, .is-lite .star__body::after { animation: none !important; }
 .is-lite .hdr, .is-lite .comics .mnav { backdrop-filter: none; -webkit-backdrop-filter: none; }
