@@ -75,7 +75,7 @@
     font-weight: 500; letter-spacing: .22em; text-transform: uppercase; animation: cin .9s var(--e-out) .16s both; }
   .cover__enter { margin-top: clamp(36px, 5vw, 56px); animation: cin .9s var(--e-out) .24s both; }
   /* 最底下一行：左边版权 + 版本号，右边语言切换 —— 和其他页面页脚最底下那一行一样（2026-10-15）。
-     语言选择存在 localStorage 'jp-lang'，进到首页就按它显示；扉页本身的字是英文，不跟着换 */
+     语言默认跟随浏览器设置；手动选过的存在 localStorage 'jp-lang'，进到首页就按它显示；扉页本身的字是英文，不跟着换 */
   .cover__bar { position: relative; z-index: 2; width: 100%; padding-inline: var(--gutter);
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
     animation: cin .9s var(--e-out) .36s both; }
@@ -111,7 +111,7 @@
   </div>
 
   <div class="cover__bar">
-    <p class="cover__foot">JasperPeng©2026<span class="ftr__ver" data-version>v3.1.1</span></p>
+    <p class="cover__foot">JasperPeng©2026<span class="ftr__ver" data-version>v4.1.0</span></p>
     <div class="lang" data-lang>
       <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.75"/><path d="M3.25 12h17.5M12 3.25c4.8 5.5 4.8 12.1 0 17.5-4.8-5.4-4.8-12 0-17.5Z"/></svg>
@@ -174,8 +174,21 @@
     var box = document.querySelector('[data-lang]');
     if (!box) return;
     var btn = box.querySelector('[data-lang-btn]'), label = box.querySelector('[data-lang-label]'), menu = box.querySelector('[data-lang-menu]');
-    var lang = 'zh-Hans';
-    try { lang = localStorage.getItem('jp-lang') || lang; } catch (e) {}
+    /* 没手动选过的访客跟随浏览器语言，规则和 main.js 的 browserLang() 一样（两处要一起改） */
+    function browserLang() {
+      var list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+      for (var i = 0; i < list.length; i++) {
+        var l = String(list[i]).toLowerCase();
+        if (/^zh-(hant|tw|hk|mo)\b/.test(l)) return 'zh-Hant';
+        if (/^zh\b/.test(l)) return 'zh-Hans';
+        if (/^ja\b/.test(l)) return 'ja';
+        if (/^en\b/.test(l)) return 'en';
+      }
+      return 'en';
+    }
+    var lang = '';
+    try { lang = localStorage.getItem('jp-lang') || ''; } catch (e) {}
+    if (!LANGS.some(function (l) { return l.code === lang; })) lang = browserLang();
     menu.innerHTML = LANGS.map(function (l) {
       return '<li><button type="button" role="option" data-code="' + l.code + '">' + l.label + '</button></li>';
     }).join('');

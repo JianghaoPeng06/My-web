@@ -1771,7 +1771,10 @@ html.js-on.is-mid .grid > .reveal:not(.is-in), html.js-on.is-mid .list > .reveal
      2. main.js 的 body.is-exiting 淡出：点链接后先等 240ms 再真正跳转。
         不支持视图过渡的浏览器（用户的手机）走的就是这条，等于每次点击白等四分之一秒 —— 「卡」。
    没有过渡 = 点了立刻走，是最快也最稳的观感。要加回来的话，
-   两层必须同时改：CSS 这段和 main.js 的 pageTransition。 */
+   两层必须同时改：CSS 这段和 main.js 的 pageTransition。
+   唯一的例外（2026-10-15）：扉页点 Explore → 首页。只有 index.html 和 home.html 各自在 <head> 里声明了
+   @view-transition，动画由 home.html 的 pagereveal 自己画（按钮变成一扇窗、放大铺满）；
+   其他页面没声明，所以它们之间照旧点了立刻走。首页首屏是静态 HTML，不会出现上面说的「先闪空白」。 */
 
 /* ---------- 21 响应式 ----------
    移动端重新设计层级，不是把桌面端等比缩小 */

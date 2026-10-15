@@ -201,9 +201,24 @@
       msgTitle:'メッセージボード', msgLede:'なんでも気軽に、ここにメッセージを残してください。', msgSoon:'メッセージボードはまもなく公開', msgSoonDesc:'ただいま準備中です。それまではメールでどうぞ。', msgMail:'メールを送る', msgFail:'メッセージボードに接続できません', msgFailDesc:'ネットワークの問題かもしれません。時間をおいて再度お試しいただくか、メールでどうぞ。',
       boardLimited:'（期間限定）' }
   };
-  var LANG = 'zh-Hans';
-  try { LANG = localStorage.getItem('jp-lang') || 'zh-Hans'; } catch (e) {}
-  if (!I18N[LANG]) LANG = 'zh-Hans';
+  /* 没手动选过语言的访客，跟随浏览器 / 系统的语言设置（2026-10-15，用户要求「首先跟随用户，其次用户还能在右下角改」）。
+     按访客偏好的语言顺序，找第一个网站有的：繁体看 Hant 标记或地区（台湾、香港、澳门），其余中文是简体；
+     四种都不是的（比如法语、韩语）显示英文 —— 比中文更可能看得懂。
+     在右下角手动选过的存在 localStorage 'jp-lang'，以手动选的为准。扉页 index.html 里有同样一段，两处要一起改。 */
+  function browserLang() {
+    var list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+    for (var i = 0; i < list.length; i++) {
+      var l = String(list[i]).toLowerCase();
+      if (/^zh-(hant|tw|hk|mo)\b/.test(l)) return 'zh-Hant';
+      if (/^zh\b/.test(l)) return 'zh-Hans';
+      if (/^ja\b/.test(l)) return 'ja';
+      if (/^en\b/.test(l)) return 'en';
+    }
+    return 'en';
+  }
+  var LANG = '';
+  try { LANG = localStorage.getItem('jp-lang') || ''; } catch (e) {}
+  if (!I18N[LANG]) LANG = browserLang();
   function t(k) { return (I18N[LANG] && I18N[LANG][k]) || I18N['zh-Hans'][k] || k; }
 
   /* ---------- 多语言字段取值 ----------

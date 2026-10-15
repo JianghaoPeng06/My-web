@@ -35,7 +35,7 @@
   /* 网站版本号 —— 显示在每页页脚「JasperPeng©2026」后面。
      由站长自己决定什么时候改、改成多少；改完保存、刷新即可，
      再双击「刷新图片.cmd」把它写进静态页面（忘了也不要紧，页面打开时会自动对上）。 */
-  var VERSION = 'v3.1.1';
+  var VERSION = 'v4.1.0';
 
   /* 留言板（2026-10-05）。入口是首页史莱姆球上方那枚玻璃胶囊「留言板（限时）」，点进去是 messages/。
      「限时」只是写在胶囊上的字，不会自己消失 —— 站长哪天不想要了，再把胶囊和页面一起删掉。
@@ -707,7 +707,7 @@
 
   /* ===== Characters · OC ===== */
   add({ slug: 'strawberry-sheet', section: 'characters', cat: 'oc', date: '2026-08-18', read: 5, weight: 5,
-    title: L('草莓酱：七版之后才立住的角色', '草莓醬：七版之後才立住的角色',
+    title: L('草莓酱：七版之后才立住的角色', '草莓酱：七版之後才立住的角色',
              '草莓酱: a character that only held on the seventh try', '草莓酱：七版目でようやく立ったキャラ'),
     lede:  L('前六版都太好看了，好看到没有性格。',
              '前六版都太好看了，好看到沒有性格。',
@@ -809,9 +809,9 @@
   /* ===== About · Resources ===== */
   add({ slug: 'rainbow-picturebook', section: 'about', cat: 'resources', date: '2026-08-18', read: 5, weight: 4,
     title: L('【彩虹绘本】首个 OC 设定集确认！草莓酱三视图资源上新。',
-             '【彩虹繪本】首個 OC 設定集確認！草莓醬三視圖資源上新。',
-             '[Rainbow Picturebook] First OC guidebook confirmed — 草莓酱 turnaround sheets now available.',
-             '【虹の絵本】初のOC設定資料集が確定！草莓酱の三面図を公開。'),
+             '【彩虹绘本】首個 OC 設定集確認！草莓酱三視圖資源上新。',
+             '[彩虹绘本] First OC guidebook confirmed — 草莓酱 turnaround sheets now available.',
+             '【彩虹绘本】初のOC設定資料集が確定！草莓酱の三面図を公開。'),
     lede:  L('第一本设定集的内容、规格与获取方式。',
              '第一本設定集的內容、規格與取得方式。',
              'What the first guidebook contains, its specifications, and how to get it.',
