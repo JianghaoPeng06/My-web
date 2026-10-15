@@ -160,7 +160,7 @@
     { code: 'ja',      label: '日本語 日本',            html: 'ja' }
   ];
   var I18N = {
-    'zh-Hans': { skip:'跳到主要内容', archive:'档案', archiveTitle:'最近更新', posterCap:'新的网页上线！', home:'主页', toHome:'回到首页', more:'查看更多', reading:'继续阅读', otherIn:' 的其他文章',
+    'zh-Hans': { skip:'跳到主要内容', archive:'档案', archiveTitle:'最近更新', posterCap:'新的网页上线！', home:'主页', toHome:'回到首页', more:'查看更多', reading:'继续阅读', otherIn:'的其他文章',
       count:' 篇内容', soon:'暂未开放', search:'搜索文章、作品、角色…', noResult:'没有找到相关内容',
       bodyOriginal:'正文保持写作时的原文，未作翻译。', notFound:'没有找到这篇文章', notFoundDesc:'链接可能已经失效，或者这篇内容还没有发布。',
       charsReading:'角色相关文章', emptyTitle:'这个分类还没有内容', emptyDesc:'先去看看其他板块，或者回到首页。',
@@ -170,7 +170,7 @@
       comicsHint:'拖动浏览，点开章节开始阅读', comicsRead:'开始阅读', comicsBack:'回到章节地图', comicsNext:'下一话', comicsEnd:'本话完', comicsEmpty:'这一话的页面还没有上传。', comicsMissing:'没有找到这一话',
       msgTitle:'留言板', msgLede:'想说什么都可以，在这里留下你的话。', msgSoon:'留言板即将开放', msgSoonDesc:'后台还在搭建中。想说什么，可以先发邮件给我。', msgMail:'发邮件', msgFail:'留言板暂时连不上', msgFailDesc:'可能是网络问题，稍后再试；着急的话可以先发邮件给我。',
       boardLimited:'（限时）' },
-    'zh-Hant': { skip:'跳到主要內容', archive:'檔案', archiveTitle:'最近更新', posterCap:'新的網站上線！', home:'首頁', toHome:'回到首頁', more:'查看更多', reading:'繼續閱讀', otherIn:' 的其他文章',
+    'zh-Hant': { skip:'跳到主要內容', archive:'檔案', archiveTitle:'最近更新', posterCap:'新的網站上線！', home:'首頁', toHome:'回到首頁', more:'查看更多', reading:'繼續閱讀', otherIn:'的其他文章',
       count:' 篇內容', soon:'尚未開放', search:'搜尋文章、作品、角色…', noResult:'找不到相關內容',
       bodyOriginal:'正文保持寫作時的原文，未作翻譯。', notFound:'找不到這篇文章', notFoundDesc:'連結可能已失效，或這篇內容尚未發布。',
       charsReading:'角色相關文章', emptyTitle:'這個分類還沒有內容', emptyDesc:'先看看其他版塊，或回到首頁。',
@@ -190,7 +190,7 @@
       comicsHint:'Drag to explore · open a chapter to start reading', comicsRead:'Start reading', comicsBack:'Back to the chapter map', comicsNext:'Next', comicsEnd:'End of chapter', comicsEmpty:'The pages for this chapter haven’t been uploaded yet.', comicsMissing:'Chapter not found',
       msgTitle:'Message Board', msgLede:'Say anything you like — leave a message here.', msgSoon:'The message board is opening soon', msgSoonDesc:'It’s still being set up. In the meantime, feel free to send me an email.', msgMail:'Send an email', msgFail:'Can’t reach the message board right now', msgFailDesc:'It may be a network issue — please try again later, or send me an email.',
       boardLimited:' (limited)' },
-    ja: { skip:'本文へスキップ', archive:'アーカイブ', archiveTitle:'最近の更新', posterCap:'新サイトが公開されました！', home:'ホーム', toHome:'ホームへ戻る', more:'もっと見る', reading:'続けて読む', otherIn:' の他の記事',
+    ja: { skip:'本文へスキップ', archive:'アーカイブ', archiveTitle:'最近の更新', posterCap:'新サイトが公開されました！', home:'ホーム', toHome:'ホームへ戻る', more:'もっと見る', reading:'続けて読む', otherIn:'の他の記事',
       count:' 件', soon:'準備中', search:'記事・作品・キャラクターを検索…', noResult:'該当する内容が見つかりません',
       bodyOriginal:'本文は執筆時の言語のまま、翻訳していません。', notFound:'記事が見つかりません', notFoundDesc:'リンクが無効か、まだ公開されていない可能性があります。',
       charsReading:'キャラクター関連の記事', emptyTitle:'まだコンテンツがありません', emptyDesc:'他のセクションを見るか、ホームへ戻ってください。',
@@ -918,6 +918,205 @@
     measure();
     sec.classList.add('is-bleed');
   })();
+
+  /* ---------- 07c 首页宣言：钉住 + 墨迹显影 ----------
+     设计规范 07「一出完整的戏」的做法（2026-10-15 加，用户要求照规范来）：
+     先把这句宣言钉在屏幕中间，再跟着滚动逐词显影；往回滚倒着走。
+     第二版（同日，用户：第一版「像加深颜色，不像晕染的墨水聚拢成文字」）：
+       没显出来的词是一团字形的墨晕 —— 字本身透明，只剩一圈宽的、略微偏开的墨色光晕（text-shadow）；
+       显影时墨晕向字心收拢、变浓，字从中间凝出来；显完就是干净的字，什么效果都不留。
+       墨晕半径 22px（手机 14px）超过规范「模糊最多 4px」—— 美观例外，而且 text-shadow 比 filter 省，手机上也开着。
+     只用在首页「Design Philosophy」这句上 —— 首页可以炫技，文章正文一律不用，保证可读性（用户定的）。
+     · 没有 JS、开了「减少动态效果」、静止档：不钉住、不显影，文字原样可见（规范：内容先在，动效后到）。
+     · 减配档（手机、平板）：墨晕小一号；钉住的长度缩到 1.5 屏（规范：手机上减配）。样式在 css 第 13b 节。
+     进度：区块顶边贴到顶栏底下时开始（钉住），区块底边到屏幕底时结束（松开）；
+     所有词在 80% 处显完，最后 20% 让整句停在那里，读完再走。 */
+  (function inkStatement() {
+    var sec = $('#philosophy'), el = $('#philosophy .h2'), hdr = $('[data-header]');
+    if (!sec || !el || reduce || LITE) return;
+    var parts = el.textContent.trim().split(/\s+/), words = [];
+    el.textContent = '';
+    parts.forEach(function (w, i) {
+      var s = document.createElement('span');
+      s.className = 'ink-w';
+      s.textContent = w;
+      el.appendChild(s);
+      if (i < parts.length - 1) el.appendChild(document.createTextNode(' '));
+      words.push(s);
+    });
+    el.classList.add('is-in');            /* 整句的入场淡入交给墨迹，不再叠一层 */
+    sec.classList.add('is-pinned');       /* 加上这个类，区块才变高、里面才钉住（css 13b） */
+    var ticking = false, last = -1;
+    var n = words.length, W = .2;         /* 每个词用 20% 的进度，前后几个词同时在收拢，像墨一路洇过去 */
+    var FROM = .04, TO = .8;              /* 第一个词从 4% 开始，最后一个词在 80% 显完 */
+    var R = MID ? 14 : 22;                /* 墨晕最大半径（px） */
+    /* 每个词的墨晕往一个固定的方向偏一点（-4…4px），另一层往反方向偏，收拢时都回到字上 ——
+       真的墨不会均匀地晕开，一团墨总是这边浓一点、那边淡一点 */
+    var drift = words.map(function (_, i) {
+      return [Math.sin(i * 12.9898) * 4, Math.cos(i * 78.233) * 3];
+    });
+    var ink = [20, 20, 19];               /* 墨色 = 当前文字色（深色模式下是浅色），从样式里读，换主题时重读 */
+    var tea = [143, 151, 85];             /* 晕开的那层是掺了茶芽的淡墨（深色下用茶芽 300），越收越回到纯墨 —— 品牌色藏在动效里 */
+    function readInk() {
+      var m = getComputedStyle(el).color.match(/[\d.]+/g);
+      if (m) ink = [+m[0], +m[1], +m[2]];
+      tea = inkTea();
+      last = -1;
+    }
+    function rgba(a) { return 'rgba(' + ink[0] + ',' + ink[1] + ',' + ink[2] + ',' + a.toFixed(3) + ')'; }
+    /* 茶芽 → 墨：k = 0 是茶芽淡墨，k = 1 是纯墨 */
+    function wash(a, k) {
+      return 'rgba(' + [0, 1, 2].map(function (j) { return Math.round(tea[j] + (ink[j] - tea[j]) * k); }).join(',') + ',' + a.toFixed(3) + ')';
+    }
+    function clamp(x) { return Math.max(0, Math.min(1, x)); }
+    function ease(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+    function headH() { return hdr ? hdr.getBoundingClientRect().height : 72; }
+    function progress() {
+      var r = sec.getBoundingClientRect(), h = headH();
+      var dist = r.height - innerHeight + h;          /* 钉住期间一共滚过的距离 */
+      return dist > 0 ? clamp((h - r.top) / dist) : 1;
+    }
+    function render(p) {
+      words.forEach(function (w, i) {
+        var a = FROM + (n > 1 ? i / (n - 1) : 0) * (TO - W - FROM);
+        var t = ease(clamp((p - a) / W));
+        if (t >= 1) { w.style.color = ''; w.style.textShadow = ''; return; }
+        var u = 1 - t;
+        /* 字芯：后半程才凝出来（t² 让它晚一点、快一点）。
+           墨晕三层：一开始只有两团宽而淡、往不同方向洇开的墨，看不清字形；
+           收拢时第三层（窄而浓的字心）在半程最浓，墨往字上聚，随后字芯接手、墨晕退尽 */
+        var core = Math.pow(t, 2);
+        var halo = .3 * Math.pow(u, .6);
+        var dx = drift[i][0] * u, dy = drift[i][1] * u;
+        w.style.color = rgba(core);
+        w.style.textShadow =
+          /* 外圈：最宽最淡，往一边洇 */
+          dx.toFixed(2) + 'px ' + dy.toFixed(2) + 'px ' + (R * u + 1).toFixed(1) + 'px ' + wash(halo * 1.15, t * .8) + ', ' +
+          /* 另一团：往反方向 —— 两团叠出不均匀的墨迹 */
+          (-dx * .6).toFixed(2) + 'px ' + (-dy * .8).toFixed(2) + 'px ' + (R * .8 * u + 1).toFixed(1) + 'px ' + wash(halo * .9, t) + ', ' +
+          /* 字心：一开始没有，收拢到一半时最浓（4t(1−t)），字凝出来后退掉 */
+          '0 0 ' + (R * .25 * u + .5).toFixed(1) + 'px ' + rgba(.7 * 4 * t * u);
+      });
+    }
+    readInk();
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { readInk(); onScroll(); });
+    function update() {
+      ticking = false;
+      var p = Math.round(progress() * 1000) / 1000;
+      if (p !== last) { last = p; render(p); }
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    /* 只在区块出现在屏幕上时才听滚动；离开时按当前位置定格一次（滚过头 = 全显，没到 = 淡墨） */
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) addEventListener('scroll', onScroll, { passive: true });
+        else removeEventListener('scroll', onScroll);
+        update();
+      }).observe(sec);
+    } else addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', function () { last = -1; onScroll(); });
+    /* 首屏的「Design Philosophy」按钮会跳到这里：直接停在区块顶部的话整句还是淡墨。
+       改成滚到「显完」的位置（85%），滚动途中刚好把显影播一遍。 */
+    $$('a[href="#philosophy"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var r = sec.getBoundingClientRect(), h = headH(), dist = r.height - innerHeight + h;
+        scrollTo({ top: scrollY + r.top - h + dist * .85, behavior: 'smooth' });
+      });
+    });
+    update();
+  })();
+
+  /* ---------- 07d 墨迹入场：首屏大标题（每次打开网站一次）· 首页区块标题 ----------
+     2026-10-15，用户：「动效在现在的基础上做得更华丽一点，让读者惊叹」。
+     和宣言（07c）同一种墨：字先是一团掺了茶芽的淡墨，墨向字心收拢、变浓，字凝出来，最后什么效果都不留。
+     07c 跟着滚动；这里是按时间播一遍（Web Animations，1.4s 左右），只播一次。
+     · 首屏「Design. Think. Create.」：每个浏览器会话第一次进首页时播 —— 换页回来不再重播
+       （首屏内容平时刻意不做入场，免得每次换页「跳一下」，见 06 的说明）。导语和按钮随后像纸一样落定。
+     · 「最近更新」「Let's Create…」：滚到时播一次。
+     · 只在首页；文章正文一律不用。减少动态效果、静止档：都不做。 */
+  function inkTea() {
+    return matchMedia('(prefers-color-scheme: dark)').matches ? [190, 196, 135] : [143, 151, 85];
+  }
+  /* 把一段文字拆成「词」：拉丁字母按单词，汉字一字一个，空格原样保留。返回包好的 span */
+  function inkSplit(el) {
+    var out = [];
+    (function walk(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (c) {
+        if (c.nodeType === 1) { walk(c); return; }
+        if (c.nodeType !== 3 || !c.nodeValue.trim()) return;
+        var frag = document.createDocumentFragment();
+        c.nodeValue.match(/\s+|[　-〿㐀-鿿＀-￯]|[^\s　-〿㐀-鿿＀-￯]+/g).forEach(function (tok) {
+          if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
+          var s = document.createElement('span');
+          s.className = 'ink-w';
+          s.textContent = tok;
+          frag.appendChild(s);
+          out.push(s);
+        });
+        c.parentNode.replaceChild(frag, c);
+      });
+    })(el);
+    return out;
+  }
+  /* 一个词的三段关键帧：茶芽淡墨晕开 → 墨往字心聚（字心最浓）→ 干净的字。三层影子数量不变，补间才顺 */
+  function inkFrames(el, i, R) {
+    var m = getComputedStyle(el).color.match(/[\d.]+/g) || [20, 20, 19];
+    var ink = [+m[0], +m[1], +m[2]], tea = inkTea();
+    var c = function (rgb, a) { return 'rgba(' + rgb.join(',') + ',' + a + ')'; };
+    var mid = [0, 1, 2].map(function (j) { return Math.round((tea[j] + ink[j]) / 2); });
+    var dx = Math.sin(i * 12.9898) * 4, dy = Math.cos(i * 78.233) * 3;
+    return [
+      { color: c(ink, 0), textShadow: dx + 'px ' + dy + 'px ' + R + 'px ' + c(tea, .4) + ', ' + (-dx * .6) + 'px ' + (-dy * .8) + 'px ' + (R * .8) + 'px ' + c(tea, .3) + ', 0 0 ' + (R * .25) + 'px ' + c(ink, 0) },
+      { offset: .5, color: c(ink, .3), textShadow: (dx * .4) + 'px ' + (dy * .4) + 'px ' + (R * .45) + 'px ' + c(mid, .22) + ', ' + (-dx * .25) + 'px ' + (-dy * .3) + 'px ' + (R * .35) + 'px ' + c(mid, .18) + ', 0 0 ' + (R * .12) + 'px ' + c(ink, .55) },
+      { color: c(ink, 1), textShadow: '0 0 0 ' + c(ink, 0) + ', 0 0 0 ' + c(ink, 0) + ', 0 0 0 ' + c(ink, 0) }
+    ];
+  }
+  function inkPlay(words, step, dur, delay0) {
+    var R = MID ? 14 : 22;
+    words.forEach(function (w, i) {
+      w.animate(inkFrames(w, i, R), { duration: dur, delay: (delay0 || 0) + i * step, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' });
+    });
+  }
+  function inkOK() { return PAGE === 'home' && !reduce && !LITE && !!document.body.animate; }
+
+  /* 首屏大标题：每个会话第一次进首页、而且在页面顶部时 */
+  function heroInk() {
+    var title = $('.hero__title');
+    if (!title || !inkOK() || scrollY > 40) return;
+    try { if (sessionStorage.getItem('jp-hero-ink')) return; sessionStorage.setItem('jp-hero-ink', '1'); } catch (e) { return; }
+    var lines = $$('span', title);
+    if (!lines.length) return;
+    inkPlay(lines, 220, 1500, 120);   /* 一行一行凝出来 */
+    /* 导语和按钮随后落定（规范「纸页落定」：位移 + 一点前倾） */
+    [[$('.hero__lede'), 760], [$('.hero__actions'), 900], [$('.board-pill'), 1040]].forEach(function (p) {
+      if (!p[0]) return;
+      p[0].animate([
+        { opacity: 0, transform: 'perspective(900px) translateY(' + (MID ? 10 : 18) + 'px) rotateX(' + (MID ? 3 : 6) + 'deg)' },
+        { opacity: 1, transform: 'none' }
+      ], { duration: 1000, delay: p[1], easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' });
+    });
+  }
+
+  /* 首页区块标题：滚到时凝一次 */
+  function inkTitles() {
+    if (!inkOK() || !('IntersectionObserver' in window)) return;
+    $$('#recent-title, #cta-title').forEach(function (el) {
+      el.classList.add('is-in');                 /* 整块的淡入交给墨迹 */
+      var words = inkSplit(el);
+      if (!words.length) return;
+      var step = /[㐀-鿿]/.test(el.textContent) ? 120 : 90;
+      /* 滚到之前先停在「淡墨」那一帧，免得先看见清楚的字再晕开 */
+      var hold = words.map(function (w, i) { return w.animate(inkFrames(w, i, MID ? 14 : 22).slice(0, 1).concat(inkFrames(w, i, MID ? 14 : 22).slice(0, 1)), { duration: 1, fill: 'forwards' }); });
+      var io2 = new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        io2.disconnect();
+        hold.forEach(function (a) { a.cancel(); });
+        inkPlay(words, step, 1400, 0);
+      }, { threshold: .6 });
+      io2.observe(el);
+    });
+  }
 
   /* ---------- 卡片与面包屑构件 ---------- */
   /* showPin：只有分类页传 true —— 置顶是「在自己分类里」的事，
@@ -2246,6 +2445,9 @@
   i18n();
   alignMenus();
   reveal(document);
+  /* 墨迹入场（07d）：要在 i18n() 之后 —— 换语言会重写标题文字，先拆字就白拆了 */
+  heroInk();
+  inkTitles();
   patchDirLinks();
   /* main.js 是 defer，静态 HTML 里的图可能在它跑起来之前就已经失败过一次，
      那时捕获监听还没挂上 —— 这里补一遍。 */

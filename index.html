@@ -16,13 +16,34 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="icon" href="assets/favicon/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/favicon/favicon.png">
+<!-- 首页先取好，点 Explore 时几乎不用等加载，转场一点就开始 -->
+<link rel="prefetch" href="home.html">
+<style>
+  /* Explore → 首页的转场（2026-10-15）：扉页和首页都声明跨页视图过渡，动画由首页的 pagereveal 画（见 home.html 的 <head>） */
+  @view-transition { navigation: auto; }
+  @media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+</style>
+<script>
+  /* 回到扉页时（比如在首页按返回）不要过渡：浏览器默认会淡入淡出一下，这里直接跳过 */
+  addEventListener('pagereveal', function (e) {
+    var vt = e.viewTransition;
+    if (!vt) return;
+    vt.ready.catch(function () {});   /* 跳过时 ready 会报 AbortError，接住它，免得控制台里一条红字 */
+    vt.skipTransition();
+  });
+</script>
 <style>
   /* 扉页是全屏封面，不挂导航 —— 压一条栏会破坏「翻开一本书」的感觉 */
-  .cover { position: relative; overflow: hidden; min-height: 100svh;
+  /* overflow 用 clip 不用 hidden：hidden 的盒子仍能被浏览器在里面滚动 —— 点开右下角的语言菜单时，
+     浏览器为了把菜单滚进视野，会把整张扉页往左上挪（三团极光比扉页大一圈，里面有可滚的余量）。clip 只裁不滚 */
+  .cover { position: relative; overflow: hidden; overflow: clip; min-height: 100svh;
     display: grid; grid-template-rows: 1fr auto; justify-items: center;
     padding-block: 32px 24px; background: var(--bg);
-    transition: opacity .5s var(--e-io), transform .5s var(--e-out), filter .5s var(--e-io); }
-  .cover.is-leaving { opacity: 0; transform: scale(1.015); filter: blur(3px); }
+    transition: opacity .9s cubic-bezier(.6, 0, .15, 1), transform .9s cubic-bezier(.6, 0, .15, 1), filter .9s cubic-bezier(.6, 0, .15, 1); }
+  /* 不支持跨页视图过渡的浏览器：扉页往后退（和首页那边画的动画一致），同时一扇纸色的胶囊窗从按钮展开铺满 */
+  .cover.is-leaving { opacity: .35; transform: scale(.94); filter: blur(3px); }
+  .cover__wipe { position: fixed; inset: 0; z-index: 50; background: var(--bg); pointer-events: none;
+    transition: clip-path .9s cubic-bezier(.6, 0, .15, 1); }
   .cover__aurora { position: absolute; inset: -18%; pointer-events: none; }
   .cover__aurora span { position: absolute; border-radius: 50%; filter: blur(90px); will-change: transform, opacity; }
   /* 五级 alpha 缓降，避免大尺寸渐变出现同心圆色带 */
@@ -48,13 +69,20 @@
   .cover__mark { display: grid; place-items: center; width: 46px; height: 46px; margin: 0 auto 30px;
     border-radius: var(--r-sm); background: var(--text); color: var(--bg); font-size: 22px; font-weight: 700;
     animation: cin .9s var(--e-out) both; }
-  .cover__title { font-size: clamp(46px, 9vw, 128px); line-height: 1; letter-spacing: -.055em; font-weight: 600;
+  .cover__title { font-family: var(--font-brand); font-size: clamp(46px, 9vw, 128px); line-height: 1; letter-spacing: -.055em; font-weight: 600;
     animation: cin .9s var(--e-out) .08s both; }
   .cover__sub { margin-top: 20px; color: var(--text-muted); font-size: clamp(11px, 1.15vw, 14px);
     font-weight: 500; letter-spacing: .22em; text-transform: uppercase; animation: cin .9s var(--e-out) .16s both; }
   .cover__enter { margin-top: clamp(36px, 5vw, 56px); animation: cin .9s var(--e-out) .24s both; }
-  .cover__foot { position: relative; z-index: 1; color: var(--text-faint); font-size: 12px;
+  /* 最底下一行：左边版权 + 版本号，右边语言切换 —— 和其他页面页脚最底下那一行一样（2026-10-15）。
+     语言选择存在 localStorage 'jp-lang'，进到首页就按它显示；扉页本身的字是英文，不跟着换 */
+  .cover__bar { position: relative; z-index: 2; width: 100%; padding-inline: var(--gutter);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
     animation: cin .9s var(--e-out) .36s both; }
+  .cover__foot { color: var(--text-faint); font-size: 12px; white-space: nowrap; }
+  .cover__foot .ftr__ver { margin-left: .5em; }
+  /* 手机上版本号另起一行（和页脚一样，免得把语言按钮挤出屏幕），这时不再缩进 */
+  @media (max-width: 900px) { .cover__foot .ftr__ver { margin-left: 0; } }
   @keyframes cin { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .aur1 { opacity: .22 }
@@ -82,21 +110,99 @@
     </p>
   </div>
 
-  <p class="cover__foot">JasperPeng©2026</p>
+  <div class="cover__bar">
+    <p class="cover__foot">JasperPeng©2026<span class="ftr__ver" data-version>v3.1.1</span></p>
+    <div class="lang" data-lang>
+      <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.75"/><path d="M3.25 12h17.5M12 3.25c4.8 5.5 4.8 12.1 0 17.5-4.8-5.4-4.8-12 0-17.5Z"/></svg>
+        <span data-lang-label>简体中文 中国大陆</span><i class="chev" aria-hidden="true"></i>
+      </button>
+      <ul class="lang__menu" role="listbox" data-lang-menu></ul>
+    </div>
+  </div>
 </main>
 
 <script>
-  /* 扉页很轻，不加载整套 main.js */
+  /* 扉页很轻，不加载整套 main.js。
+     Explore → 首页的转场（2026-10-15）：
+     · 支持跨页视图过渡（Chrome / Edge、Safari 18.2+）：只把按钮的位置记下来，照常跳转，动画由首页画 ——
+       透过按钮看到的就是真的首页。
+     · 不支持的浏览器：在这里演一个近似版 —— 扉页往后退，一扇纸色的胶囊窗从按钮展开铺满，0.75 秒后跳转。
+     · 开了「减少动态效果」：什么都不做，点了直接走。 */
   (function () {
     var link = document.querySelector('[data-enter]'), cover = document.getElementById('cover');
     if (!link || !cover) return;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if ('startViewTransition' in document) return;   /* 交给 CSS，避免叠两套动画 */
+    var crossDoc = 'onpagereveal' in window;
     link.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;   /* 新标签页打开之类：不拦 */
+      var r = link.getBoundingClientRect();
+      if (crossDoc) {
+        try {
+          sessionStorage.setItem('jp-cover-reveal', JSON.stringify({
+            x: r.left, y: r.top, w: r.width, h: r.height, vw: innerWidth, vh: innerHeight, t: Date.now()
+          }));
+        } catch (x) {}
+        return;   /* 照常跳转 */
+      }
       e.preventDefault();
-      cover.classList.add('is-leaving');
-      setTimeout(function () { location.href = link.getAttribute('href'); }, 460);
+      var wipe = document.createElement('div');
+      wipe.className = 'cover__wipe';
+      wipe.style.clipPath = 'inset(' + r.top + 'px ' + (innerWidth - r.right) + 'px ' + (innerHeight - r.bottom) + 'px ' + r.left + 'px round ' + (r.height / 2) + 'px)';
+      document.body.appendChild(wipe);
+      cover.style.transformOrigin = (r.left + r.width / 2) + 'px ' + (r.top + r.height / 2) + 'px';
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          cover.classList.add('is-leaving');
+          wipe.style.clipPath = 'inset(0px 0px 0px 0px round 0px)';
+        });
+      });
+      setTimeout(function () { location.href = link.getAttribute('href'); }, 750);
     });
+  })();
+
+  /* 右下角的语言切换（2026-10-15）。扉页不加载 main.js，这里是它的精简版：
+     选好的语言存进 localStorage 'jp-lang'（和 main.js 同一个键），点 Explore 进去就是这个语言。
+     语言列表要和 main.js 里的 LANGS 保持一致。 */
+  (function () {
+    var LANGS = [
+      { code: 'zh-Hans', label: '简体中文 中国大陆' },
+      { code: 'zh-Hant', label: '繁體中文 台灣' },
+      { code: 'en',      label: 'English United States' },
+      { code: 'ja',      label: '日本語 日本' }
+    ];
+    var box = document.querySelector('[data-lang]');
+    if (!box) return;
+    var btn = box.querySelector('[data-lang-btn]'), label = box.querySelector('[data-lang-label]'), menu = box.querySelector('[data-lang-menu]');
+    var lang = 'zh-Hans';
+    try { lang = localStorage.getItem('jp-lang') || lang; } catch (e) {}
+    menu.innerHTML = LANGS.map(function (l) {
+      return '<li><button type="button" role="option" data-code="' + l.code + '">' + l.label + '</button></li>';
+    }).join('');
+    function paint() {
+      var m = LANGS.filter(function (l) { return l.code === lang; })[0] || LANGS[0];
+      label.textContent = m.label;
+      Array.prototype.forEach.call(menu.querySelectorAll('[data-code]'), function (o) {
+        o.setAttribute('aria-selected', String(o.getAttribute('data-code') === lang));
+      });
+    }
+    function close() { box.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); }
+    paint();
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      btn.setAttribute('aria-expanded', String(box.classList.toggle('is-open')));
+    });
+    menu.addEventListener('click', function (e) {
+      var o = e.target.closest('[data-code]');
+      if (!o) return;
+      lang = o.getAttribute('data-code');
+      try { localStorage.setItem('jp-lang', lang); } catch (err) {}
+      paint();
+      close();
+    });
+    document.addEventListener('click', close);
+    box.addEventListener('click', function (e) { e.stopPropagation(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   })();
 </script>
 </body>
