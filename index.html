@@ -17,74 +17,72 @@
 <link rel="icon" href="assets/favicon/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/favicon/favicon.png">
 <style>
-  /* 扉页是全屏封面，不挂导航 —— 压一条栏会破坏「翻开一本书」的感觉。
-     2026-10-14 按设计规范重做，和首页首屏同一个路子（用户：扉页也按这个风格）：
-     · 像一本书的扉页：上面一行小字（标志 + Personal Archive），中间是书名，最下面一道细线隔开版权和一句话
-     · 书名「JasperPeng」是特殊版面，可以超出字号表，铺满大半个版心；字体、字重仍按规范（无衬线 700、−1%）
-     · 去掉了原来的三团彩色光晕和纸纹 —— 页面就是一张纸，层次靠字号和细线
-     · 温度：书名「墨迹显影」显出来，然后茶芽色在名字下面签一笔（和首页「Create」下面那一笔同一套，style.css 第 10 节）
-     · 其他元素「纸页落定」：从下面 24px 淡入，依次间隔 60ms */
-  .cover {
-    min-height: 100svh;
-    width: min(100% - var(--page-margin) * 2, var(--page-width)); margin-inline: auto;
-    display: grid; grid-template-rows: auto 1fr auto;
-    padding-block: var(--space-6);
-    transition: opacity var(--dur-sheet) var(--ease-ui), transform var(--dur-sheet) var(--ease-ui);
-  }
-  .cover.is-leaving { opacity: 0; transform: translateY(calc(var(--move-sm) * -1)); }
-  .cover__top, .cover__foot {
-    display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
-    color: var(--color-text-3); font-size: var(--text-label); font-weight: 500; letter-spacing: var(--tracking-label);
-  }
-  .cover__mark {
-    display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--radius-control-sm);
-    background: var(--color-text); color: var(--color-bg); font-size: 15px; font-weight: 700; letter-spacing: 0;
-  }
-  .cover__inner { align-self: center; padding-block: var(--section-sm); }
-  .cover__title {
-    /* 书名铺满约 9 成版心：「JasperPeng」的字宽约是字号的 5.2 倍，按 5.6 倍算留出余量（Mac 和 Windows 的系统字体宽度不一样），最大 240 */
-    font-size: min(calc((100vw - var(--page-margin) * 2) / 5.6), 15rem); line-height: 1; letter-spacing: var(--tracking-display); font-weight: 700;
-    animation: inkIn var(--dur-enter) var(--ease-paper) both;
-  }
-  .cover__title .hero__line { bottom: -.2em; height: .12em; }   /* 签在字母下伸部分（J、p、g）的下面，不穿过它们 */
-  .cover__title .hero__line { animation-delay: 500ms; }
-  .cover__title .hero__line path { stroke-width: .045em; }
-  .cover__row {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-5);
-    margin-top: var(--space-8);
-  }
-  .cover__sub { color: var(--color-text-2); font-family: var(--font-serif); font-size: var(--text-lead); line-height: var(--leading-relaxed); }
-  .cover__foot { padding-top: var(--space-4); border-top: 1px solid var(--color-line); }
-  .cover__top { animation: cin var(--dur-enter) var(--ease-paper) both; }
-  .cover__row > * { animation: cin var(--dur-enter) var(--ease-paper) both; animation-delay: calc(240ms + var(--i, 0) * var(--stagger)); }
-  .cover__foot { animation: cin var(--dur-enter) var(--ease-paper) 360ms both; }
-  @keyframes cin { from { opacity: 0; transform: translateY(var(--move-md)) } to { opacity: 1; transform: none } }
-  @media (max-width: 640px) {
-    .cover__row { flex-direction: column; align-items: flex-start; margin-top: var(--space-6); }
-    .cover__row .btn { width: 100%; }
+  /* 扉页是全屏封面，不挂导航 —— 压一条栏会破坏「翻开一本书」的感觉 */
+  .cover { position: relative; overflow: hidden; min-height: 100svh;
+    display: grid; grid-template-rows: 1fr auto; justify-items: center;
+    padding-block: 32px 24px; background: var(--bg);
+    transition: opacity .5s var(--e-io), transform .5s var(--e-out), filter .5s var(--e-io); }
+  .cover.is-leaving { opacity: 0; transform: scale(1.015); filter: blur(3px); }
+  .cover__aurora { position: absolute; inset: -18%; pointer-events: none; }
+  .cover__aurora span { position: absolute; border-radius: 50%; filter: blur(90px); will-change: transform, opacity; }
+  /* 五级 alpha 缓降，避免大尺寸渐变出现同心圆色带 */
+  .aur1 { width: 52vmax; height: 52vmax; top: 2%; left: 4%; opacity: .5;
+    background: radial-gradient(circle, color-mix(in srgb, var(--star) 42%, transparent) 0%,
+      color-mix(in srgb, var(--star) 31%, transparent) 24%, color-mix(in srgb, var(--star) 17%, transparent) 44%,
+      color-mix(in srgb, var(--star) 6%, transparent) 62%, transparent 79%);
+    animation: aurA 19s var(--e-io) infinite alternate; }
+  .aur2 { width: 46vmax; height: 46vmax; top: 26%; right: 0; opacity: .42;
+    background: radial-gradient(circle, #9B72CB 0%, color-mix(in srgb, #9B72CB 62%, transparent) 24%,
+      color-mix(in srgb, #9B72CB 30%, transparent) 44%, color-mix(in srgb, #9B72CB 10%, transparent) 62%, transparent 79%);
+    animation: aurB 23s var(--e-io) infinite alternate; }
+  .aur3 { width: 42vmax; height: 42vmax; bottom: -4%; left: 30%; opacity: .34;
+    background: radial-gradient(circle, #F5B8D0 0%, color-mix(in srgb, #F5B8D0 70%, transparent) 24%,
+      color-mix(in srgb, #F5B8D0 38%, transparent) 44%, color-mix(in srgb, #F5B8D0 14%, transparent) 62%, transparent 79%);
+    animation: aurC 29s var(--e-io) infinite alternate; }
+  @keyframes aurA { to { transform: translate3d(7vw, 5vh, 0) scale(1.16); opacity: .2 } }
+  @keyframes aurB { to { transform: translate3d(-6vw, 7vh, 0) scale(1.22); opacity: .16 } }
+  @keyframes aurC { to { transform: translate3d(4vw, -6vh, 0) scale(1.12); opacity: .16 } }
+  .cover__grain { position: absolute; inset: 0; pointer-events: none; opacity: .55; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E"); }
+  .cover__inner { position: relative; z-index: 1; align-self: center; text-align: center; padding-inline: var(--gutter); }
+  .cover__mark { display: grid; place-items: center; width: 46px; height: 46px; margin: 0 auto 30px;
+    border-radius: var(--r-sm); background: var(--text); color: var(--bg); font-size: 22px; font-weight: 700;
+    animation: cin .9s var(--e-out) both; }
+  .cover__title { font-size: clamp(46px, 9vw, 128px); line-height: 1; letter-spacing: -.055em; font-weight: 600;
+    animation: cin .9s var(--e-out) .08s both; }
+  .cover__sub { margin-top: 20px; color: var(--text-muted); font-size: clamp(11px, 1.15vw, 14px);
+    font-weight: 500; letter-spacing: .22em; text-transform: uppercase; animation: cin .9s var(--e-out) .16s both; }
+  .cover__enter { margin-top: clamp(36px, 5vw, 56px); animation: cin .9s var(--e-out) .24s both; }
+  .cover__foot { position: relative; z-index: 1; color: var(--text-faint); font-size: 12px;
+    animation: cin .9s var(--e-out) .36s both; }
+  @keyframes cin { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .aur1 { opacity: .22 }
+    :root:not([data-theme="light"]) .aur2 { opacity: .18 }
+    :root:not([data-theme="light"]) .aur3 { opacity: .16 }
+    :root:not([data-theme="light"]) .cover__grain { mix-blend-mode: screen; opacity: .4 }
   }
 </style>
 </head>
 <body data-base="" data-page="cover">
 
 <main class="cover" id="cover">
-  <header class="cover__top">
-    <span class="cover__mark" aria-hidden="true">J</span>
-    <span>Personal Archive</span>
-  </header>
+  <!-- 白底之上极淡的色彩呼吸。三团渐变周期 19/23/29 秒互质，叠加后看不出循环 -->
+  <div class="cover__aurora" aria-hidden="true">
+    <span class="aur1"></span><span class="aur2"></span><span class="aur3"></span>
+  </div>
+  <div class="cover__grain" aria-hidden="true"></div>
 
   <div class="cover__inner">
-    <h1 class="cover__title"><em class="hero__mark">JasperPeng<svg class="hero__line" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12 C 60 7, 130 6, 190 9 S 270 13, 297 7" pathLength="1"/></svg></em></h1>
-    <div class="cover__row">
-      <p class="cover__sub" style="--i:0">Designer · Creator · Explorer</p>
-      <a class="btn btn--primary btn--lg" style="--i:1" href="home.html" data-enter>Explore<i class="arr" aria-hidden="true"></i></a>
-    </div>
+    <p class="cover__mark" aria-hidden="true">J</p>
+    <h1 class="cover__title">JasperPeng</h1>
+    <p class="cover__sub">Designer · Creator · Explorer</p>
+    <p class="cover__enter">
+      <a class="btn btn--primary" href="home.html" data-enter>Explore<i class="arr" aria-hidden="true"></i></a>
+    </p>
   </div>
 
-  <footer class="cover__foot">
-    <span>JasperPeng©2026</span>
-    <span>Design. Think. Create.</span>
-  </footer>
+  <p class="cover__foot">JasperPeng©2026</p>
 </main>
 
 <script>
@@ -97,7 +95,7 @@
     link.addEventListener('click', function (e) {
       e.preventDefault();
       cover.classList.add('is-leaving');
-      setTimeout(function () { location.href = link.getAttribute('href'); }, 300);   /* = --dur-sheet */
+      setTimeout(function () { location.href = link.getAttribute('href'); }, 460);
     });
   })();
 </script>

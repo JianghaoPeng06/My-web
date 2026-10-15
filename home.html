@@ -142,22 +142,24 @@
       <span><span data-i18n="msgTitle">留言板</span><span class="board-pill__emoji" aria-hidden="true">👋</span><em data-i18n="boardLimited">（限时）</em></span>
       <i class="arr" aria-hidden="true"></i>
     </a>
-    <!-- 2026-10-14 重排：照 anthropic.com 首页 —— 左边一句大标题，右边衬线导语贴着标题底边，下面紧跟海报。
-         史莱姆球删掉了（用户：和网站整体不搭）。标题三行像墨水渗进纸一样显出来，「Create」下面茶芽色描一笔 -->
     <div class="hero__inner">
-      <div class="hero__head">
-        <p class="eyebrow">Personal Archive</p>
-        <h1 class="hero__title">
-          <span style="--i:0">Design.</span>
-          <span style="--i:1">Think.</span>
-          <span style="--i:2"><em class="hero__mark">Create<svg class="hero__line" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 13 C 52 8, 118 6, 172 8 S 262 13, 297 7" pathLength="1"/></svg></em>.</span>
-        </h1>
+      <div>
+        <p class="eyebrow reveal">Personal Archive</p>
+        <h1 class="hero__title reveal"><span>Design.</span><span>Think.</span><span>Create.</span></h1>
+        <p class="hero__lede lede reveal">A personal archive exploring visual design, imagination, technology and human creativity.</p>
+        <div class="hero__actions reveal">
+          <a class="btn btn--primary" href="works/artifacts/">Explore Works<i class="arr" aria-hidden="true"></i></a>
+          <a class="btn btn--ghost" href="#philosophy">Design Philosophy</a>
+        </div>
       </div>
-      <div class="hero__side">
-        <p class="hero__lede lede">A personal archive exploring visual design, imagination, technology and human creativity.</p>
-        <div class="hero__actions">
-          <a class="btn btn--primary btn--lg" href="works/artifacts/">Explore Works<i class="arr" aria-hidden="true"></i></a>
-          <a class="btn btn--ghost btn--lg" href="#philosophy">Design Philosophy</a>
+
+      <!-- 星体 · Figma：420 正圆 / #4BB6EC / 透明度 0.1 / 2px 模糊
+           球内四团彩光被圆形裁住 —— 光在球里流动，而不是给球描边 -->
+      <div class="hero__visual" data-star aria-hidden="true">
+        <div class="star">
+          <span class="star__glow"></span>
+          <span class="star__body"><i></i><i></i><i></i><i></i><i></i></span>
+          <span class="star__gloss"></span>
         </div>
       </div>
     </div>
@@ -179,7 +181,7 @@
       <header class="sec-head reveal">
         <div class="sec-head__text">
           <p class="eyebrow" data-i18n="archive">Archive</p>
-          <h2 class="h2" id="recent-title" data-i18n="archiveTitle">最近更新</h2>
+          <h2 class="h1" id="recent-title" data-i18n="archiveTitle">最近更新</h2>
         </div>
         <a class="link-more" href="research/news/"><span data-i18n="more">查看更多</span><i class="arr" aria-hidden="true"></i></a>
       </header>
@@ -210,7 +212,7 @@
         </article>
       </div>
 
-      <div class="list" style="margin-top:var(--space-8)" data-recent-list>
+      <div class="list" style="margin-top:var(--sp-xl)" data-recent-list>
         <article class="list__item reveal" data-slug="rainbow-picturebook">
           <a class="list__link" href="articles/rainbow-picturebook/">
             <span class="list__media"><img src="assets/images/resources/rainbow-picturebook.jpg" alt="【彩虹绘本】首个 OC 设定集确认！草莓酱三视图资源上新。" loading="lazy" width="360" height="360"></span>
@@ -262,16 +264,16 @@
   <section class="section" id="philosophy" aria-labelledby="phil-title">
     <div class="wrap">
       <p class="eyebrow reveal" id="phil-title">Design Philosophy</p>
-      <p class="statement reveal" style="max-width:18em">Design is not only about creating beautiful objects. It is about creating meaning, connection and experiences between people and the world.</p>
+      <p class="h2 reveal" style="max-width:22ch">Design is not only about creating beautiful objects. It is about creating meaning, connection and experiences between people and the world.</p>
     </div>
   </section>
 
   <!-- ===== Contact CTA · Figma Frame 14 ===== -->
   <section class="section section--alt" id="contact" aria-labelledby="cta-title">
     <div class="wrap">
-      <h2 class="h2 reveal" id="cta-title" style="max-width:16em">Let's Create Something Meaningful</h2>
-      <p class="lede reveal" style="margin-top:var(--space-5)">Open for design collaborations and creative projects.</p>
-      <p class="reveal" style="margin-top:var(--space-6)">
+      <h2 class="h1 reveal" id="cta-title" style="max-width:16ch">Let's Create Something Meaningful</h2>
+      <p class="lede reveal" style="margin-top:var(--sp-md)">Open for design collaborations and creative projects.</p>
+      <p class="reveal" style="margin-top:var(--sp-lg)">
         <a class="btn btn--primary" href="mailto:pengjasper@icloud.com">Contact Me<i class="arr" aria-hidden="true"></i></a>
       </p>
     </div>
@@ -294,7 +296,7 @@
       <div class="ftr__col"><h3 class="ftr__head"><button class="ftr__toggle" type="button" aria-expanded="false" data-ftr-acc><span data-t="s.contact.kicker">联系</span><i class="chev" aria-hidden="true"></i></button></h3><div class="ftr__panel"><div class="ftr__inner"><a href="mailto:pengjasper@icloud.com" data-t="l.contact.0.label">邮件</a><a href="https://x.com/jianghaoPeng" target="_blank" rel="noopener" data-t="l.contact.1.label">X</a><a href="https://bsky.app/profile/jianghaopeng.bsky.social" target="_blank" rel="noopener" data-t="l.contact.2.label">Bluesky</a><a href="https://github.com/JianghaoPeng06" target="_blank" rel="noopener" data-t="l.contact.3.label">GitHub</a><h3 data-t="n.contact.0.kicker">关于我</h3><p class="ftr__note" data-t="n.contact.0.text">常驻中国大陆</p><h3 data-t="n.contact.1.kicker">赞助</h3><p class="ftr__note" data-t="n.contact.1.text">暂未开放</p></div></div></div>
     </div>
     <div class="ftr__bar">
-      <p class="ftr__copy">JasperPeng©2026 <span class="ftr__ver" data-version>v4.0.0</span></p>
+      <p class="ftr__copy">JasperPeng©2026 <span class="ftr__ver" data-version>v3.1.1</span></p>
       <div class="lang" data-lang>
         <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.75"/><path d="M3.25 12h17.5M12 3.25c4.8 5.5 4.8 12.1 0 17.5-4.8-5.4-4.8-12 0-17.5Z"/></svg>

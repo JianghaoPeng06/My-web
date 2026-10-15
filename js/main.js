@@ -6,7 +6,7 @@
    即使这个文件加载失败，页面依然是可导航的完整站点。
 
    01 工具    02 页头滚动   03 下拉面板   04 移动导航
-   05 搜索    06 入场动画   07 星体（已删）  08 文章页（08b 插图放大）
+   05 搜索    06 入场动画   07 星体（史莱姆）  08 文章页（08b 插图放大）
    09 分类页  10 角色页（10b 漫画地图 10c 条漫阅读 10d 留言板）  11 语言  12 跳转过渡
    ============================================================= */
 (function () {
@@ -687,8 +687,7 @@
       els.forEach(function (e) { e.classList.add('is-in'); }); return;
     }
     $$('.grid, .list', root || document).forEach(function (g) {
-      /* 依次出现：间隔 60ms，最多 6 个（规范 07 · 叙事层），所以封顶 300ms */
-      $$('.reveal', g).forEach(function (e, i) { e.style.setProperty('--delay', Math.min(i * 60, 300) + 'ms'); });
+      $$('.reveal', g).forEach(function (e, i) { e.style.setProperty('--delay', Math.min(i * 70, 350) + 'ms'); });
     });
     /* 首屏之内的直接就位，既不交给 IntersectionObserver，也不做入场动画。
        两件事分开说：
@@ -724,7 +723,145 @@
   }
 
   /* ---------- 07 星体：史莱姆 ----------
-     2026-10-14 首页重排时删掉了（用户：和网站整体不搭）。原来的弹簧模型和交互在 git 历史里（v3.1.1 及以前）。 */
+     球是一团有弹性的果冻，用一个很小的弹簧模型驱动（每帧积分，不用库）：
+       位置   弹簧拉回原点，阻尼偏小 → 松手后会冲过头再回来
+       形变   沿某个方向「拉长 / 压扁」，同样是弹簧 → 松手后会抖几下才停
+     交互：
+       · 按下   按到哪儿，就从哪个方向往里凹一下
+       · 拖动   球跟着走，但越拖越沉（有拉力上限），拉不动的那部分变成朝指针方向的拉长
+       · 松手   弹回原位、过冲、抖动几下停住
+       · 悬停   （仅鼠标）轻微被指针牵引，移动快时顺着速度方向拉长一点
+     形变写成 rotate(a) scale(1+s, 1−0.75s) rotate(−a)：s>0 沿 a 拉长、s<0 沿 a 压扁，
+     垂直方向反着补一点，看起来体积守恒，才像软的东西而不是在缩放。
+     变换挂在 .star（外层）上，呼吸浮动在 .star__body / .star__glow 上，互不顶掉
+     （CSS 动画优先级高于内联 style，写在同一个元素上牵引会被吃掉）。
+     高光 .star__gloss 用独立的 translate 属性反向错开一点 —— 内部有惯性，更像一团液体。 */
+  (function star() {
+    var host = $('[data-star]');
+    if (!host || reduce) return;
+    var orb = $('.star', host), gloss = $('.star__gloss', host);
+    if (!orb) return;
+    var finePtr = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    orb.classList.add('is-slime');
+
+    var x = 0, y = 0, vx = 0, vy = 0;       /* 位置 / 速度（px, px/帧） */
+    var st = 0, sv = 0, ax = 0;             /* 形变量 / 形变速度 / 形变方向（弧度） */
+    var hx = 0, hy = 0;                     /* 悬停牵引目标 */
+    var drag = null, raf = 0, last = 0;
+    /* 2026-10-04 用户觉得「有点卡、效果减弱一点点」：
+       · 所有幅度收一档：拉出去最远 0.55R → 0.42R，拉长上限 0.32 → 0.22，按下 / 戳一下的回弹也小一点
+       · 阻尼加大一点，松手后抖的次数少、停得更快
+       · 半径不再每帧读 offsetWidth（每帧读布局会逼浏览器同步重排），按下时和窗口变化时量一次
+       · 拖动 / 回弹期间加 is-active（css 里把层级提到最上面），停稳后摘掉
+       · 球滚出屏幕就给 .star 加 is-paused，暂停那些一直在跑的 CSS 循环动画 */
+    var R = 200;
+    function measure() { R = orb.offsetWidth / 2 || 200; }
+    measure();
+    addEventListener('resize', measure);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        orb.classList.toggle('is-paused', !es[0].isIntersecting);
+      }).observe(host);
+    }
+    function center() {
+      var r = orb.getBoundingClientRect();     /* 含当前位移，减掉它拿到「原位」中心 */
+      return { x: r.left + r.width / 2 - x, y: r.top + r.height / 2 - y };
+    }
+
+    function frame(now) {
+      var dt = Math.min(2.5, (now - (last || now)) / 16.667 || 1);
+      last = now;
+      var tx = hx, ty = hy, sTarget = 0;
+
+      if (drag) {
+        /* 拉力：球最多跟出去 0.42R，再往外拖就拖不动了（tanh 渐近），
+           拖不动的那段距离变成朝指针方向的拉长 */
+        var dx = drag.px - drag.sx, dy = drag.py - drag.sy, dist = Math.hypot(dx, dy);
+        if (dist > 0.5) {
+          var reach = R * 0.42 * Math.tanh(dist / (R * 0.9));
+          tx = dx / dist * reach; ty = dy / dist * reach;
+          sTarget = Math.min(0.22, (dist - reach) / R * 0.32);
+          ax = Math.atan2(dy, dx);
+        }
+      }
+      /* 位置弹簧：拖动时更紧（跟手），松开后更软（过冲） */
+      var k = drag ? 0.22 : 0.08, damp = drag ? 0.62 : 0.86;
+      vx = (vx + (tx - x) * k * dt) * Math.pow(damp, dt);
+      vy = (vy + (ty - y) * k * dt) * Math.pow(damp, dt);
+      x += vx * dt; y += vy * dt;
+
+      /* 没在拖的时候，速度本身会把球甩长：顺着速度方向 */
+      var speed = Math.hypot(vx, vy);
+      if (!drag && speed > 0.4) {
+        sTarget = Math.min(0.14, speed * 0.014);
+        ax = Math.atan2(vy, vx);
+      }
+      /* 形变弹簧：阻尼小，松手后会在拉长和压扁之间来回抖几下 */
+      sv = (sv + (sTarget - st) * 0.2 * dt) * Math.pow(0.88, dt);
+      st += sv * dt;
+      st = Math.max(-0.2, Math.min(0.3, st));
+
+      var deg = ax * 180 / Math.PI;
+      orb.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0) rotate(' + deg.toFixed(2) +
+        'deg) scale(' + (1 + st).toFixed(4) + ',' + (1 - st * 0.75).toFixed(4) + ') rotate(' + (-deg).toFixed(2) + 'deg)';
+      if (gloss) gloss.style.translate = (-vx * 1.6).toFixed(2) + 'px ' + (-vy * 1.6).toFixed(2) + 'px';
+
+      var settled = !drag && Math.abs(x - hx) < 0.05 && Math.abs(y - hy) < 0.05 &&
+                    Math.abs(vx) + Math.abs(vy) < 0.02 && Math.abs(st) < 0.001 && Math.abs(sv) < 0.001;
+      if (settled) { raf = 0; last = 0; orb.classList.remove('is-active'); return; }
+      raf = requestAnimationFrame(frame);
+    }
+    function kick() { if (!raf) { last = 0; raf = requestAnimationFrame(frame); } }
+
+    /* 只有球本身（圆形区域）接指针 —— 见 css 的 .star.is-slime。
+       触屏上在球上按下就是在玩球，不会顺带滚动页面；球外面照常滚。 */
+    orb.addEventListener('pointerdown', function (e) {
+      if (e.button > 0) return;
+      e.preventDefault();
+      /* 捕获挂在被按到的那层圆上（.star 自己 pointer-events:none），事件照样冒泡到这里 */
+      try { e.target.setPointerCapture(e.pointerId); } catch (err) {}
+      measure();
+      var c = center();
+      /* 按下：从按的那一侧往里凹 */
+      ax = Math.atan2(e.clientY - c.y, e.clientX - c.x);
+      sv -= 0.05;
+      drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, px: e.clientX, py: e.clientY, moved: 0 };
+      orb.classList.add('is-grabbing', 'is-active');
+      kick();
+    });
+    orb.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      drag.px = e.clientX; drag.py = e.clientY;
+      drag.moved = Math.max(drag.moved, Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy));
+      kick();
+    });
+    function release(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      /* 点一下没怎么拖：额外弹一下，像戳了一下果冻 */
+      if (drag.moved < 6) sv += 0.08;
+      drag = null;
+      orb.classList.remove('is-grabbing');
+      kick();
+    }
+    orb.addEventListener('pointerup', release);
+    orb.addEventListener('pointercancel', release);
+    orb.addEventListener('lostpointercapture', release);
+
+    if (finePtr) {
+      /* 宿主的位置在指针进来时量一次，不在每次 mousemove 里读布局 */
+      var hostRect = null;
+      host.addEventListener('pointerenter', function () { hostRect = host.getBoundingClientRect(); });
+      addEventListener('scroll', function () { hostRect = null; }, { passive: true });
+      host.addEventListener('pointermove', function (e) {
+        if (drag || e.pointerType !== 'mouse') return;
+        var r = hostRect || (hostRect = host.getBoundingClientRect());
+        hx = ((e.clientX - r.left) / r.width - .5) * 18;
+        hy = ((e.clientY - r.top) / r.height - .5) * 18;
+        kick();
+      });
+      host.addEventListener('pointerleave', function () { hx = 0; hy = 0; kick(); });
+    }
+  })();
 
   /* ---------- 07b 首页海报：滚动放大铺满 ----------
      照 anthropic.com 首页那张大图实测的节奏（1280×800 下）：
@@ -758,13 +895,15 @@
       padTop = parseFloat(getComputedStyle(sec).paddingTop) || 0;
       /* 框的比例不变 → 铺满后多出来的高度 = 多出来的宽度 × 高宽比；理想是其中 45% 往上长 */
       up = Math.round(Math.max(0, vw - w) * ratio * 0.45);
-      /* 但往上不能碰到上面的内容：量出海报顶边到上一块内容底边（hero 的标题、导语、按钮，
+      /* 但往上不能碰到上面的内容：量出海报顶边到上一块内容底边（hero 的文字、按钮、史莱姆球，
          不算它的底部留白）的距离，最多往上长到「这段距离 − SAFE 安全距离」，剩下的全往下长。
          以前没有这一步，宽屏上（1920 宽理想值约 170px，而留白只有约 96px）海报会盖住上面的内容（用户反馈）。 */
       var prev = sec.previousElementSibling;
       if (prev) {
         var pr = prev.getBoundingClientRect();
         var contentBottom = pr.bottom - (parseFloat(getComputedStyle(prev).paddingBottom) || 0);
+        var vis = $('.hero__visual', prev);              /* 史莱姆球那一格，算进上方内容里 */
+        if (vis) contentBottom = Math.max(contentBottom, vis.getBoundingClientRect().bottom);
         var room = sec.getBoundingClientRect().top + padTop - contentBottom - SAFE;   /* 海报顶边 = 区块顶 + padding */
         up = Math.max(0, Math.min(up, Math.floor(room)));
       }
