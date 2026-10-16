@@ -269,6 +269,8 @@
     var p = path.split('.');
     var kind = p[0];
     if (kind === 'ui') return t(p[1]);
+    /* 顶栏精选栏里的文章（data.js 文章上的 menu：true 用标题，L(...) 用短名） */
+    if (kind === 'm') { var ma = artOf(p[1]); return ma && ma.menu ? T(ma.menu === true ? ma.title : ma.menu) : null; }
     var sec = secOf(p[1]);
     if (!sec) return null;
     if (kind === 's') return T(sec[p[2]]);
@@ -278,8 +280,6 @@
     }
     var idx = parseInt(p[2], 10);
     if (kind === 'f') return sec.feature && sec.feature[idx] ? T(sec.feature[idx].label) : null;
-    if (kind === 'g') return sec.tags && sec.tags.items[idx] ? T(sec.tags.items[idx].label) : null;
-    if (kind === 'gk') return sec.tags ? T(sec.tags.kicker) : null;
     if (kind === 'l') return sec.links && sec.links[idx] ? T(sec.links[idx].label) : null;
     if (kind === 'n') return sec.notes && sec.notes[idx] ? T(sec.notes[idx][p[3]]) : null;
     return null;

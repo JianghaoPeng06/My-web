@@ -17,7 +17,7 @@
    加文章：往 ARTICLES 加一条，四语标题/导语都填上。
    加分类：往对应 section 的 cats 加一条，再跑一次 build.ps1。
 
-   文章的两个隐藏开关（读者看不到数值，只影响排序和推荐）
+   文章的隐藏开关（读者看不到，只影响排序、推荐和顶栏精选）
    ----------------------------------------------------
    weight: 1–5   推荐权重。文章页底部「继续阅读」按它挑文章：
                  5 = 最常被推荐，1 = 很少出现。不写就当 3。
@@ -26,6 +26,11 @@
    两项都写在 add({ … }) 的第一行，read: 后面，例如：
      add({ slug: 'kyoto', section: 'works', cat: 'photos', date: '2026-08-04', read: 4, weight: 3, pin: true,
    改完保存、刷新页面即可，不用跑 build.ps1。
+   menu          精选到顶部栏（2026-10-17）：顶栏下拉面板右边那一列「精选栏」，读者看不到这个开关本身。
+                 menu: true 用文章标题；menu: L('短名', …) 用这个短名（顶栏里放不下长标题时用）。
+                 单独一行，写在 lede（和 author）后面、tags 前面。不精选就删掉这一行。
+                 同一板块的精选按日期从新到旧排，同一天权重高的在前。改完要跑 build.ps1（后台保存会自动跑）。
+                 每个板块的精选栏最多 5 项（连同板块里手写的 feature，比如角色板块的 4 个角色）。
    ============================================================= */
 (function (w) {
   'use strict';
@@ -35,7 +40,7 @@
   /* 网站版本号 —— 显示在每页页脚「JasperPeng©2026」后面。
      由站长自己决定什么时候改、改成多少；改完保存、刷新即可，
      再双击「刷新图片.cmd」把它写进静态页面（忘了也不要紧，页面打开时会自动对上）。 */
-  var VERSION = 'v4.4.1';
+  var VERSION = 'v4.4.5';
 
   /* 留言板（2026-10-05）。入口是首页按钮下面那枚玻璃胶囊「留言板（限时）」和「联系」里的「留言板」（下面 contact.links 最后一项），点进去是 messages/。
      「限时」只是写在胶囊上的字，不会自己消失 —— 站长哪天不想要了，再把胶囊和页面一起删掉。
@@ -61,7 +66,6 @@
                 'Notes on creativity, technology, culture and existence — including the questions still unresolved.',
                 '創作・技術・文化・存在についてのメモ、そしてまだ答えの出ていない問い。'),
       kicker:     L('浏览研究', '瀏覽研究', 'Explore Research', 'リサーチを見る'),
-      featKicker: L('我的研究', '我的研究', 'My Research', 'マイリサーチ'),
       cats: [
         { slug: 'news',       label: L('动态', '動態', 'News', 'ニュース'),
           desc: L('关于这个档案馆的更新、上线与阶段性记录。', '關於這個檔案館的更新、上線與階段性紀錄。',
@@ -70,10 +74,6 @@
           desc: L('关于创作、技术、文化与存在的笔记与个人思考。', '關於創作、技術、文化與存在的筆記與個人思考。',
                   'Notes and personal reflections on creativity, technology, culture and existence.',
                   '創作・技術・文化・存在についてのメモと個人的な考察。') }
-      ],
-      feature: [
-        { to: 'article:the-word',   label: P('The word') },
-        { to: 'article:image-read', label: L('图像', '圖像', 'Art', 'イメージ') }
       ]
     },
     {
@@ -85,7 +85,6 @@
                 'Crafts, graphics, illustration and photography — the things made, and the making of them.',
                 '手仕事・グラフィック・イラスト・写真 ——「作ったもの」と「作る過程」。'),
       kicker:     L('浏览作品', '瀏覽作品', 'Explore Works', 'ワークスを見る'),
-      featKicker: L('精选', '精選', 'Best goods', 'ベスト'),
       cats: [
         { slug: 'artifacts',     label: L('手作', '手作', 'Artifacts', '手仕事'),
           desc: L('手作物件与实体造物，以及它们的制作过程。', '手作物件與實體造物，以及它們的製作過程。',
@@ -105,20 +104,7 @@
         { slug: 'photos',        label: L('摄影', '攝影', 'Photos', 'フォト'),
           desc: L('旅途、城市与日常的摄影记录。', '旅途、城市與日常的攝影紀錄。',
                   'Photographs from travel, cities and daily life.', '旅・都市・日常の写真記録。') }
-      ],
-      feature: [
-        { to: 'article:tongtong-mask',  label: P('嗵嗵仮面') },
-        { to: 'article:indian-anklets', label: L('印度脚铃', '印度腳鈴', 'Indian anklets', 'インドの足鈴') },
-        { to: 'article:doudou-seasons', label: P('DOUDOU') }
-      ],
-      tags: {
-        kicker: L('摄影', '攝影', 'Photos', 'フォト'),
-        items: [
-          { to: 'article:osaka',           label: L('大阪', '大阪', 'Osaka', '大阪') },
-          { to: 'article:kyoto',           label: L('京都', '京都', 'Kyoto', '京都') },
-          { to: 'article:nanjing-station', label: L('南京站', '南京站', 'Nanjing station', '南京駅') }
-        ]
-      }
+      ]
     },
     {
       key: 'universe', dir: 'universe',
@@ -129,7 +115,6 @@
                 'A city that does not exist, and the geography, transit and architecture that make it hold together.',
                 '存在しない都市と、それを成り立たせる地理・交通・建築。'),
       kicker:     L('浏览世界观', '瀏覽世界觀', 'Explore Universe', 'ユニバースを見る'),
-      featKicker: L('品牌', '品牌', 'Brands', 'ブランド'),
       cats: [
         { slug: 'maps',         label: L('地图', '地圖', 'Maps', 'マップ'),
           desc: L('虚构世界的地图与地理体系。', '虛構世界的地圖與地理體系。',
@@ -146,8 +131,7 @@
         { slug: 'scenery',      label: L('风景', '風景', 'Scenery', '風景'),
           desc: L('风景、光线与场景设定。', '風景、光線與場景設定。',
                   'Landscape, light and scene settings.', '風景・光・シーンの設定。') }
-      ],
-      feature: [ { to: 'article:noote-metro', label: P('NooteMetro') } ]
+      ]
     },
     {
       key: 'characters', dir: 'characters',
@@ -158,7 +142,6 @@
                 'Original characters — their settings, relationships, and the way each of them speaks.',
                 'オリジナルキャラクターの設定・関係、そしてそれぞれの語り口。'),
       kicker:     L('浏览角色', '瀏覽角色', 'Explore Characters', 'キャラクターを見る'),
-      featKicker: L('原创角色', '原創角色', 'OC', 'オリキャラ'),
       cats: [
         { slug: 'oc',            label: L('原创角色', '原創角色', 'OC', 'オリキャラ'), to: 'characters/',
           desc: L('原创角色设定与三视图。', '原創角色設定與三視圖。',
@@ -189,7 +172,6 @@
                 'Downloadable assets, visual guidelines, and a few things that fit nowhere else.',
                 'ダウンロード素材、ビジュアル規範、そしてどこにも入らない諸々。'),
       kicker:     L('关于我', '關於我', 'About me', '私について'),
-      featKicker: L('规范', '規範', 'Guidelines', 'ガイドライン'),
       cats: [
         { slug: 'resources',  label: L('资源', '資源', 'Resources', 'リソース'),
           desc: L('可下载的素材、字体与图形资源。', '可下載的素材、字體與圖形資源。',
@@ -200,11 +182,6 @@
         { slug: 'misc',       label: L('杂项', '雜項', 'Miscellaneous', 'その他'),
           desc: L('杂项记录与未归类内容。', '雜項紀錄與未歸類內容。',
                   'Miscellaneous notes and unfiled things.', '雑多な記録と未分類のもの。') }
-      ],
-      feature: [
-        { to: 'article:fonts', label: L('字体', '字體', 'Fonts', '書体') },
-        { to: 'article:logos', label: L('标识', '標識', 'Logos', 'ロゴ') },
-        { to: 'cat:resources', label: L('插画素材', '插畫素材', 'Illustrations', 'イラスト素材') }
       ]
     },
     {
@@ -353,6 +330,7 @@
              '福祿壽 FloruitShow 樂隊作品中常出現的樂器，《玉珍》《蘭若度母》等作品重要的樂器之一，聲音清脆悅耳。',
              'An instrument that recurs in the music of FloruitShow — central to tracks like Yuzhen and Tara — with a bright, ringing voice.',
              'FloruitShow の楽曲に度々登場する楽器。『玉珍』『蘭若度母』などで重要な役割を担い、澄んだ音色を持つ。'),
+    menu: L('印度脚铃', '印度腳鈴', 'Indian anklets', 'インドの足鈴'),
     tags: [L('作品','作品','Works','ワークス'), P('2026'), L('手作','手作','Handmade','手仕事')],
     body: [
       { t: 'p', v: '如果你听过福禄寿 FloruitShow 的歌，应该会发现她们的音乐里经常出现一些很有意思的传统乐器。印度脚铃就是其中让我印象比较深的一种。它看起来特别简单，就是用一根长绳把很多小铃铛串在一起，但真正用起来的时候，声音特别好听。' },
@@ -370,6 +348,7 @@
              '造型稿畫得再好看，戴上十分鐘脖子就開始抗議 —— 面具真正的難點在看不見的地方。',
              'However beautiful the concept drawing, ten minutes in and your neck starts complaining. The real difficulty of a mask lies where you cannot see it.',
              'どれほど美しい造形案でも、十分被れば首が抗議を始める。仮面の本当の難所は、見えないところにある。'),
+    menu: P('嗵嗵仮面'),
     tags: [L('作品','作品','Works','ワークス'), P('2026'), L('手作','手作','Handmade','手仕事')],
     body: [
       { t: 'p', v: '做面具最容易被低估的一件事是重量。造型稿画得再好看，一旦材料铺满整张脸，重心就会往前掉，戴上十分钟脖子就开始抗议。' },
@@ -417,6 +396,7 @@
              '同一個角色，四種季節，四種完全不同的呼吸節奏。',
              'One character, four seasons, four entirely different rhythms of breathing.',
              '同じキャラクター、四つの季節、まったく異なる四つの呼吸。'),
+    menu: P('DOUDOU'),
     tags: [L('作品','作品','Works','ワークス'), L('插画','插畫','Illustrations','イラスト')],
     body: [
       { t: 'p', v: '这一组的想法很简单：让同一个角色在四个季节里各活一次，看看画面会自己长成什么样。' },
@@ -472,6 +452,7 @@
              '關西的夜晚是偏綠的，這件事在照片裡比在現場明顯得多。',
              'Kansai nights lean green — far more obviously in a photograph than in person.',
              '関西の夜は緑に寄る。それは現場よりも写真のほうがはるかに顕著だ。'),
+    menu: L('大阪', '大阪', 'Osaka', '大阪'),
     tags: [L('作品','作品','Works','ワークス'), L('摄影','攝影','Photos','フォト'), L('旅行','旅行','Travel','旅')],
     body: [
       { t: 'p', v: '车厢里的荧光灯把所有人的脸都调成同一个色温，只有窗外掠过的招牌在不停打断它。那种打断很有节奏，像呼吸。' },
@@ -486,6 +467,7 @@
              '與其等一個空無一人的畫面，不如承認人也是風景的一部分。',
              'Rather than wait for an empty frame, admit that people are part of the scenery too.',
              '無人の画面を待つより、人もまた風景の一部だと認めたほうがいい。'),
+    menu: L('京都', '京都', 'Kyoto', '京都'),
     tags: [L('作品','作品','Works','ワークス'), L('摄影','攝影','Photos','フォト'), L('旅行','旅行','Travel','旅')],
     body: [
       { t: 'p', v: '在京都等一个没有人的镜头，往往要站上四十分钟。后来我放弃了，改成等一个"人站得刚好"的镜头，反而快得多，画面也更诚实。' },
@@ -548,6 +530,7 @@
              '文字、命名、字體，以及語言與視覺表達之間那條模糊的邊界。',
              'Words, naming, typefaces — and the blurred border between language and visual expression.',
              '文字、命名、書体、そして言語と視覚表現のあいだの曖昧な境界。'),
+    menu: P('The word'),
     tags: [L('研究','研究','Research','リサーチ'), L('思考','思考','Philosophy','思索')],
     body: [
       { t: 'p', v: '一个词被写下来的那一刻，它同时变成了两样东西：意思，和形状。大多数时候我们只读前者。' },
@@ -564,6 +547,7 @@
              '一張圖需要被讀懂到什麼程度，取決於它想要誰看。',
              'How legible an image needs to be depends on who it wants to be seen by.',
              '画像がどこまで読み解かれるべきかは、誰に見せたいかで決まる。'),
+    menu: L('图像', '圖像', 'Art', 'イメージ'),
     tags: [L('研究','研究','Research','リサーチ'), L('思考','思考','Philosophy','思索')],
     body: [
       { t: 'p', v: '可读性不是越高越好。有些图像的价值恰恰在于它拒绝被立刻读懂，逼着人多停留几秒 —— 那几秒是它全部的意义。' },
@@ -579,6 +563,7 @@
              '地圖、交通系統與虛構的城市環境 —— 這個世界觀裡被建造得最久的一部分。',
              'Maps, transit and a fictional urban environment — the longest-built part of this world.',
              '地図、交通、架空の都市環境 —— この世界観で最も長く作り続けている部分。'),
+    menu: P('NooteMetro'),
     tags: [L('世界观','世界觀','Universe','ユニバース'), L('轨道交通','軌道交通','Metro','メトロ')],
     body: [
       { t: 'p', v: '第三版线网最大的改动是承认了一件事：这座城市不需要那么多换乘站。' },
@@ -732,6 +717,7 @@
              'A warm sheet of paper, a single sprout, and the few rules that keep them in order. Everything below is live — click it, drag it, try it.',
              '温かい色の紙、一本の茶の芽、そしてそれらを整える数本のルール。下の色や書体、動きはすべて触って試せます。'),
     author: 'JasperPeng，Claude by Anthropic',
+    menu: L('设计规范文档', '設計規範文檔', 'Design Specification Document', 'デザイン仕様ドキュメント'),
     tags: [L('规范','規範','Guidelines','ガイドライン'), L('字体','字體','Fonts','書体'), L('标识','標識','Logos','ロゴ'), L('资源','資源','Resources','リソース')],
     body: [
       { t: 'html', v: '<div class="sx sx-hero" data-sx-auto><div class="sx-hero__dots" aria-hidden="true"><i style="--c:#FAF9F5;--i:0"></i><i style="--c:#141413;--i:1"></i><i style="--c:#8F9755;--i:2"></i><i style="--c:#8C89CD;--i:3"></i><i style="--c:#CF6872;--i:4"></i><i style="--c:#5E9FC3;--i:5"></i><i style="--c:#70B2B2;--i:6"></i><i style="--c:#D8C0A1;--i:7"></i></div><div class="sx-hero__say">A warm sheet of paper, <em>and a single sprout.</em></div><div class="sx-hero__sub">纸、墨、芽 —— 这个网站的颜色、字体、形状和动作都从这里来。<br>下面的东西都是活的：色块可以点，滑块可以拖，动画可以重播。</div></div>' },

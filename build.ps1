@@ -71,7 +71,6 @@ for ($i = 0; $i -lt $secs.Count; $i++) {
     $s | Add-Member Seg        $seg
     $s | Add-Member Label      (Field $seg 'label')
     $s | Add-Member Kicker     (Field $seg 'kicker')
-    $s | Add-Member FeatKicker (Field $seg 'featKicker')
 
     # cats
     # 分类可以带 to:'<路径>' —— 表示这一项不生成自己的分类页，
@@ -107,20 +106,6 @@ for ($i = 0; $i -lt $secs.Count; $i++) {
         }
     }
     $s | Add-Member Feature $feat
-
-    # tags（Works 板块的 Photos 胶囊）
-    $tags = @(); $tagKicker = ''
-    $tm = [regex]::Match($seg, 'tags:\s*\{')
-    if ($tm.Success) {
-        $tseg = $seg.Substring($tm.Index, [Math]::Min(900, $seg.Length - $tm.Index))
-        $tagKicker = Field $tseg 'kicker'
-        foreach ($x in [regex]::Matches($tseg, "to:\s*'([^']+)'\s*,\s*label:\s*[LP]\s*\(")) {
-            $tags += [pscustomobject]@{ To = $x.Groups[1].Value
-                                        Label = (Get-Loc $tseg ($x.Index + $x.Length - 1)) }
-        }
-    }
-    $s | Add-Member TagKicker $tagKicker
-    $s | Add-Member Tags $tags
 
     # links / notes（Contact）
     $links = @(); $notes = @()
@@ -234,25 +219,32 @@ function Build-Header($base) {
         }
         $left += '</ul>'
 
-        # 右栏
+        # 右栏 = 精选栏（2026-10-17 用户定的规矩）：左栏是主框架（分类，和页脚那一列一样），
+        # 右栏是从这个大分类里挑出来、可以直达的几样东西，不带小标题（联系除外，它的右栏是备注）。
+        # 来源两处：板块里手写的 feature（文章以外的东西，比如角色板块的 char:）在前；
+        # 文章上写了 menu 的（后台「精选到顶部栏」）在后，按日期从新到旧、同一天权重高的在前。
+        # 左栏有一行小标题，右栏用一行看不见的占位，让第一项和左栏第一项对齐。
         $right = ''
-        if ($s.Feature.Count) {
-            $right += "<p class=""menu__kicker"" data-t=""s.$($s.Key).featKicker"">$(Esc $s.FeatKicker)</p><ul class=""menu__list"">"
+        $picks = @($arts | Where-Object { $_.Section -eq $s.Key -and $_.Menu } |
+                   Sort-Object @{ Expression = 'Date'; Descending = $true }, @{ Expression = 'Weight'; Descending = $true }, @{ Expression = 'Order'; Descending = $false })
+        # 精选栏最多 5 项（2026-10-17 用户定的），连同手写的 feature 一起算；多出来的不进顶栏，构建时提醒一声（后台本来就不让超）
+        $room = [Math]::Max(0, 5 - $s.Feature.Count)
+        if ($picks.Count -gt $room) {
+            if (-not $script:menuWarned) { $script:menuWarned = @{} }
+            if (-not $script:menuWarned[$s.Key]) { $script:menuWarned[$s.Key] = 1; Write-Host "  ⚠ 顶栏「$($s.Label)」的精选超过 5 项，只放前 $room 篇，没放进去的：$(($picks | Select-Object -Skip $room | ForEach-Object { $_.Slug }) -join ', ')" }
+            $picks = @($picks | Select-Object -First $room)
+        }
+        if ($s.Feature.Count -or $picks.Count) {
+            $right += '<p class="menu__kicker menu__kicker--blank" aria-hidden="true">&nbsp;</p><ul class="menu__list">'
             $fi = 0
             foreach ($f in $s.Feature) {
                 $right += "<li><a href=""$(LinkFor $f.To $s $base)"" data-t=""f.$($s.Key).$fi.label"">$(Esc $f.Label)<i class=""arr"" aria-hidden=""true""></i></a></li>"
                 $fi++
             }
-            $right += '</ul>'
-        }
-        if ($s.Tags.Count) {
-            $right += "<p class=""menu__kicker menu__kicker--sp"" data-t=""gk.$($s.Key)"">$(Esc $s.TagKicker)</p><div class=""menu__tags"">"
-            $gi = 0
-            foreach ($x in $s.Tags) {
-                $right += "<a href=""$(LinkFor $x.To $s $base)"" data-t=""g.$($s.Key).$gi.label"">$(Esc $x.Label)</a>"
-                $gi++
+            foreach ($p in $picks) {
+                $right += "<li><a href=""$($base)articles/$($p.Slug)/"" data-t=""m.$($p.Slug)"">$(Esc $p.Menu)<i class=""arr"" aria-hidden=""true""></i></a></li>"
             }
-            $right += '</div>'
+            $right += '</ul>'
         }
         if ($s.Notes.Count) {
             $ni = 0
@@ -652,9 +644,15 @@ for ($ai = 0; $ai -lt $artMatches.Count; $ai++) {
     $wm = [regex]::Match($seg, 'weight:\s*(\d+)'); $rm = [regex]::Match($seg, 'read:\s*(\d+)')
     $wt = if ($wm.Success) { [int]$wm.Groups[1].Value } else { 3 }
     if ($wt -lt 1 -or $wt -gt 5) { $wt = 3 }
+    # 精选到顶部栏（后台的开关）：menu: true 用标题；menu: L('短名', …) 用这个短名。只在 body: 之前找，正文里的字不算
+    $bi   = $seg.IndexOf('body:')
+    $head = if ($bi -ge 0) { $seg.Substring(0, $bi) } else { $seg }
+    $mm   = [regex]::Match($head, '(?m)^\s*menu:\s*(true|[LP]\s*\()')
+    $menu = if (-not $mm.Success) { '' } elseif ($mm.Groups[1].Value -eq 'true') { $title } else { Get-Loc $head ($mm.Index + $mm.Length - 1) }
     $catObj = if ($sec) { $sec.Cats | Where-Object { $_.Slug -eq $m.Groups[3].Value } | Select-Object -First 1 } else { $null }
     $arts += [pscustomobject]@{ Slug = $m.Groups[1].Value; Date = $m.Groups[4].Value; Cover = $cover
                                 Title = $title; Lede = (Field $seg 'lede'); Weight = $wt; Order = $ai
+                                Section = $m.Groups[2].Value; Menu = $menu
                                 Read = $(if ($rm.Success) { [int]$rm.Groups[1].Value } else { 0 })
                                 CatLabel = $(if ($catObj) { $catObj.Label } elseif ($sec) { $sec.Label } else { '' })
                                 CatHref  = $(if ($catObj) { CatHref $sec $catObj '' } else { 'home.html' }) }

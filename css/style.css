@@ -470,6 +470,8 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
   font-size: var(--fs-label); font-weight: 500; letter-spacing: .02em;
 }
 .menu__kicker--sp { margin-top: var(--sp-md); }
+/* 右栏是精选栏，不带小标题（2026-10-17）：这一行只占位置、看不见，让精选第一项和左栏分类第一项对齐 */
+.menu__kicker--blank { visibility: hidden; }
 .menu__list a, .menu__soon {
   display: flex; align-items: center; gap: 8px;
   padding: 7px 0;
@@ -486,14 +488,6 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
 }
 .menu__note { font-size: var(--fs-small); color: var(--text-2); }
 .menu__note--dim { color: var(--text-faint); }
-.menu__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-.menu__tags a {
-  display: inline-flex; align-items: center; height: 32px; padding-inline: 14px;
-  border: 1px solid var(--border); border-radius: var(--r-pill);
-  font-size: 13px; color: var(--text-2);
-  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
-}
-.menu__tags a:hover { border-color: var(--focus); color: var(--brand-soft-text); background: var(--brand-soft); }
 
 .scrim {
   position: fixed; inset: var(--header-h) 0 0; z-index: 490;
