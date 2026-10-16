@@ -323,7 +323,7 @@
   function add(o) { A.push(o); }
 
   /* ===== Works · Artifacts ===== */
-  add({ slug: 'indian-anklets', section: 'works', cat: 'artifacts', date: '2026-08-18', read: 5, weight: 4,
+  add({ slug: 'indian-anklets', section: 'works', cat: 'artifacts', date: '2026-09-02', read: 5, weight: 4,
     title: L('用铃铛和长绳编织一串印度脚铃', '用鈴鐺和長繩編織一串印度腳鈴',
              'Weaving a string of Indian anklets from bells and cord', '鈴と長い紐でインドの足鈴を編む'),
     lede:  L('福禄寿 FloruitShow 乐队作品中常出现的乐器，《玉珍》《兰若度母》等作品重要的乐器之一，声音清脆悦耳。',
@@ -488,7 +488,7 @@
     ]});
 
   /* ===== Research · News ===== */
-  add({ slug: 'site-launch', section: 'research', cat: 'news', date: '2026-08-18', read: 3, weight: 5, pin: true,
+  add({ slug: 'site-launch', section: 'research', cat: 'news', date: '2026-09-09', read: 3, weight: 5, pin: true,
     title: L('JasperPeng 个人网站正式上线！来自 2026 年的声音。',
              'JasperPeng 個人網站正式上線！來自 2026 年的聲音。',
              'JasperPeng’s personal site is live — a voice from 2026.',
@@ -508,7 +508,7 @@
       { t: 'img', src: 'assets/images/research/site-launch-3.jpg', cap: 'V4.3.0 Home页面纪念' }
     ]});
 
-  add({ slug: 'archive-plan', section: 'research', cat: 'news', date: '2026-08-15', read: 1, weight: 1,
+  add({ slug: 'archive-plan', section: 'research', cat: 'news', date: '2026-10-16', read: 1, weight: 1,
     title: L('接下来半年打算做的事', '接下來半年打算做的事',
              'What I plan to do over the next six months', 'これから半年でやること'),
     lede:  L('计划。',
