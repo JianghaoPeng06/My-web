@@ -202,6 +202,10 @@ body {
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* 数字一律用等高的「齐线数字」（2026-10-16 用户要求）：Georgia 和 Gelasio 默认是忽高忽低的「旧式数字」（3、4、5、7、9 往下掉，6、8 往上冒），
+     装饰味重、读日期和数字很费劲。两种字体都自带齐线数字（lnum），这里打开就行；Google Sans 本来就是齐线数字，不受影响。
+     会继承到所有元素。别处写 font-variant-numeric 时要连 lining-nums 一起写（比如 lining-nums tabular-nums），只写一个值会把这里覆盖掉 */
+  font-variant-numeric: lining-nums;
   /* body 也必须用 clip：这里以前写的是 hidden，body 因此变成了滚动容器（html 不是 visible 时，body 的 overflow 不会交给视口），
      顶栏的 position: sticky 就以 body 为准、跟着页面滚走了 —— 全站顶栏一直没有吸顶（2026-10-05 做漫画页时发现，见 §8 bug #38） */
   overflow-x: clip;
@@ -249,7 +253,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .lede { font-family: var(--font-serif); color: var(--text-muted); font-size: var(--fs-lead); line-height: 1.6; max-width: 60ch; text-wrap: pretty; }   /* 规范：段落避免最后一行只剩一两个字 */
 /* 装饰衬线（Kawoszeh）：只给大字号的哲理、宣言句子（现在只有首页 Design Philosophy 那一句），见令牌 --font-deco 的说明。
    字距归零 —— 它本身就是窄而高的字形，不用再收。小字（导语那种 20 来 px）试过，笔画太细、看不出装饰感还难读（用户 10-16），不用 */
-.deco, #philosophy .deco { font-family: var(--font-deco); letter-spacing: 0; }
+.deco, #philosophy .deco { font-family: var(--font-deco); letter-spacing: 0; font-variant-numeric: oldstyle-nums; }
+/* 装饰字体的数字用忽高忽低的「旧式数字」（Kawoszeh 自带 onum；它默认是等高数字，所以要专门打开）—— 用户 10-16：正文的数字要等高好读，
+   装饰的地方反而要这种起伏。只在 .deco 里这样，全站其他地方是 body 上的 lining-nums。Kawoszeh 加载不到时落到 Georgia，Georgia 的旧式数字也是这个味道 */
 /* 版权符号 ©（页脚、漫画页小胶囊、扉页底栏）：Google Sans 的 © 是缩小抬高的上标样式，夹在 JasperPeng 和 2026 中间像飘着（用户 10-16）。
    只给这一个符号换成 Arial —— 它的 © 和大写字母一样高，坐在基线上；Android 没有 Arial，落到 Roboto，样子一样 */
 .copy-mark { font-family: Arial, "Helvetica Neue", Roboto, sans-serif; }
@@ -1532,7 +1538,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .msg .twikoo .tk-comment .tk-submit .tk-textarea .tk-input__inner { min-height: 96px; }
 .msg .twikoo .tk-textarea .tk-input__inner:hover { border-color: var(--text-faint); }
 .msg .twikoo .tk-textarea .tk-input__inner:focus { border-color: var(--focus); box-shadow: var(--msg-ring); }
-.msg .twikoo .tk-input__count { right: 14px; bottom: 9px; font-size: 12px; font-variant-numeric: tabular-nums; color: var(--text-faint); }
+.msg .twikoo .tk-input__count { right: 14px; bottom: 9px; font-size: 12px; font-variant-numeric: lining-nums tabular-nums; color: var(--text-faint); }
 
 /* 底下一行：左边表情 / 图片 / Markdown 图标，右边预览 + 发送 */
 .msg .twikoo .tk-row.actions { margin: 14px 0 0 calc(var(--msg-avatar) + 16px); gap: 8px; }
@@ -1590,7 +1596,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
   margin-bottom: 4px; padding-bottom: 16px; line-height: 1.2;
   font-size: clamp(20px, 2vw, 24px); font-weight: 600; letter-spacing: -.02em;
 }
-.msg .twikoo .tk-comments-count span:first-child { font-variant-numeric: tabular-nums; margin-right: .2em; }
+.msg .twikoo .tk-comments-count span:first-child { font-variant-numeric: lining-nums tabular-nums; margin-right: .2em; }
 .msg .twikoo .tk-comments-actions { gap: 6px; }
 .msg .twikoo .tk-comments-sort {
   gap: 2px; margin-right: 6px; padding: 3px; border-radius: var(--r-pill); background: var(--bg-2);
@@ -1632,7 +1638,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .msg .twikoo .tk-nick-link { color: var(--text); }
 .msg .twikoo .tk-nick-link:hover { color: var(--msg-accent); text-decoration: none; }
 .msg .twikoo .tk-time { font-size: 13px; color: var(--text-faint); }
-.msg .twikoo .tk-time time { font-variant-numeric: tabular-nums; }
+.msg .twikoo .tk-time time { font-variant-numeric: lining-nums tabular-nums; }
 .msg .twikoo .tk-actions button { font-size: 12px; color: var(--msg-accent); }
 
 /* 标签：小胶囊。「站长」用强调色，置顶 / 待审核保留 Twikoo 原来的红 / 黄意思但换成同样的胶囊 */
@@ -1652,7 +1658,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
   transition: background var(--t-fast), color var(--t-fast);
 }
 .msg .twikoo .tk-action-icon { width: 16px; height: 16px; color: inherit; }
-.msg .twikoo .tk-action-count { margin-left: 4px; font-size: 12px; font-variant-numeric: tabular-nums; color: inherit; }
+.msg .twikoo .tk-action-count { margin-left: 4px; font-size: 12px; font-variant-numeric: lining-nums tabular-nums; color: inherit; }
 .msg .twikoo .tk-action-link.tk-liked { color: var(--msg-accent); }
 @media (hover: hover) and (pointer: fine) {
   .msg .twikoo .tk-action-link:hover { background: var(--bg-2); color: var(--text); }
@@ -1682,7 +1688,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .msg .twikoo .tk-pagination { margin-top: 20px; gap: 6px; }
 .msg .twikoo .tk-pagination-pager {
   min-width: 34px; height: 34px; padding: 0 10px; border-radius: var(--r-pill);
-  font-size: 13px; font-variant-numeric: tabular-nums; color: var(--text-muted); transition: background var(--t-fast), color var(--t-fast);
+  font-size: 13px; font-variant-numeric: lining-nums tabular-nums; color: var(--text-muted); transition: background var(--t-fast), color var(--t-fast);
 }
 .msg .twikoo .tk-pagination-pager:hover { background: var(--bg-2); color: var(--text); }
 .msg .twikoo .tk-pagination-pager.__current { background: var(--text); color: var(--bg); }
@@ -1759,7 +1765,7 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
 .ftr__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-md); padding-top: var(--sp-lg); border-top: 1px solid var(--border); }
 .ftr__copy { color: var(--text-muted); font-size: var(--fs-caption); }
 /* 版本号：跟在版权后面，再淡一档，只给需要的人看（数值在 data.js 的 VERSION） */
-.ftr__ver { margin-left: .5em; font-family: var(--font-mono); color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.ftr__ver { margin-left: .5em; font-family: var(--font-mono); color: var(--text-faint); font-variant-numeric: lining-nums tabular-nums; }
 
 .lang { position: relative; }
 .lang__btn {

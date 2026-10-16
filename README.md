@@ -547,6 +547,9 @@ Figma 坐标不直接翻译成 CSS。优先级链条（来自用户给的提示�
 - 实测：有 Georgia 的电脑上只下载了 `google-sans-latin.woff2` 一个文件；四种字形（Google Sans 正 / 斜、Gelasio 正 / 斜）都能正常加载
 - **装饰衬线 Kawoszeh**（同一天，用户找的 Lanota 用的字体，写进设计规范 02）：作者 gluk，SIL OFL 1.1，许可全文 `assets/fonts/kawoszeh-OFL.txt`。字体带「保留字体名」，按 OFL 不能改字形，所以不裁字符，只把原版 OTF 换成 WOFF 外壳（144KB → 68KB，`assets/fonts/kawoszeh.woff`）。令牌 `--font-deco`（后备 Georgia），用类名 `.deco`。**只用于可有可无的英文大字句子**（谚语、哲理、宣言，32px 以上）：现在只有首页 Design Philosophy 那一句。首屏导语和 Contact Me 下面那句试过，小字笔画太细、看不出装饰感还难读（用户），改回 Georgia。首页 `<head>` preload 了它
 - **版权符号 ©**（同一天，用户：用 Google Sans 不协调）：Google Sans 的 © 是缩小抬高的上标样式，夹在「JasperPeng©2026」中间像飘着。页脚（`build.ps1` 生成）和扉页底栏里把 © 包成 `<span class="copy-mark">`，只这一个符号用 Arial（Android 落到 Roboto），和大写字母一样高、坐在基线上
+- **数字一律等高**（同一天，用户：衬线体的数字忽高忽低、装饰味重、难读）：Georgia 和 Gelasio 默认是「旧式数字」（3 4 5 7 9 下沉、6 8 上冒），两种字体都自带等高的「齐线数字」（OpenType `lnum`，已逐个检查过字体文件）。
+  `body` 上写了 `font-variant-numeric: lining-nums`，全站继承；Google Sans 本来就是齐线数字，不受影响。**别处写 `font-variant-numeric` 要连 `lining-nums` 一起写**（比如 `lining-nums tabular-nums`），只写一个值会把它覆盖回旧式数字。后台（jp-admin 的 app.css）也一样
+- **装饰字体例外：数字反而要忽高忽低**（同一天，用户）：装饰衬线 Kawoszeh 自带旧式数字（`onum`，它默认是等高数字），`.deco` 上专门写了 `font-variant-numeric: oldstyle-nums`，所以装饰性的英文大字句子里出现年份、数字时是起伏的写法。Kawoszeh 加载不到时落到 Georgia，Georgia 的旧式数字也是同一个味道。现在唯一的 `.deco`（首页 Design Philosophy 那句）里没有数字，看不出变化，以后用到时自动生效
 ## 4. 从 Figma 实测出来的关键数据
 
 | 项目 | 值 | 来源 |
@@ -1138,7 +1141,9 @@ CSS 花括号 389/389 配平。
   角色立绘和角色板块的文章图片在同一个文件夹，后台会拦住会撞名的地址
 - **首页海报**：换 `assets/images/poster.<图片>` / `poster.mp4|webm`（旧的挪进备份），可以把视频最后一帧存成静止画面，25MB 以上不让传（Cloudflare Pages 单文件上限）；
   图注改的是 `main.js` 四种语言的 `posterCap:'…'`（后台按「'zh-Hans': / 'zh-Hant': / en: / ja: 开头的那一行」认，别改这个写法）
-- **换电脑**：后台文件夹里双击「打包备份.cmd」出一个安装包 zip；新电脑装好 Node.js、克隆网站，解压后双击「安装.cmd」选网站文件夹即可
+- **换电脑 / 备份**：`jp-admin` 文件夹本身就是完整的后台，整个拷走即可（不打包，用户 10-16 要求：本地和备份是同一份，改一处就都改好）；新电脑装好 Node.js、克隆网站，双击里面的「安装.cmd」选网站文件夹即可
+- **作者**（同一天）：基本信息里能填作者，空着 = JasperPeng（data.js 补的默认值）。不是 JasperPeng 时，在 `lede` 后面单独写一行 `author: '…',`；是 JasperPeng 就不写，和以前一样。文章页底部「作者」显示它（main.js 渲染，build.ps1 不用它）
+- **文章地址**：新文章填英文标题时，地址框空着或还是自动生成的那个，就跟着变；另有「按英文标题生成」按钮，随时可点（老文章会先确认，因为旧链接会失效）
 
 ### 加一篇文章 / 自己写正文和排版
 
@@ -1230,6 +1235,7 @@ add({ slug: 'kyoto', section: 'works', cat: 'photos', date: '2026-08-04', read: 
 | v4.1.3 | 2026-10-16 | 透明底 PNG 保持透明：图框的米灰占位底色只在图片没加载出来时垫着，加载好就撤掉，透明处直接透出页面背景（卡片、列表、海报、文章插图、角色缩略图、漫画格子、搜索缩略图、漫画阅读页；见「换真实图片」） |
 | v4.2.0 | 2026-10-16 | 首页海报可以是图片也可以是视频（像 anthropic.com 那样放一次就停住）：有 `assets/images/poster.mp4` 就放视频、删掉就变回图片，改完双击「刷新图片.cmd」；海报换成 JasperPeng 手绘动画（先写字画头，线团、小人渐显，再长出藤蔓，3 秒）；见「首页海报：图片或视频」 |
 | v4.3.0 | 2026-10-16 | 首页首屏照 anthropic.com 重排：左边大标题（放大到 56→152，Google Sans 700）、右边导语 + 按钮一块文字块，底边和「Create.」对齐；史莱姆球挪到最下面 Contact Me、缩小放在文字右边。英文字体统一改成规范字体：无衬线 Google Sans（含「JasperPeng」字标和首页大字），衬线 Georgia，没有 Georgia 的设备用 Gelasio；字体文件放在网站自己的 assets/fonts/，大陆也能加载，所有设备一致，加载不到才用后备字体（§3.9「字体文件」）。首页 Design Philosophy 那句宣言换成装饰衬线 Kawoszeh（Lanota 用的字体，只用于可有可无的英文大字句子）。设计规范第 02 节同步更新 |
+| v4.3.1 | 2026-10-16 | 数字一律用等高的齐线数字（Georgia / Gelasio 默认的旧式数字忽高忽低、难读）；装饰衬线 Kawoszeh 反过来打开它的起伏数字当装饰（§3.9 末尾），设计规范第 02 节同步；「角色配色的三色律」改成「JasperPeng 设计规范文档」（关于 · 规范，置顶），这次生成了它的文章页。另外网站外面的后台加了角色、首页海报管理、作者和「按英文标题生成」地址（§10） |
 
 - **只在一处改**：`js/data.js` 开头的 `var VERSION = 'v4.3.0';`。改完保存、刷新即可；
   再双击「刷新图片.cmd」把它写进静态页面（忘了也行，`main.js` 打开页面时会按 data.js 再对一遍，实测过）
