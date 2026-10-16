@@ -2133,6 +2133,56 @@ html.js-on .reveal:not(.is-in) { opacity: 0; transform: translateY(22px); transi
 html.js-on .grid > .reveal:not(.is-in), html.js-on .list > .reveal:not(.is-in) { transform: perspective(900px) translateY(24px) rotateX(8deg); }
 html.js-on.is-mid .grid > .reveal:not(.is-in), html.js-on.is-mid .list > .reveal:not(.is-in) { transform: perspective(900px) translateY(12px) rotateX(4deg); }
 
+/* 文章目录导航条（main.js 11d，2026-10-17）—— 学 ChatGPT 长对话的那列短横线，放在屏幕左边（用户要求）。
+   平时只有短横线（h2 长、h3 短，墨色 20%），读到的那一节变茶芽、稍微拉长；
+   展开的列表是一张浮层卡片，盖在横线上、从左边轻轻滑出来。当前一节用茶芽浅底（规范「状态 = 茶芽浅底」）。 */
+.toc {
+  position: fixed; left: clamp(4px, 1.6vw, 24px); top: 50%; z-index: 465;
+  transform: translateY(-50%);
+  transition: opacity var(--t) var(--e-io), visibility var(--t);
+}
+.toc.is-away:not(.is-open) { opacity: 0; visibility: hidden; }   /* 读完正文（底板、继续阅读）就淡出 */
+.toc__rail {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  padding: 12px 8px; border-radius: var(--r-xs);
+}
+.toc__tick {
+  display: block; width: 16px; height: 2px; border-radius: 2px; background: var(--border-2);
+  transition: background var(--t-fast) var(--e-io), width var(--t) var(--e-out);
+}
+.toc__tick--h3 { width: 9px; }
+.toc__tick.is-on { width: 22px; background: var(--accent); }
+.toc__tick--h3.is-on { width: 14px; }
+.toc__panel {
+  position: absolute; left: 0; top: 50%; width: 288px; max-height: min(72vh, 600px);
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+  padding: 14px 8px 8px; background: var(--float); border: 1px solid var(--border);
+  border-radius: var(--r-sm); box-shadow: var(--shadow-lg);
+  opacity: 0; visibility: hidden; transform: translate(-10px, -50%); transform-origin: left center;
+  transition: opacity var(--t-fast) var(--e-io), transform var(--t) var(--e-out), visibility var(--t-fast);
+}
+.toc.is-open .toc__panel { opacity: 1; visibility: visible; transform: translate(0, -50%); }
+.toc__title { padding: 0 10px 8px; color: var(--text-muted); font-size: var(--fs-label); font-weight: 500; letter-spacing: .02em; }
+.toc__panel ol { list-style: none; margin: 0; padding: 0; }
+.toc__panel a {
+  display: block; padding: 7px 10px; border-radius: var(--r-xs);
+  font-family: var(--font); font-size: 14px; line-height: 1.4; color: var(--text-muted);
+  transition: background var(--t-fast) var(--e-io), color var(--t-fast) var(--e-io);
+}
+.toc__item--h2 a { color: var(--text); font-weight: 500; }
+.toc__item--h2:not(:first-child) { margin-top: 4px; }
+.toc__item--h3 a { padding-left: 24px; }
+.toc__panel a:hover { background: color-mix(in srgb, var(--text) 6%, transparent); color: var(--text); }
+.toc__panel a[aria-current] { background: var(--brand-soft); color: var(--brand-soft-text); }
+.toc__panel a:focus-visible { outline-offset: -2px; }
+@media (max-width: 900px) {
+  .toc { left: 2px; }
+  .toc__rail { gap: 8px; padding: 10px 6px; }
+  .toc__tick { width: 12px; } .toc__tick--h3 { width: 7px; }
+  .toc__tick.is-on { width: 16px; } .toc__tick--h3.is-on { width: 10px; }
+  .toc__panel { left: 14px; width: min(300px, calc(100vw - 32px)); }   /* 离屏幕边 16px */
+}
+
 .to-top {
   position: fixed; right: 24px; bottom: 24px; z-index: 470;
   display: grid; place-items: center; width: 44px; height: 44px;
@@ -2264,7 +2314,7 @@ html.js-on.is-mid .grid > .reveal:not(.is-in), html.js-on.is-mid .list > .reveal
   .reveal { opacity: 1; transform: none; }
 }
 @media print {
-  .hdr, .ftr, .to-top, .scrim, .search, .mnav, .crumb, .poster, .zoom { display: none !important; }
+  .hdr, .ftr, .to-top, .toc, .scrim, .search, .mnav, .crumb, .poster, .zoom { display: none !important; }
   body { color: #000; background: #fff; }
   .read { width: 100%; }
 }

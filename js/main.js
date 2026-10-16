@@ -177,7 +177,7 @@
       bodyOriginal:'正文保持写作时的原文，未作翻译。', notFound:'没有找到这篇文章', notFoundDesc:'链接可能已经失效，或者这篇内容还没有发布。',
       charsReading:'角色相关文章', emptyTitle:'这个分类还没有内容', emptyDesc:'先去看看其他板块，或者回到首页。',
       category:'分类', viewRes:'查看资源', all:'全部', year:'年份', version:'版本', region:'地图',
-      pinned:'置顶', zoomClose:'关闭', zoomHint:'双击或滚轮放大 · 拖动查看细节', searchTip:'可搜标题、标签、分类、正文；空格分隔多个关键词',
+      pinned:'置顶', zoomClose:'关闭', toc:'本文目录', zoomHint:'双击或滚轮放大 · 拖动查看细节', searchTip:'可搜标题、标签、分类、正文；空格分隔多个关键词',
       nfTitle:'这个页面不存在', nfDesc:'链接可能已经失效，或者地址输错了。', nfSearch:'搜索', share:'分享', copied:'链接已复制', author:'作者',
       comicsHint:'拖动浏览，点开章节开始阅读', comicsRead:'开始阅读', comicsBack:'回到章节地图', comicsNext:'下一话', comicsEnd:'本话完', comicsEmpty:'这一话的页面还没有上传。', comicsMissing:'没有找到这一话',
       msgTitle:'留言板', msgLede:'想说什么都可以，在这里留下你的话。', msgSoon:'留言板即将开放', msgSoonDesc:'后台还在搭建中。想说什么，可以先发邮件给我。', msgMail:'发邮件', msgFail:'留言板暂时连不上', msgFailDesc:'可能是网络问题，稍后再试；着急的话可以先发邮件给我。',
@@ -188,7 +188,7 @@
       bodyOriginal:'正文保持寫作時的原文，未作翻譯。', notFound:'找不到這篇文章', notFoundDesc:'連結可能已失效，或這篇內容尚未發布。',
       charsReading:'角色相關文章', emptyTitle:'這個分類還沒有內容', emptyDesc:'先看看其他版塊，或回到首頁。',
       category:'分類', viewRes:'檢視資源', all:'全部', year:'年份', version:'版本', region:'地圖',
-      pinned:'置頂', zoomClose:'關閉', zoomHint:'雙擊或滾輪放大 · 拖動查看細節', searchTip:'可搜尋標題、標籤、分類、正文；以空格分隔多個關鍵字',
+      pinned:'置頂', zoomClose:'關閉', toc:'本文目錄', zoomHint:'雙擊或滾輪放大 · 拖動查看細節', searchTip:'可搜尋標題、標籤、分類、正文；以空格分隔多個關鍵字',
       nfTitle:'這個頁面不存在', nfDesc:'連結可能已經失效，或者網址輸入錯誤。', nfSearch:'搜尋', share:'分享', copied:'連結已複製', author:'作者',
       comicsHint:'拖動瀏覽，點開章節開始閱讀', comicsRead:'開始閱讀', comicsBack:'回到章節地圖', comicsNext:'下一話', comicsEnd:'本話完', comicsEmpty:'這一話的頁面還沒有上傳。', comicsMissing:'找不到這一話',
       msgTitle:'留言板', msgLede:'想說什麼都可以，在這裡留下你的話。', msgSoon:'留言板即將開放', msgSoonDesc:'後台還在搭建中。想說什麼，可以先寄信給我。', msgMail:'寄信', msgFail:'留言板暫時連不上', msgFailDesc:'可能是網路問題，稍後再試；著急的話可以先寄信給我。',
@@ -199,7 +199,7 @@
       bodyOriginal:'The article text is kept in the language it was written in, untranslated.', notFound:'Article not found', notFoundDesc:'The link may have expired, or this piece is not published yet.',
       charsReading:'Reading on the characters', emptyTitle:'Nothing here yet', emptyDesc:'Try another section, or head back home.',
       category:'Category', viewRes:'View resources', all:'All', year:'Year', version:'Version', region:'Region',
-      pinned:'Pinned', zoomClose:'Close', zoomHint:'Double-click or scroll to zoom · drag to pan', searchTip:'Search titles, tags, categories and text; separate keywords with spaces',
+      pinned:'Pinned', zoomClose:'Close', toc:'On this page', zoomHint:'Double-click or scroll to zoom · drag to pan', searchTip:'Search titles, tags, categories and text; separate keywords with spaces',
       nfTitle:'This page doesn’t exist', nfDesc:'The link may have expired, or the address was mistyped.', nfSearch:'Search', share:'Share', copied:'Link copied', author:'Author',
       comicsHint:'Drag to explore · open a chapter to start reading', comicsRead:'Start reading', comicsBack:'Back to the chapter map', comicsNext:'Next', comicsEnd:'End of chapter', comicsEmpty:'The pages for this chapter haven’t been uploaded yet.', comicsMissing:'Chapter not found',
       msgTitle:'Message Board', msgLede:'Say anything you like — leave a message here.', msgSoon:'The message board is opening soon', msgSoonDesc:'It’s still being set up. In the meantime, feel free to send me an email.', msgMail:'Send an email', msgFail:'Can’t reach the message board right now', msgFailDesc:'It may be a network issue — please try again later, or send me an email.',
@@ -210,7 +210,7 @@
       bodyOriginal:'本文は執筆時の言語のまま、翻訳していません。', notFound:'記事が見つかりません', notFoundDesc:'リンクが無効か、まだ公開されていない可能性があります。',
       charsReading:'キャラクター関連の記事', emptyTitle:'まだコンテンツがありません', emptyDesc:'他のセクションを見るか、ホームへ戻ってください。',
       category:'カテゴリ', viewRes:'リソースを見る', all:'すべて', year:'年', version:'版', region:'地域',
-      pinned:'固定', zoomClose:'閉じる', zoomHint:'ダブルクリック・ホイールで拡大 · ドラッグで移動', searchTip:'タイトル・タグ・カテゴリ・本文を検索。スペースで複数キーワード',
+      pinned:'固定', zoomClose:'閉じる', toc:'目次', zoomHint:'ダブルクリック・ホイールで拡大 · ドラッグで移動', searchTip:'タイトル・タグ・カテゴリ・本文を検索。スペースで複数キーワード',
       nfTitle:'このページは存在しません', nfDesc:'リンクが無効になったか、アドレスが間違っている可能性があります。', nfSearch:'検索', share:'共有', copied:'リンクをコピーしました', author:'著者',
       comicsHint:'ドラッグで移動、章を開いて読む', comicsRead:'読む', comicsBack:'チャプターマップへ', comicsNext:'次の話', comicsEnd:'この話はここまで', comicsEmpty:'この話のページはまだアップロードされていません。', comicsMissing:'この話が見つかりません',
       msgTitle:'メッセージボード', msgLede:'なんでも気軽に、ここにメッセージを残してください。', msgSoon:'メッセージボードはまもなく公開', msgSoonDesc:'ただいま準備中です。それまではメールでどうぞ。', msgMail:'メールを送る', msgFail:'メッセージボードに接続できません', msgFailDesc:'ネットワークの問題かもしれません。時間をおいて再度お試しいただくか、メールでどうぞ。',
@@ -1597,6 +1597,89 @@
     });
   }
 
+  /* ---------- 11d 文章目录导航条（2026-10-17，学 ChatGPT 长对话的那列短横线，放在左边）----------
+     按正文里的小标题自动生成（只认 .article__body 直接下面的 h2 / h3，交互演示里的不算），少于 2 个就不出。
+       平时  屏幕左边一列短横线：h2 长一点、h3 短一点，读到的那一节变茶芽色
+       展开  鼠标移上去（或键盘 Tab 进来）展开标题列表；触屏上点一下展开，点空白处收起
+       跳转  点标题平滑滚到那一节（停的位置让开顶栏，靠 html 的 scroll-padding-top）
+     读完正文（底板、继续阅读）就淡出。 */
+  var tocOff = [];
+  function articleToc(body) {
+    tocOff.forEach(function (f) { f(); }); tocOff = [];
+    var old = $('.toc'); if (old) old.remove();
+    if (!body) return;
+    var hs = $$(':scope > h2, :scope > h3', body);
+    if (hs.length < 2) return;
+    hs.forEach(function (h, i) { if (!h.id) h.id = 'sec-' + (i + 1); h.setAttribute('tabindex', '-1'); });
+
+    var nav = document.createElement('nav');
+    nav.className = 'toc';
+    nav.setAttribute('aria-label', t('toc'));
+    nav.innerHTML =
+      '<button class="toc__rail" type="button" aria-expanded="false" aria-controls="toc-panel" aria-label="' + esc(t('toc')) + '">' +
+        hs.map(function (h) { return '<i class="toc__tick toc__tick--' + h.tagName.toLowerCase() + '"></i>'; }).join('') +
+      '</button>' +
+      '<div class="toc__panel" id="toc-panel"><p class="toc__title">' + esc(t('toc')) + '</p><ol>' +
+        hs.map(function (h) {
+          return '<li class="toc__item--' + h.tagName.toLowerCase() + '"><a href="#' + h.id + '">' + esc(h.textContent) + '</a></li>';
+        }).join('') +
+      '</ol></div>';
+    BODY.appendChild(nav);
+
+    var rail = $('.toc__rail', nav), panel = $('.toc__panel', nav);
+    var ticks = $$('.toc__tick', nav), links = $$('.toc__panel a', nav);
+    var fine = matchMedia('(hover: hover) and (pointer: fine)').matches, shut = 0, cur = -1, raf = 0;
+    function on(tg, ev, fn, opt) { tg.addEventListener(ev, fn, opt); tocOff.push(function () { tg.removeEventListener(ev, fn, opt); }); }
+    function open(v) {
+      clearTimeout(shut);
+      nav.classList.toggle('is-open', v);
+      rail.setAttribute('aria-expanded', String(v));
+      if (v && links[cur]) {                         /* 列表很长时，把当前这一节滚到看得见的地方 */
+        var li = links[cur], fits = li.offsetTop + li.offsetHeight + 8 <= panel.clientHeight;
+        panel.scrollTop = fits ? 0 : li.offsetTop - panel.clientHeight / 2 + li.offsetHeight / 2;
+      }
+    }
+
+    if (fine) {
+      nav.addEventListener('mouseenter', function () { open(true); });
+      nav.addEventListener('mouseleave', function () { shut = setTimeout(function () { open(false); }, 160); });
+    }
+    rail.addEventListener('click', function () { open(!nav.classList.contains('is-open')); });
+    nav.addEventListener('focusin', function () { open(true); });
+    nav.addEventListener('focusout', function (e) { if (!nav.contains(e.relatedTarget)) open(false); });
+    on(document, 'keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) { open(false); rail.focus(); }
+    });
+    on(document, 'pointerdown', function (e) { if (!nav.contains(e.target)) open(false); });
+    links.forEach(function (a, i) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        hs[i].scrollIntoView({ block: 'start' });      /* 平滑与否跟 html 的 scroll-behavior（减少动态效果时直接到） */
+        hs[i].focus({ preventScroll: true });
+        open(false);
+      });
+    });
+
+    /* 当前读到哪一节：最后一个越过屏幕上方 30% 那条线的标题 */
+    function frame() {
+      raf = 0;
+      var line = innerHeight * .3, k = -1;
+      for (var i = 0; i < hs.length; i++) { if (hs[i].getBoundingClientRect().top <= line) k = i; else break; }
+      if (k !== cur) {
+        if (ticks[cur]) { ticks[cur].classList.remove('is-on'); links[cur].removeAttribute('aria-current'); }
+        cur = k;
+        if (ticks[cur]) { ticks[cur].classList.add('is-on'); links[cur].setAttribute('aria-current', 'true'); }
+      }
+      var r = body.getBoundingClientRect();
+      nav.classList.toggle('is-away', r.bottom < innerHeight * .4 || r.top > innerHeight);
+    }
+    function req() { if (!raf) raf = requestAnimationFrame(frame); }
+    on(window, 'scroll', req, { passive: true });
+    on(window, 'resize', req);
+    tocOff.push(function () { cancelAnimationFrame(raf); clearTimeout(shut); });
+    frame();
+  }
+
   function renderArticle() {
     var host = $('[data-article]');
     if (!host) return;
@@ -1689,6 +1772,7 @@
     /* 正文里的插图都能点开放大（顶部那张封面不算，它不在 .article__body 里） */
     zoomable($('.article__body', host));
     specDemos($('.article__body', host));      /* 正文里有 .sx 交互演示才会接上（11c） */
+    articleToc($('.article__body', host));     /* 小标题够多才出左边的目录导航条（11d） */
 
     paintCrumbs(crumbHTML([
       { label: T(s.label), href: c ? catUrl(s, c.slug) : url('home.html') },
