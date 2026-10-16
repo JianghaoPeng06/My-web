@@ -506,7 +506,7 @@
     ]});
 
   /* ===== Research · News ===== */
-  add({ slug: 'site-launch', section: 'research', cat: 'news', date: '2026-08-18', read: 8, weight: 5,
+  add({ slug: 'site-launch', section: 'research', cat: 'news', date: '2026-08-18', read: 3, weight: 5, pin: true,
     title: L('JasperPeng 个人网站正式上线！来自 2026 年的声音。',
              'JasperPeng 個人網站正式上線！來自 2026 年的聲音。',
              'JasperPeng’s personal site is live — a voice from 2026.',
@@ -519,9 +519,11 @@
     body: [
       { t: 'p', v: '很长一段时间里，我的东西散落在各个平台：插画在一个地方，设定集在另一个地方，随手写的想法则基本上没有地方。' },
       { t: 'h2', v: '为什么要自己做一个' },
+      { t: 'img', src: 'assets/images/research/site-launch-2.jpg', cap: 'V2.0.0加入的首页海报' },
       { t: 'p', v: '平台会改版、会关停、会用推荐算法决定谁看得到什么。而档案需要的恰恰是稳定和可检索 —— 这两件事只能自己做。' },
       { t: 'quote', v: '档案的价值不在于当下有多少人看，而在于十年后它还在不在。' },
-      { t: 'p', v: '所以有了这个站点。它不追求流量，只追求把东西放好、放稳、找得到。我想，比起看人脸色，随时封禁的社交媒体，一个真正属于自己的网站才是保存我作品和想法最好的容器，在这里我可以随意发言，而你，我的读者，欢迎访问我的小网站，如果有一天你的网络无法访问了，可以写邮件联系我，或者使用网络代理工具访问，当然，我相信大约是不会有那一天的。' }
+      { t: 'p', v: '所以有了这个站点。它不追求流量，只追求把东西放好、放稳、找得到。我想，比起看人脸色，随时封禁的社交媒体，一个真正属于自己的网站才是保存我作品和想法最好的容器，在这里我可以随意发言，而你，我的读者，欢迎访问我的小网站，如果有一天你的网络无法访问了，可以写邮件联系我，或者使用网络代理工具访问，当然，我相信大约是不会有那一天的。' },
+      { t: 'img', src: 'assets/images/research/site-launch-3.jpg', cap: 'V4.3.0 Home页面纪念' }
     ]});
 
   add({ slug: 'archive-plan', section: 'research', cat: 'news', date: '2026-08-15', read: 4, weight: 2,
