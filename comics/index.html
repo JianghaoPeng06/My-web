@@ -14,6 +14,7 @@
 <!-- 漫画页和角色页一样固定深色（Figma「漫画」画板底色 #070024） -->
 <meta name="theme-color" content="#070024">
 <link rel="stylesheet" href="../css/style.css">
+<link rel="preload" href="../assets/fonts/google-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="../assets/favicon/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="../assets/favicon/favicon.png">
 </head>
@@ -168,7 +169,7 @@
      做成和「拖动浏览」提示一样的半透明小胶囊，悬浮在地图底部（用户 2026-10-05）。由 build.ps1 生成 -->
 <!-- #chrome:minibar:start -->
 <div class="cmap-bar" data-minibar>
-      <p class="ftr__copy">JasperPeng©2026 <span class="ftr__ver" data-version>v4.2.0</span></p>
+      <p class="ftr__copy">JasperPeng<span class="copy-mark">©</span>2026 <span class="ftr__ver" data-version>v4.3.0</span></p>
       <div class="lang" data-lang>
         <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.75"/><path d="M3.25 12h17.5M12 3.25c4.8 5.5 4.8 12.1 0 17.5-4.8-5.4-4.8-12 0-17.5Z"/></svg>

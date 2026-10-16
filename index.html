@@ -14,6 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="JasperPeng">
 <link rel="stylesheet" href="css/style.css">
+<link rel="preload" href="assets/fonts/google-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="assets/favicon/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/favicon/favicon.png">
 <!-- 首页先取好，点 Explore 时几乎不用等加载，转场一点就开始 -->
@@ -75,7 +76,7 @@
   .cover__mark { display: grid; place-items: center; width: 46px; height: 46px; margin: 0 auto 30px;
     border-radius: var(--r-sm); background: var(--text); color: var(--bg); font-size: 22px; font-weight: 700;
     animation: cin .9s var(--e-out) both; }
-  .cover__title { font-family: var(--font-brand); font-size: clamp(46px, 9vw, 128px); line-height: 1; letter-spacing: -.055em; font-weight: 600;
+  .cover__title { font-family: var(--font-brand); font-size: clamp(46px, 9vw, 128px); line-height: 1; letter-spacing: -.045em; font-weight: 600;
     animation: cin .9s var(--e-out) .08s both; }
   .cover__sub { margin-top: 20px; color: var(--text-muted); font-size: clamp(11px, 1.15vw, 14px);
     font-weight: 500; letter-spacing: .22em; text-transform: uppercase; animation: cin .9s var(--e-out) .16s both; }
@@ -117,7 +118,7 @@
   </div>
 
   <div class="cover__bar">
-    <p class="cover__foot">JasperPeng©2026<span class="ftr__ver" data-version>v4.2.0</span></p>
+    <p class="cover__foot">JasperPeng<span class="copy-mark">©</span>2026<span class="ftr__ver" data-version>v4.3.0</span></p>
     <div class="lang" data-lang>
       <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.75"/><path d="M3.25 12h17.5M12 3.25c4.8 5.5 4.8 12.1 0 17.5-4.8-5.4-4.8-12 0-17.5Z"/></svg>

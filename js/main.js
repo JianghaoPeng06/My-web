@@ -958,15 +958,13 @@
       padTop = parseFloat(getComputedStyle(sec).paddingTop) || 0;
       /* 框的比例不变 → 铺满后多出来的高度 = 多出来的宽度 × 高宽比；理想是其中 45% 往上长 */
       up = Math.round(Math.max(0, vw - w) * ratio * 0.45);
-      /* 但往上不能碰到上面的内容：量出海报顶边到上一块内容底边（hero 的文字、按钮、史莱姆球，
+      /* 但往上不能碰到上面的内容：量出海报顶边到上一块内容底边（hero 的标题、导语和按钮，
          不算它的底部留白）的距离，最多往上长到「这段距离 − SAFE 安全距离」，剩下的全往下长。
          以前没有这一步，宽屏上（1920 宽理想值约 170px，而留白只有约 96px）海报会盖住上面的内容（用户反馈）。 */
       var prev = sec.previousElementSibling;
       if (prev) {
         var pr = prev.getBoundingClientRect();
         var contentBottom = pr.bottom - (parseFloat(getComputedStyle(prev).paddingBottom) || 0);
-        var vis = $('.hero__visual', prev);              /* 史莱姆球那一格，算进上方内容里 */
-        if (vis) contentBottom = Math.max(contentBottom, vis.getBoundingClientRect().bottom);
         var room = sec.getBoundingClientRect().top + padTop - contentBottom - SAFE;   /* 海报顶边 = 区块顶 + padding */
         up = Math.max(0, Math.min(up, Math.floor(room)));
       }

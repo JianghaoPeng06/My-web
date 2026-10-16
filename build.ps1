@@ -357,7 +357,7 @@ function FtrCol([string]$dataT, [string]$label, [string]$inner) {
 # 普通页脚和漫画页的「迷你底栏」共用这一段
 function Build-Bar {
 @"
-      <p class="ftr__copy">JasperPeng©2026 <span class="ftr__ver" data-version>$(Esc $version)</span></p>
+      <p class="ftr__copy">JasperPeng<span class="copy-mark">©</span>2026 <span class="ftr__ver" data-version>$(Esc $version)</span></p>
       <div class="lang" data-lang>
         <button class="lang__btn" type="button" data-lang-btn aria-expanded="false" aria-haspopup="listbox">
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.75"/><path d="M3.25 12h17.5M12 3.25c4.8 5.5 4.8 12.1 0 17.5-4.8-5.4-4.8-12 0-17.5Z"/></svg>

@@ -15,6 +15,23 @@
    ============================================================= */
 
 /* ---------- 01 令牌 ---------- */
+/* 规范字体文件（2026-10-16）：Google Sans（无衬线）、Gelasio（Georgia 的同尺寸替身，只在没有 Georgia 的设备上加载）。
+   取自 Google Fonts，开源 OFL 许可，放在网站自己的 assets/fonts/ 里，不依赖 Google 的服务器（大陆连不上）。
+   只取拉丁 + 拉丁扩展两段：unicode-range 是 Google 原样给的，页面上没有这些字符时不会下载；中文、日文落到系统黑体。
+   font-display: swap —— 字体到之前先用后备字体显示，不会出现空白；文件很小（常用的一个 35KB），一般一闪就换上 */
+@font-face { font-family: "Google Sans"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/google-sans-italic-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Google Sans"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/google-sans-italic-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Google Sans"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/google-sans-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Google Sans"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/google-sans-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Gelasio"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/gelasio-italic-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Gelasio"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/gelasio-italic-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Gelasio"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/gelasio-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Gelasio"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/gelasio-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+/* 装饰衬线 Kawoszeh（2026-10-16，用户找的 Lanota 用的字体）：作者 gluk，SIL OFL 1.1，许可全文在 assets/fonts/kawoszeh-OFL.txt。
+   字体带「保留字体名」，按 OFL 不能改字形，所以不裁字符，只把原版 OTF 换成 WOFF 外壳（逐表压缩，144KB → 68KB）。
+   字重声明成 100–900：只有这一个字重，任何粗细都用它本身，浏览器不会去伪造粗体 */
+@font-face { font-family: "Kawoszeh"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("../assets/fonts/kawoszeh.woff") format("woff"); }
+
 :root {
   /* 色板 —— 中性色取自设计规范第一版（anthropic.com 原值），2026-10-15 第 1 步 */
   --bg:            #FAF9F5;   /* Ivory light · 页面 */
@@ -119,16 +136,25 @@
   --shadow-paper: 0 1px 2px rgba(20,20,19,.05), 0 14px 28px -14px rgba(20,20,19,.3);
   --paper-edge:   rgba(20,20,19,.07);
 
-  /* 字体 —— 设计规范 02（2026-10-15 第 3 步）：只用系统自带字体，不加载网络字体。
-     用来读的用衬线（正文、导语、宣言、引文），用来找和点的用无衬线（标题、导航、按钮、日期）。
-     中文一律退回黑体：宋体在屏幕上、尤其 Windows 小字号容易发虚，Claude 也是这样处理的。 */
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei",
+  /* 字体 —— 设计规范 02。用来读的用衬线（正文、导语、宣言、引文），用来找和点的用无衬线（标题、导航、按钮、日期）。
+     2026-10-16 起英文先用规范字体（用户：能用规范就用规范，实在没办法加载再用后备字体；iOS 和 Android 显示不一样）：
+       · 无衬线：Google Sans —— 网站自带字体文件（assets/fonts/，开源 OFL），所以 iOS、Android、电脑都一样，大陆也能加载
+       · 衬线：Georgia；没有 Georgia 的设备（主要是 Android）用 Gelasio —— 和 Georgia 同尺寸的开源替身，同样自带，
+         有 Georgia 的设备根本不会去下载它
+       · 加载不到时才轮到后面的系统字体。字体文件只含拉丁 / 拉丁扩展字符，中文、日文自动落到后面的苹方 / 微软雅黑（黑体，Claude 也这样） */
+  --font: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei",
           "Noto Sans SC", Arial, sans-serif;
-  --font-serif: Georgia, "Times New Roman", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", serif;
+  --font-serif: Georgia, Gelasio, "Times New Roman", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", serif;
   --font-mono: ui-monospace, "SF Mono", Consolas, monospace;   /* 只用于版本号这类数字 */
-  /* 「JasperPeng」字标（扉页大字、顶栏左上角）保留改版前的字体（用户 2026-10-15 要求改回）。
-     这一串的英文在 Windows 上落到微软雅黑自带的英文字形，Mac 上是苹方 / SF —— 就是原来的样子 */
-  --font-brand: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+  /* 装饰衬线 · Kawoszeh（2026-10-16，用户要求加进规范）：只用在「可有可无、不影响功能」的英文句子上，
+     而且**只用大字号**（宣言那一档，32px 以上）—— 谚语、哲理、宣言（现在是首页 Design Philosophy 那一句）。
+     小字试过（首屏导语、Contact Me 下面那句），笔画太细、看不出装饰感还影响阅读，已经改回 Georgia。
+     标题、正文、导语、导航、按钮、日期、任何要靠它读懂信息的地方都不能用。它没有中文，中文会落到后面的 Georgia / 黑体。
+     待遇和 Google Sans 一样：网站自带、能加载就加载（首页 preload） */
+  --font-deco: "Kawoszeh", Georgia, Gelasio, "Times New Roman", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", serif;
+  /* 「JasperPeng」字标（扉页大字、顶栏左上角）和首页大字「Design. Think. Create.」：2026-10-16 起也固定用 Google Sans（用户要求）。
+     后备照旧是原来那串系统字体（Windows 上落到微软雅黑自带的英文字形，Mac 上是 SF）。 */
+  --font-brand: "Google Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
                 "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC",
                 Inter, "Helvetica Neue", Arial, sans-serif;
 }
@@ -221,6 +247,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 #philosophy .h2 { font-family: var(--font-serif); font-size: var(--fs-statement); font-weight: 400; letter-spacing: -.015em; }
 .h3 { font-size: var(--fs-h4); line-height: 1.3; font-weight: 600; }   /* 空状态等小标题 = 规范 H4 */
 .lede { font-family: var(--font-serif); color: var(--text-muted); font-size: var(--fs-lead); line-height: 1.6; max-width: 60ch; text-wrap: pretty; }   /* 规范：段落避免最后一行只剩一两个字 */
+/* 装饰衬线（Kawoszeh）：只给大字号的哲理、宣言句子（现在只有首页 Design Philosophy 那一句），见令牌 --font-deco 的说明。
+   字距归零 —— 它本身就是窄而高的字形，不用再收。小字（导语那种 20 来 px）试过，笔画太细、看不出装饰感还难读（用户 10-16），不用 */
+.deco, #philosophy .deco { font-family: var(--font-deco); letter-spacing: 0; }
+/* 版权符号 ©（页脚、漫画页小胶囊、扉页底栏）：Google Sans 的 © 是缩小抬高的上标样式，夹在 JasperPeng 和 2026 中间像飘着（用户 10-16）。
+   只给这一个符号换成 Arial —— 它的 © 和大写字母一样高，坐在基线上；Android 没有 Arial，落到 Roboto，样子一样 */
+.copy-mark { font-family: Arial, "Helvetica Neue", Roboto, sans-serif; }
 .caption { color: var(--text-faint); font-size: var(--fs-caption); }
 
 .sec-head {
@@ -531,32 +563,56 @@ html:not(.js-on) .menu__grid { width: min(var(--panel-w), 100% - var(--gutter) *
 .sr__chip:hover { border-color: var(--text); color: var(--text); background: var(--bg-2); }
 .sr__empty { padding: 36px; text-align: center; color: var(--text-muted); font-size: var(--fs-small); }
 
-/* ---------- 10 Hero ---------- */
-.hero { position: relative; padding-block: clamp(28px, 3.2vw, 48px) clamp(48px, 6vw, 96px); --hero-gap: clamp(28px, 4vw, 64px); }   /* 2026-10-16 留言板胶囊挪到按钮下面，顶上空出来了（用户：「上面空空的」），整块往上提：顶部留白 clamp(40px, 6vw, 88px) → clamp(28px, 3.2vw, 48px) */
+/* ---------- 10 Hero ----------
+   2026-10-16 照 anthropic.com 首页的排法：左边眉题 + 大标题，右边导语 + 按钮。
+   第二版（同一天，用户：比例再改进，按你的审美）：
+     · 大标题再放大一档（56→152），让它真正占住左半边 —— 三行字往右下错开，像一级级台阶
+     · 右栏是一块固定宽度（最宽 460）的「文字块」，贴着版心右边；底边和最后一行「Create.」对齐，
+       台阶正好把视线带到右下角的导语和按钮。导语、两颗按钮、留言板胶囊同宽，左右边都对齐，像一个整齐的矩形
+     · 两栏之间的空白交给 justify-content: space-between 自己分，屏幕越宽越舒展
+   901–1180 宽：右栏收到 380；900 以下上下叠。原来右边的史莱姆球挪到了最下面的 Contact Me（见「CTA · 联系」）。
+   顶部留白比有球的时候大：球走了，首屏要靠留白托住大标题（anthropic 首屏标题上方也是一大片空） */
+.hero { position: relative; padding-block: clamp(40px, 6vw, 112px) clamp(48px, 6vw, 96px); --hero-gap: clamp(32px, 5vw, 96px); }
 .hero__inner {
-  display: grid; grid-template-columns: 1.05fr .95fr;
-  align-items: center; gap: var(--hero-gap);
+  display: grid; grid-template-columns: auto minmax(300px, 460px);
+  justify-content: space-between; align-items: end; gap: var(--hero-gap);
 }
 .hero__title {
   display: flex; flex-direction: column;
-  /* 2026-10-16 改回 v3.1.1 的样子（用户：现在的大小不协调，改回老版本）：老字体（和「JasperPeng」字标同一串 --font-brand，
-     Windows 上是微软雅黑的英文字形、Mac 上是 SF）、56→116 的大字、紧字距 −5.5%、行距 .92、600 粗。
-     越过规范 Display 48→80 / 700 —— 这三个词是全站的招牌，紧凑的大字和旁边的史莱姆球更协调。 */
+  /* 招牌大字：Google Sans 700（600 在 Google Sans 里偏细，撑不住招牌的分量；2026-10-16 起，和「JasperPeng」字标同一串 --font-brand）。
+     越过规范 Display 48→80 / 700 —— 这三个词是全站的招牌，要大、要紧凑。
+     字距 −4.5%：Google Sans 的字形比原来的系统字体松，−5.5% 时字母之间开始打架，−4.5% 刚好紧而不挤 */
   font-family: var(--font-brand);
-  font-size: clamp(56px, 8.6vw, 116px); line-height: .92; letter-spacing: -.055em; font-weight: 600;
+  font-size: clamp(56px, 8.8vw, 152px); line-height: .92; letter-spacing: -.045em; font-weight: 700;
 }
 .hero__title span:nth-child(2) { margin-left: .26em; }
 .hero__title span:nth-child(3) { margin-left: .52em; }
-.hero__lede { margin-top: clamp(24px, 2.6vw, 36px); max-width: 46ch; }
+/* 右栏的底边和「Create.」的字底对齐：大字的行盒底下还留着一截（行距 .92 里字母下面那段空），往上抬一点补回来 */
+.hero__side { padding-bottom: clamp(4px, .9vw, 14px); }
+.hero__lede { max-width: none; }   /* 右栏本身就是阅读宽度，导语铺满右栏，和下面的按钮同宽 */
 .hero__actions {
-  /* 2026-10-16：两颗按钮一行、留言板胶囊在下面一行横跨两颗按钮 —— 整组宽度 = 两颗按钮合起来的宽度（fit-content），左右边都对齐 */
-  display: grid; grid-template-columns: auto auto; gap: 12px; width: fit-content;
-  margin-top: clamp(24px, 2.8vw, 36px);
+  /* 两颗按钮平分一行、留言板胶囊在下面一行横跨两颗按钮 —— 整组和导语同宽，左右边都对齐 */
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-top: clamp(24px, 2.4vw, 32px);
+}
+.hero__actions .btn { padding-inline: 20px; }
+
+@media (min-width: 901px) and (max-width: 1180px) {
+  .hero__inner { grid-template-columns: auto minmax(300px, 380px); }   /* 窄一点的屏幕，右栏收窄，给大标题留地方 */
+  .hero__actions .btn { padding-inline: 14px; }
 }
 
+/* CTA · 联系（首页最下面「Let's Create Something Meaningful」）
+   2026-10-16：史莱姆球从首屏挪到这里、缩小，放在文字右边；栏宽和首屏一样 7 : 5，上下居中。
+   900 以下上下叠，球在文字下面。球的样子和交互都没变（main.js 07），只是住进了一个小一点的格子 */
+.cta__inner {
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: center; gap: clamp(28px, 4vw, 64px);
+}
 /* 星体 —— Figma：420 正圆 / #4BB6EC / 透明度 0.1 / 2px 模糊
    球内四团彩光被圆形裁住，光在球里流动 */
-.hero__visual { display: grid; place-items: center; width: 100%; aspect-ratio: 1; max-height: min(64vh, 560px); }
+.cta__visual { display: grid; place-items: center; width: 100%; aspect-ratio: 1; max-height: 400px; }
+.cta__visual .star { width: min(80%, 320px); }
 
 /* 留言板入口（2026-10-05）：只在首页的胶囊「留言板（限时）」。
    位置：2026-10-16 起在 Explore Works / Design Philosophy 两颗按钮下面（用户指定），放在 .hero__actions 里横跨两列：和两颗按钮合起来一样宽、和按钮一样高（48）；页脚「联系」里也有一项「留言板」。
@@ -1785,10 +1841,11 @@ html.js-on.is-mid .grid > .reveal:not(.is-in), html.js-on.is-mid .list > .reveal
   .list { grid-template-columns: 1fr; }
   .ftr__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-lg) var(--sp-lg); }
 
-  /* Hero 竖排，星体收小，避免顶掉首屏文字 */
+  /* Hero、CTA 竖排；CTA 里的史莱姆球在文字下面，再收小一点 */
   .hero__inner { grid-template-columns: 1fr; gap: var(--sp-xl); }
-  .hero__visual { max-height: 42vh; order: 2; }
-  .star { width: min(72vw, 360px); }
+  .cta__inner { grid-template-columns: 1fr; gap: var(--sp-xl); }
+  .cta__visual { max-height: 300px; }
+  .cta__visual .star { width: min(64vw, 260px); }
   .chars__stage { grid-template-columns: 1fr; }
 
   /* 触摸目标补足到 44px 一线，纯靠内边距，不动版面 */
