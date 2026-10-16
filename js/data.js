@@ -346,7 +346,7 @@
   function add(o) { A.push(o); }
 
   /* ===== Works · Artifacts ===== */
-  add({ slug: 'indian-anklets', section: 'works', cat: 'artifacts', date: '2026-08-18', read: 5, weight: 5,
+  add({ slug: 'indian-anklets', section: 'works', cat: 'artifacts', date: '2026-08-18', read: 5, weight: 4,
     title: L('用铃铛和长绳编织一串印度脚铃', '用鈴鐺和長繩編織一串印度腳鈴',
              'Weaving a string of Indian anklets from bells and cord', '鈴と長い紐でインドの足鈴を編む'),
     lede:  L('福禄寿 FloruitShow 乐队作品中常出现的乐器，《玉珍》《兰若度母》等作品重要的乐器之一，声音清脆悦耳。',
@@ -709,7 +709,7 @@
     ]});
 
   /* ===== Characters · OC ===== */
-  add({ slug: 'strawberry-sheet', section: 'characters', cat: 'oc', date: '2026-08-18', read: 5, weight: 5,
+  add({ slug: 'strawberry-sheet', section: 'characters', cat: 'oc', date: '2026-08-18', read: 5, weight: 4,
     title: L('草莓酱：七版之后才立住的角色', '草莓酱：七版之後才立住的角色',
              '草莓酱: a character that only held on the seventh try', '草莓酱：七版目でようやく立ったキャラ'),
     lede:  L('前六版都太好看了，好看到没有性格。',
@@ -738,14 +738,48 @@
       { t: 'p', v: '页面是一张暖色的纸，所有东西都放在纸上。层次靠纸色深浅和细线区分，不靠阴影。墨色写字，茶芽色是纸上长出的一点光，用得越少越亮。' },
       { t: 'h3', v: '读的用衬线，点的用无衬线' },
       { t: 'p', v: '正文、导语、宣言用 Georgia，像在读书；标题、导航、按钮、日期用 Google Sans，像在用工具。中文一律用黑体，屏幕上最清楚。' },
-      { t: 'h3', v: '形状会说话' },
+      { t: 'h3', v: ' 形状会说话' },
       { t: 'p', v: '小圆角的矩形是动作，胶囊是标签。元素越大越圆；套在里面的圆角和外面同心。控件、间距、图标都是 4 的倍数，所以一切能对齐。' },
       { t: 'h3', v: '安静的版面，华丽的时刻' },
       { t: 'p', v: '颜色、字体、排版都克制，留给动效出场。一屏只演一出戏：钉住画面，跟着滚动推进，像 Apple 那样让人惊喜。' },
       { t: 'h3', v: '作品是主角' },
       { t: 'p', v: '网站展示的是上传的作品。界面安静地托住它们：不加滤镜、不加阴影、深色模式下也不调暗，圆角跟着所在的容器走，颜色退到一边。' },
       { t: 'hr' },
-      { t: 'h2', v: '01.颜色规范' }
+      { t: 'h2', v: '01.颜色规范' },
+      { t: 'h3', v: '-背景色和文字色' },
+      { t: 'p', v: '文字分三档：标题、正文段落、说明，对比度 17.5 / 10.3 / 6.3。边框是墨色加透明度，普通 10%，悬停 20%。\n十一种颜色都有位置，用法：纸色三档做页面、次级区块和悬停；Oat 是暖色块，卡片、面板、图片底都用它； White 只给浮层和输入框；页脚是整块 Slate dark，栏目标题用 Ivory light、链接用 Cloud medium（在墨底上 8.5:1）。 Cloud 系列在纸上不够深，所以只用于分隔点、箭头、大号数字和禁用状态，不放要读的字。\n深色的三档文字对比度是 17.3 / 10.2 / 6.1，和浅色几乎对称，所以切换主题时层次感不变。深色几乎是纯中性的黑。' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-3.jpg', cap: '背景色和文字色' },
+      { t: 'h3', v: '-品牌色 · 茶芽', c: 'tea' },
+      { t: 'p', v: '色相取自 JasperPeng 自己画的嫩芽色，饱和度、对比度、加深版全部对齐 Claude 陶土，所以它在页面上的分量和可读性与陶土一模一样。一块土，一株芽，长在同一张纸上。色阶浅的一端略偏小麦黄，深的一端略偏苔绿，像茶叶从芽尖到叶脉的颜色。', c: 'tea' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-4.jpg', cap: '品牌色 · 茶芽' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-5.jpg', cap: '用途' },
+      { t: 'quote', v: '按钮和链接都是墨色，品牌色不用在它们上面。茶芽只出现在选中、焦点、标签和少量图形色块里，所以它一出现就很显眼。' },
+      { t: 'h3', v: '-点缀色和浅底色' },
+      { t: 'p', v: '藤紫在色环上和茶芽正好相对，是最出彩的一对；莓红呼应草莓酱的莓果与叶子；星蓝是原来的品牌色，退成点缀。六个点缀色都调到和茶芽相近的柔和度，放在一起不会有哪个特别跳。' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-6.jpg', cap: '其他颜色' },
+      { t: 'h3', v: '-选中的文本' },
+      { t: 'p', v: '品牌色加 50% 透明度”。文字保持原色，选中后的对比度浅色 10.7:1、深色 7.2:1。' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-8.jpg' },
+      { t: 'h2', v: '02.字体' },
+      { t: 'p', v: '英文无衬线用 Google Sans，衬线用 Georgia。规范字体排在最前面，所有设备都先用它；实在加载不到，才轮到后备字体。' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-9.jpg', cap: '字体规范' },
+      { t: 'quote', v: '英文正文用 Georgia，中文正文退回黑体。宋体在屏幕上，尤其 Windows 上，小字号容易发虚。' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-10.jpg', cap: '用法：衬线体与非衬线体' },
+      { t: 'h2', v: '03. 版面与间距' },
+      { t: 'p', v: '12 栏、最大宽度 1432px，页边距随屏宽从 32px 长到 80px。组件和版面共用一套 12 级间距，从按钮里的缝隙到区块之间的留白，都从这里取。' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-11.jpg' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-12.jpg', cap: '版面与间距' },
+      { t: 'h2', v: '04.圆角' },
+      { t: 'h3', v: '-控件看高度，面看大小，嵌套看外框' },
+      { t: 'p', v: '三条规则就能算出所有圆角。控件的圆角是高度的四分之一，面越大越圆，卡片用 18px；嵌套的圆角和外框同心。' },
+      { t: 'quote', v: '形状语言：小圆角的矩形 = 可以点、会发生动作（按钮、输入框）；胶囊 = 标签、状态（分类、徽章、限时入口）。两种形状不混用，所以按钮不做成 Apple 营销页那样的胶囊。' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-13.jpg', cap: '圆角' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-14.jpg', cap: '同心圆角 · 内角 = 外角 − 间距' },
+      { t: 'h2', v: '05.组件' },
+      { t: 'p', v: '控件高度 32 / 40 / 48px，默认 40px。一个画面里最多一个实心主按钮，大按钮只用于首屏。悬停 200ms，按下缩到 97%、120ms。左右内边距：小 12、默认 16、大 24。' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-15.jpg' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-16.jpg' },
+      { t: 'img', src: 'assets/images/resources/design-specification-document-17.jpg' }
     ]});
 
   /* ===== Characters · Character ===== */
