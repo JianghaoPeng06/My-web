@@ -717,7 +717,6 @@
              'A warm sheet of paper, a single sprout, and the few rules that keep them in order. Everything below is live — click it, drag it, try it.',
              '温かい色の紙、一本の茶の芽、そしてそれらを整える数本のルール。下の色や書体、動きはすべて触って試せます。'),
     author: 'JasperPeng，Claude by Anthropic',
-    menu: L('设计规范文档', '設計規範文檔', 'Design Specification Document', 'デザイン仕様ドキュメント'),
     tags: [L('规范','規範','Guidelines','ガイドライン'), L('字体','字體','Fonts','書体'), L('标识','標識','Logos','ロゴ'), L('资源','資源','Resources','リソース')],
     body: [
       { t: 'html', v: '<div class="sx sx-hero" data-sx-auto><div class="sx-hero__dots" aria-hidden="true"><i style="--c:#FAF9F5;--i:0"></i><i style="--c:#141413;--i:1"></i><i style="--c:#8F9755;--i:2"></i><i style="--c:#8C89CD;--i:3"></i><i style="--c:#CF6872;--i:4"></i><i style="--c:#5E9FC3;--i:5"></i><i style="--c:#70B2B2;--i:6"></i><i style="--c:#D8C0A1;--i:7"></i></div><div class="sx-hero__say">A warm sheet of paper, <em>and a single sprout.</em></div><div class="sx-hero__sub">纸、墨、芽 —— 这个网站的颜色、字体、形状和动作都从这里来。<br>下面的东西都是活的：色块可以点，滑块可以拖，动画可以重播。</div></div>' },
