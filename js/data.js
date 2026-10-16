@@ -389,19 +389,19 @@
     ]});
 
   /* ===== Works · Illustrations ===== */
-  add({ slug: 'doudou-seasons', section: 'works', cat: 'illustrations', date: '2026-08-14', read: 4, weight: 4,
-    title: L('DOUDOU 春夏秋冬 · 四条时间线', 'DOUDOU 春夏秋冬 · 四條時間線',
-             'DOUDOU through four seasons — four timelines', 'DOUDOU 春夏秋冬 · 四つの時間軸'),
-    lede:  L('同一个角色，四种季节，四种完全不同的呼吸节奏。',
-             '同一個角色，四種季節，四種完全不同的呼吸節奏。',
-             'One character, four seasons, four entirely different rhythms of breathing.',
-             '同じキャラクター、四つの季節、まったく異なる四つの呼吸。'),
+  add({ slug: 'doudou-seasons', section: 'works', cat: 'illustrations', date: '2026-09-01', read: 4, weight: 4,
+    title: P('DOUDOU 春夏秋冬'),
+    lede:  L('那是一首预谋很久的歌，却迟迟未上线录音室版，不过2023巡演以春夏秋冬命名。',
+             '那是一首預謀很久的歌，卻遲遲未上線錄音室版，不過 2023 巡演以春夏秋冬命名。',
+             'That is a long-planned song, yet the studio version still hasn\'t been released. However, the 2023 tour is named after the four seasons.',
+             'それは長年温めてきた曲だが、スタジオ版はいまだにリリースされていない。ただし、2023 年のツアーは春夏秋冬にちなんで名付けられた。'),
     menu: P('DOUDOU'),
     tags: [L('作品','作品','Works','ワークス'), L('插画','插畫','Illustrations','イラスト')],
     body: [
-      { t: 'p', v: '这一组的想法很简单：让同一个角色在四个季节里各活一次，看看画面会自己长成什么样。' },
-      { t: 'p', v: '春天用了最多的留白，夏天几乎塞满，秋天开始往回收，冬天只剩下轮廓。四张放在一起看，才是完整的一句话；单看任何一张，都像话说了一半。' },
-      { t: 'figure', cap: '秋卷 · 局部' }
+      { t: 'p', v: '这一组的想法很简单：让四个季节里各“活”一次，看看画面会自己长成什么样。' },
+      { t: 'quote', v: '春天，就让这繁华都开遍，\n夏天，我想你想了千万遍，\n秋天，当落叶画成一个圈，\n冬天，就在这冰封一瞬间。', c: 'tea' },
+      { t: 'figure', cap: '为纪念春夏秋冬巡演创作' },
+      { t: 'p', v: '可恶的不良商家给我图盗了拿去商用，气煞我也！不过目前下架了。' }
     ]});
 
   add({ slug: 'linework', section: 'works', cat: 'illustrations', date: '2026-08-09', read: 4, weight: 2,
@@ -508,18 +508,19 @@
       { t: 'img', src: 'assets/images/research/site-launch-3.jpg', cap: 'V4.3.0 Home页面纪念' }
     ]});
 
-  add({ slug: 'archive-plan', section: 'research', cat: 'news', date: '2026-08-15', read: 4, weight: 2,
+  add({ slug: 'archive-plan', section: 'research', cat: 'news', date: '2026-08-15', read: 1, weight: 1,
     title: L('接下来半年打算做的事', '接下來半年打算做的事',
              'What I plan to do over the next six months', 'これから半年でやること'),
-    lede:  L('一份写给自己看的、允许被推翻的计划。',
-             '一份寫給自己看的、允許被推翻的計畫。',
-             'A plan written for myself, and allowed to be overturned.',
-             '自分のために書いた、覆してよい計画。'),
+    lede:  L('计划。',
+             '計畫。',
+             'A plan.',
+             '計画。'),
     tags: [L('研究','研究','Research','リサーチ'), L('动态','動態','News','ニュース')],
     body: [
-      { t: 'p', v: '先把已有的东西搬完 —— 这件事最枯燥，但不做完，后面所有的分类都是空的。' },
-      { t: 'p', v: '然后是角色页。七个人现在只有名字和一句话，需要补设定集、三视图、关系图。' },
-      { t: 'p', v: '最后才是世界观那部分。工程量最大，也最容易做不完，所以排在最后 —— 排在前面的话，前两件事永远轮不到。' }
+      { t: 'h2', v: '事以密成，语以泄败。', c: 'wisteria' },
+      { t: 'h2', v: '事以密成，語以泄敗', c: 'tea' },
+      { t: 'h2', v: 'Matters succeed through secrecy, and fail through careless talk.', c: 'muted' },
+      { t: 'h2', v: '事は密をもって成り、語は泄をもって敗れる。', c: 'dusk' }
     ]});
 
   /* ===== Research · Philosophy ===== */
@@ -695,18 +696,17 @@
 
   /* ===== Characters · OC ===== */
   add({ slug: 'strawberry-sheet', section: 'characters', cat: 'oc', date: '2026-08-18', read: 5, weight: 4,
-    title: L('草莓酱：七版之后才立住的角色', '草莓酱：七版之後才立住的角色',
-             '草莓酱: a character that only held on the seventh try', '草莓酱：七版目でようやく立ったキャラ'),
-    lede:  L('前六版都太好看了，好看到没有性格。',
-             '前六版都太好看了，好看到沒有性格。',
-             'The first six versions were too pretty — pretty to the point of having no personality.',
-             '最初の六版はきれいすぎた。性格が消えるほどに。'),
+    title: P('草莓酱'),
+    lede:  L('【彩虹绘本】看板娘',
+             '【彩虹绘本】看板娘',
+             '【彩虹绘本】mascot',
+             '【彩虹绘本】看板娘'),
     tags: [L('角色','角色','Characters','キャラクター'), L('原创角色','原創角色','OC','オリキャラ')],
     body: [
-      { t: 'p', v: '草莓酱的设定改了七版。前六版的问题都一样：太顺眼了。每一处都挑不出毛病，合起来就是一张没有记忆点的脸。' },
-      { t: 'figure', cap: '三视图 · 定稿版' },
+      { t: 'p', v: '这是高三某次语文考试的时候无聊画的，可能受到了《重返未来 1999》的影响，突然间想到一个最简单的设定，后来，我决定将其作为【彩虹绘本】的看板娘啦' },
+      { t: 'figure', cap: '创作于2024年，也许该加个立绘了' },
       { t: 'p', v: '第七版把配色压暗了两度，加了一点不对称 —— 左右耳饰不一样，刘海一侧短一截。人立刻就有了脾气。' },
-      { t: 'quote', v: '完美对称的角色，看起来像模板。' }
+      { t: 'p', v: 'Puree Strawberry', f: 'deco' }
     ]});
 
   add({ slug: 'design-specification-document', section: 'about', cat: 'guidelines', date: '2026-10-16', read: 9, weight: 5, pin: true,
