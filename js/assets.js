@@ -28,7 +28,6 @@ window.JP_ASSETS = {
   "resources/archive-naming": "assets/images/resources/archive-naming.jpg",
   "resources/brush-pack": "assets/images/resources/brush-pack.jpg",
   "resources/design-specification-document": "assets/images/resources/design-specification-document.jpg",
-  "resources/fonts": "assets/images/resources/fonts.jpg",
   "resources/logos": "assets/images/resources/logos.jpg",
   "resources/rainbow-picturebook": "assets/images/resources/rainbow-picturebook.jpg",
   "resources/workspace": "assets/images/resources/workspace.jpg",

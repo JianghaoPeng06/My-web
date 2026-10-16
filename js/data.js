@@ -888,20 +888,6 @@
     ]});
 
   /* ===== About · Guidelines ===== */
-  add({ slug: 'fonts', section: 'about', cat: 'guidelines', date: '2026-08-13', read: 5, weight: 3,
-    title: L('字体与排印资源', '字體與排印資源',
-             'Typefaces and typographic resources', '書体と組版リソース'),
-    lede:  L('档案馆里用到的字体，以及为什么选它们。',
-             '檔案館裡用到的字體，以及為什麼選它們。',
-             'The typefaces used across this archive, and why they were chosen.',
-             'このアーカイブで使う書体と、それを選んだ理由。'),
-    tags: [L('规范','規範','Guidelines','ガイドライン'), L('字体','字體','Fonts','書体')],
-    body: [
-      { t: 'p', v: '中文正文优先用系统字，理由很实际：加载快、不会因为网络问题掉字、在各种设备上都能正常渲染。' },
-      { t: 'quote', v: '最好的字体是用户已经装好的那一款。' },
-      { t: 'p', v: '只有标题和标识才用定制字形，而且都转成曲线，不依赖字体文件。' }
-    ]});
-
   add({ slug: 'logos', section: 'about', cat: 'guidelines', date: '2026-08-12', read: 4, weight: 2,
     title: L('标识系统', '標識系統', 'The logo system', 'ロゴシステム'),
     lede:  L('一个字母能承担多少识别度。', '一個字母能承擔多少識別度。',
