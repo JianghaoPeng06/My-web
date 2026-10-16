@@ -1430,14 +1430,16 @@
      除了 html / 字符串两种，其余都会转义，写中文标点和 < > 都不会出事。
      排版想自己控就用 html 块 —— 那一段可以写任何标签和 class。 */
   /* 文字块可选的颜色 c、字体 f（2026-10-16，后台「正文」里选）：只认设计规范里的几种，别的值忽略。
-       c: 'ink' 墨色（标题色） | 'body' 正文灰 | 'muted' 说明灰 | 'tea' 茶芽（强调文字色）
+       c: 'ink' 墨色（标题色） | 'body' 正文灰 | 'muted' 说明灰 | 'tea' 茶芽（强调文字色） | 'dusk' 暮蓝
+          | 'wisteria' 藤紫 | 'jam' 莓红 —— 这两个不够小字的对比度，只给小标题（h2 / h3）和装饰大字（f: 'deco'）
        f: 'sans' Google Sans | 'serif' Georgia | 'mono' 等宽 | 'deco' 装饰衬线 Kawoszeh（只给段落、引用，自动放大到宣言字号）
      例：{ t:'p', v:'…', c:'tea', f:'sans' }。样式在 style.css 的 .tc-* / .tf-* */
-  var TC = { ink: 1, body: 1, muted: 1, tea: 1 }, TF = { sans: 1, serif: 1, mono: 1, deco: 1 };
+  var TC = { ink: 1, body: 1, muted: 1, tea: 1, dusk: 1, wisteria: 2, jam: 2 }, TF = { sans: 1, serif: 1, mono: 1, deco: 1 };
   function blockCls(b) {
-    var c = [];
-    if (TC[b.c]) c.push('tc-' + b.c);
-    if (TF[b.f] && (b.f !== 'deco' || b.t === 'p' || b.t === 'quote')) c.push('tf-' + b.f);
+    var c = [], decoOK = b.t === 'p' || b.t === 'quote';
+    var big = b.t === 'h2' || b.t === 'h3' || (b.f === 'deco' && decoOK);
+    if (TC[b.c] === 1 || (TC[b.c] === 2 && big)) c.push('tc-' + b.c);
+    if (TF[b.f] && (b.f !== 'deco' || decoOK)) c.push('tf-' + b.f);
     return c.length ? ' class="' + c.join(' ') + '"' : '';
   }
   function bodyHTML(a, title) {
@@ -1473,6 +1475,128 @@
   }
 
   /* ---------- 08 文章页 ---------- */
+  /* ---------- 11c 正文里的交互演示（.sx-*，2026-10-16，文章「JasperPeng 设计规范文档」）----------
+     结构写在文章的 html 块里，这里只接上动作。内容先在、动效后到：HTML 本身就是最终画面，
+     JS 只在看得到的时候「倒回去再演一遍」；开了减少动态效果、静止模式（is-lite）时不自动播，跟随滚动的那一出戏也不钉住。
+       data-sx-copy="#HEX"   点一下复制色值
+       data-sx-auto          进入视野时播一次（加 is-play）；data-sx-play 按钮重播所在的 [data-sx-box]
+       data-sx-slow          切换慢放 ×5（曲线那块）
+       data-sx-type          打字，同一块里的 [data-sx-type-out] 跟着变
+       data-sx-range="h|p"   滑块，写进所在 [data-sx-rbox] 的 --h / --p，[data-sx-out] 显示算出来的数
+       .sx-ladder            字号阶梯，output 里写此刻的实际像素
+       data-sx-scene         跟随滚动：逐词显影 → 裁纸展开 → 描线 */
+  var sxOff = [];                         /* 换语言会重画文章：先撤掉上一次挂在 window 上的监听 */
+  function specDemos(root) {
+    sxOff.forEach(function (f) { f(); }); sxOff = [];
+    if (!root || !$('.sx', root)) return;
+    var still = reduce || LITE;
+    function on(t, ev, fn, opt) { t.addEventListener(ev, fn, opt); sxOff.push(function () { t.removeEventListener(ev, fn, opt); }); }
+    function play(el) { el.classList.remove('is-play'); void el.offsetWidth; el.classList.add('is-play'); }
+    function copy(v, done) {
+      if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(v).then(done, function () {});
+      var ta = document.createElement('textarea');
+      ta.value = v; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) {}
+      ta.remove();
+    }
+
+    $$('[data-sx-copy]', root).forEach(function (b) {
+      b.addEventListener('click', function () {
+        copy(b.getAttribute('data-sx-copy'), function () {
+          b.classList.remove('is-copied'); void b.offsetWidth; b.classList.add('is-copied');
+          clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove('is-copied'); }, 1400);
+        });
+      });
+    });
+
+    $$('[data-sx-type]', root).forEach(function (inp) {
+      var outs = $$('[data-sx-type-out]', inp.closest('.sx'));
+      inp.addEventListener('input', function () {
+        var v = inp.value.trim() ? inp.value : inp.getAttribute('placeholder');
+        outs.forEach(function (o) { o.textContent = v; });
+      });
+    });
+
+    $$('[data-sx-range]', root).forEach(function (r) {
+      var box = r.closest('[data-sx-rbox]'), key = r.getAttribute('data-sx-range');
+      function paint() {
+        var v = +r.value;
+        box.style.setProperty('--' + key, v);
+        $$('[data-sx-out]', box).forEach(function (o) {
+          var f = o.getAttribute('data-sx-out');
+          o.textContent = f === 'q' ? v / 4 : f === 'c' ? 24 - v : v;
+        });
+      }
+      r.addEventListener('input', paint); paint();
+    });
+
+    var ladder = $$('.sx-ladder > div', root);
+    function paintPx() {
+      ladder.forEach(function (row) {
+        var s = $('strong', row), o = $('output', row);
+        if (s && o) o.textContent = Math.round(parseFloat(getComputedStyle(s).fontSize)) + 'px';
+      });
+    }
+    if (ladder.length) { paintPx(); var pxT; on(window, 'resize', function () { cancelAnimationFrame(pxT); pxT = requestAnimationFrame(paintPx); }); }
+
+    $$('[data-sx-play]', root).forEach(function (b) {
+      b.addEventListener('click', function () { play(b.closest('[data-sx-box]')); });
+    });
+    $$('[data-sx-slow]', root).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var box = b.closest('[data-sx-box]'), slow = b.getAttribute('aria-pressed') !== 'true';
+        b.setAttribute('aria-pressed', String(slow));
+        box.style.setProperty('--slow', slow ? 5 : 1);
+        play(box);
+      });
+    });
+
+    var autos = $$('[data-sx-auto]', root);
+    if (!still && autos.length && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { play(e.target); io.unobserve(e.target); } });
+      }, { threshold: .3 });
+      autos.forEach(function (el) { io.observe(el); });
+      sxOff.push(function () { io.disconnect(); });
+    }
+
+    /* 一出完整的戏：区块钉在屏幕上，滚动进度 0→1 依次推进三个动作，往回滚就倒着走 */
+    $$('[data-sx-scene]', root).forEach(function (sc) {
+      if (still) return;
+      sc.classList.add('is-live');
+      var words = $$('.sx-scene__say span', sc), pic = $('.sx-scene__pic', sc), path = $('[data-sx-draw]', sc);
+      var bar = $('.sx-scene__bar i', sc), steps = $$('.sx-scene__steps span', sc), raf = 0, vis = false;
+      var blur = !MID;                                     /* 手机上不做模糊 */
+      function seg(v, a, b) { return Math.min(1, Math.max(0, (v - a) / (b - a))); }
+      function out3(t) { return 1 - Math.pow(1 - t, 3); }
+      function frame() {
+        raf = 0;
+        var r = sc.getBoundingClientRect(), span = r.height - innerHeight * .8;
+        var p = seg(-r.top + innerHeight * .1, 0, span);
+        var a = seg(p, .02, .5), q = out3(seg(p, .42, .78)), d = seg(p, .72, .98);
+        words.forEach(function (w, i) {
+          var k = seg(a, i / words.length, (i + 1) / words.length);
+          w.style.opacity = (.15 + .85 * k).toFixed(3);
+          w.style.filter = blur && k < 1 ? 'blur(' + (3 * (1 - k)).toFixed(2) + 'px)' : '';
+        });
+        pic.style.setProperty('--cut', (12 * (1 - q)).toFixed(2) + '%');
+        pic.style.setProperty('--zoom', (1 + .12 * (1 - q)).toFixed(4));
+        path.style.strokeDashoffset = (1 - d).toFixed(4);
+        bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+        [a > 0 && a < 1 || (a >= 1 && q === 0), q > 0 && q < 1 || (q >= 1 && d === 0), d > 0].forEach(function (x, i) { if (steps[i]) steps[i].classList.toggle('is-on', !!x); });
+      }
+      function req() { if (!raf) raf = requestAnimationFrame(frame); }
+      path.style.strokeDasharray = '1';
+      var sio = new IntersectionObserver(function (es) { vis = es[0].isIntersecting; if (vis) req(); });
+      sio.observe(sc);
+      sxOff.push(function () { sio.disconnect(); cancelAnimationFrame(raf); });
+      on(window, 'scroll', function () { if (vis) req(); }, { passive: true });
+      on(window, 'resize', req);
+      frame();
+    });
+  }
+
   function renderArticle() {
     var host = $('[data-article]');
     if (!host) return;
@@ -1564,6 +1688,7 @@
     });
     /* 正文里的插图都能点开放大（顶部那张封面不算，它不在 .article__body 里） */
     zoomable($('.article__body', host));
+    specDemos($('.article__body', host));      /* 正文里有 .sx 交互演示才会接上（11c） */
 
     paintCrumbs(crumbHTML([
       { label: T(s.label), href: c ? catUrl(s, c.slug) : url('home.html') },
