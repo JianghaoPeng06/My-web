@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JasperPeng 后台</title>
+<link rel="icon" href="/site/assets/favicon/favicon.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="top__brand"><span class="top__mark">J</span>JasperPeng 后台</div>
+  <nav class="tabs" aria-label="管理什么">
+    <button type="button" data-tab="articles" aria-pressed="true">文章</button>
+    <button type="button" data-tab="chars" aria-pressed="false">角色</button>
+    <button type="button" data-tab="poster" aria-pressed="false">首页海报</button>
+  </nav>
+  <div class="top__actions">
+    <span class="top__hint" data-build-hint hidden>有改动还没生成页面</span>
+    <button class="btn btn--ghost" type="button" data-open-site>打开网站预览</button>
+    <button class="btn btn--primary" type="button" data-build>生成页面</button>
+  </div>
+</header>
+
+<div class="layout" data-pane="articles">
+  <!-- 左边：文章列表 -->
+  <aside class="side">
+    <button class="btn btn--primary btn--block" type="button" data-new>＋ 写新文章</button>
+    <input class="field" type="search" placeholder="搜索标题、标签、正文…" data-search>
+    <div class="chips" data-sec-filter></div>
+    <p class="side__count" data-count></p>
+    <ul class="list" data-list></ul>
+  </aside>
+
+  <!-- 中间：编辑 -->
+  <main class="main" data-main>
+    <div class="empty" data-empty>
+      <p class="empty__title">选一篇文章开始编辑</p>
+      <p class="empty__text">左边点一篇文章，或者点「写新文章」。<br>星星是置顶，五个小点是推荐权重，都可以在列表里直接点。</p>
+    </div>
+
+    <form class="editor" data-editor hidden autocomplete="off">
+      <div class="editor__bar">
+        <input class="editor__title" data-f="title.zh-Hans" placeholder="文章标题（简体）">
+        <span class="editor__state" data-state></span>
+        <button class="btn btn--ghost" type="button" data-view>在网站上看</button>
+        <button class="btn btn--danger" type="button" data-delete>删除</button>
+        <button class="btn btn--primary" type="submit" data-save>保存</button>
+      </div>
+
+      <section class="card">
+        <h2 class="card__title">基本信息</h2>
+        <div class="grid">
+          <label class="lbl">板块<select class="field" data-f="section"></select></label>
+          <label class="lbl">分类<select class="field" data-f="cat"></select></label>
+          <label class="lbl">日期<input class="field" type="date" data-f="date"></label>
+          <label class="lbl">阅读时长（分钟）
+            <span class="row"><input class="field" type="number" min="1" max="99" data-f="read"><button class="btn btn--ghost btn--sm" type="button" data-estimate>按正文估算</button></span>
+          </label>
+          <label class="lbl lbl--wide">文章地址
+            <span class="row"><span class="prefix">jasperpeng.uk/articles/</span><input class="field mono" data-f="slug" placeholder="比如 kyoto-trip"><button class="btn btn--ghost btn--sm" type="button" data-slug-gen>按英文标题生成</button></span>
+            <span class="help">只能用小写英文字母、数字和短横线。新文章填英文标题时会自动跟着生成（地址框空着、或者还是自动生成的那个时），也可以随时点右边的按钮。改了地址，图片会跟着改名，旧链接会失效。</span>
+          </label>
+          <label class="lbl">作者
+            <input class="field" data-f="author" list="author-list" placeholder="JasperPeng">
+            <datalist id="author-list" data-author-list></datalist>
+            <span class="help">显示在文章底部「作者」那里。空着就是 JasperPeng</span>
+          </label>
+          <div class="lbl">置顶
+            <label class="switch"><input type="checkbox" data-f="pin"><span></span><em>在自己的分类页里排最前面</em></label>
+          </div>
+          <div class="lbl">推荐权重
+            <div class="seg" data-weight></div>
+            <span class="help">文章底部「继续阅读」挑文章时，5 最常被推荐，1 很少出现</span>
+          </div>
+          <div class="lbl lbl--wide">精选到顶部栏
+            <label class="switch"><input type="checkbox" data-menu-on><span></span><em data-menu-where>出现在顶栏下拉面板右边那一列（精选栏）</em></label>
+            <span class="menu-names" data-menu-names hidden>
+              <input class="field" data-menu-l="zh-Hans" aria-label="顶栏里的名字（简体）">
+              <input class="field" data-menu-l="zh-Hant" aria-label="繁體">
+              <input class="field" data-menu-l="en" aria-label="English">
+              <input class="field" data-menu-l="ja" aria-label="日本語">
+            </span>
+            <span class="help">读者看不到这个开关。顶栏里的名字空着就用文章标题；标题太长可以写个短名（简体、繁體、English、日本語，后三个空着就用简体）。同一板块的精选按日期从新到旧排，同一天权重高的在前。</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">标题和导语 <span class="card__note">繁体、英文、日文空着就自动显示简体；四种都一样就当作专有名词</span></h2>
+        <table class="langs">
+          <thead><tr><th></th><th>标题</th><th>导语（标题下面那句话）</th></tr></thead>
+          <tbody>
+            <tr><th>简体</th><td><span class="muted">在最上面填</span></td><td><textarea class="field" rows="2" data-f="lede.zh-Hans"></textarea></td></tr>
+            <tr><th>繁體</th><td><input class="field" data-f="title.zh-Hant"></td><td><textarea class="field" rows="2" data-f="lede.zh-Hant"></textarea></td></tr>
+            <tr><th>English</th><td><input class="field" data-f="title.en"></td><td><textarea class="field" rows="2" data-f="lede.en"></textarea></td></tr>
+            <tr><th>日本語</th><td><input class="field" data-f="title.ja"></td><td><textarea class="field" rows="2" data-f="lede.ja"></textarea></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">标签 <span class="card__note">点标签可以改四种语言；文章页底部会显示</span></h2>
+        <div class="tags" data-tags></div>
+        <div class="row">
+          <select class="field" data-tag-pick><option value="">从用过的标签里加…</option></select>
+          <button class="btn btn--ghost btn--sm" type="button" data-tag-new>＋ 新标签</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">封面 <span class="card__note">卡片、列表和分享时用；正文里的「封面图」块也用它</span></h2>
+        <div class="cover">
+          <div class="cover__img" data-cover></div>
+          <div class="cover__side">
+            <label class="drop" data-drop="cover">
+              <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+              <strong>换封面</strong><span>点这里选图片，或者把图片拖进来</span>
+            </label>
+            <label class="check"><input type="checkbox" data-raw> 保持原图，不压缩（一般不用勾）</label>
+            <p class="help">会自动缩到长边 2000 像素以内：带透明的存成 PNG（保留透明），其他存成 JPG。动图 GIF 原样保存。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">正文 <span class="card__note">一块一块写；按住左边的点点可以拖动换顺序。粘贴一大段带空行的文字，会自动拆成几段</span></h2>
+        <div class="blocks" data-blocks></div>
+        <div class="adder" data-adder></div>
+      </section>
+    </form>
+  </main>
+
+  <!-- 右边：实时预览（用网站自己的样式） -->
+  <section class="preview" data-preview hidden>
+    <div class="preview__bar">
+      <span>预览 · 和网站上的文章页一样</span>
+      <div class="seg seg--sm" data-pv-size>
+        <button type="button" data-w="100%" aria-pressed="true">电脑</button><button type="button" data-w="390px">手机</button>
+      </div>
+    </div>
+    <div class="preview__stage"><iframe title="文章预览" data-frame></iframe></div>
+  </section>
+</div>
+
+<!-- ================= 角色 ================= -->
+<div class="layout no-preview" data-pane="chars" hidden>
+  <aside class="side">
+    <button class="btn btn--primary btn--block" type="button" data-c-new>＋ 新角色</button>
+    <p class="side__count" data-c-count></p>
+    <ul class="list" data-c-list></ul>
+    <p class="help">顺序就是角色页上缩略图的顺序，用 ↑ ↓ 调。</p>
+  </aside>
+
+  <main class="main" data-c-main>
+    <div class="empty" data-c-empty>
+      <p class="empty__title">选一个角色开始编辑</p>
+      <p class="empty__text">左边点一个角色，或者点「新角色」。<br>名字是专有名词，四种语言一般都写一样的。</p>
+    </div>
+
+    <form class="editor" data-c-editor hidden autocomplete="off">
+      <div class="editor__bar">
+        <input class="editor__title" data-c="name.zh-Hans" placeholder="角色名字">
+        <span class="editor__state" data-c-state></span>
+        <button class="btn btn--ghost" type="button" data-c-view>在网站上看</button>
+        <button class="btn btn--danger" type="button" data-c-delete>删除</button>
+        <button class="btn btn--primary" type="submit" data-c-save>保存</button>
+      </div>
+
+      <section class="card">
+        <h2 class="card__title">基本信息 <span class="card__note">年份、版本也是角色页上的筛选项</span></h2>
+        <div class="grid">
+          <label class="lbl lbl--wide">角色地址
+            <span class="row"><span class="prefix">jasperpeng.uk/characters/?c=</span><input class="field mono" data-c="slug" placeholder="比如 caomeijiang"></span>
+            <span class="help">只能用小写英文字母、数字和短横线，一般写名字的拼音。改了地址，立绘和导航里的链接会跟着改。</span>
+          </label>
+          <label class="lbl">年份<input class="field" data-c="year" placeholder="比如 2026"></label>
+          <label class="lbl">版本<input class="field" data-c="version" placeholder="比如 v1"></label>
+          <label class="lbl lbl--wide">「查看资源」按钮跳到<select class="field" data-c="res"></select></label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">立绘 <span class="card__note">角色页的大图和缩略图都用它</span></h2>
+        <div class="cover">
+          <div class="cover__img cover__img--art" data-c-art></div>
+          <div class="cover__side">
+            <label class="drop" data-c-drop>
+              <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+              <strong>换立绘</strong><span>点这里选图片，或者把图片拖进来</span>
+            </label>
+            <label class="check"><input type="checkbox" data-c-raw> 保持原图，不压缩（一般不用勾）</label>
+            <p class="help">建议用透明底的 PNG（透明会保留，透出页面的深色背景）。大图按 4:5 完整显示；缩略图是竖条，会裁掉左右两边。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">四种语言 <span class="card__note">繁体、英文、日文空着就显示简体；四种都一样就当作专有名词</span></h2>
+        <table class="langs langs--4">
+          <thead><tr><th></th><th>简体</th><th>繁體</th><th>English</th><th>日本語</th></tr></thead>
+          <tbody data-c-langs></tbody>
+        </table>
+        <h3 class="card__sub">简介</h3>
+        <div class="grid" data-c-bio></div>
+      </section>
+    </form>
+  </main>
+
+  <section class="preview" data-c-preview hidden>
+    <div class="preview__bar">
+      <span>预览 · 和角色页一样</span>
+      <div class="seg seg--sm" data-c-pv-size>
+        <button type="button" data-w="100%" aria-pressed="true">电脑</button><button type="button" data-w="390px">手机</button>
+      </div>
+    </div>
+    <div class="preview__stage"><iframe title="角色预览" data-c-frame></iframe></div>
+  </section>
+</div>
+
+<!-- ================= 首页海报 ================= -->
+<div class="pane" data-pane="poster" hidden>
+  <div class="pane__inner">
+    <h1 class="pane__title">首页海报</h1>
+    <p class="pane__lede">首页大标题下面那张大图。可以是一张图片，也可以是一段视频（播一次，停在最后一帧）。换完点右上角「生成页面」。</p>
+
+    <section class="card">
+      <h2 class="card__title">现在的海报 <span class="card__note" data-p-status></span></h2>
+      <div class="poster-pv" data-p-frame></div>
+      <div class="row poster-pv__bar">
+        <div class="seg seg--sm" data-p-ratio>
+          <button type="button" data-r="16 / 9" aria-pressed="true">电脑 16:9</button><button type="button" data-r="4 / 3">手机 4:3</button>
+        </div>
+        <span class="help">网站会把海报裁成这个比例（铺满、居中裁切）。</span>
+        <span class="spacer"></span>
+        <button class="btn btn--ghost btn--sm" type="button" data-p-replay hidden>再播一次</button>
+      </div>
+    </section>
+
+    <div class="grid grid--cards">
+      <section class="card">
+        <h2 class="card__title">换图片</h2>
+        <label class="drop" data-p-drop="image">
+          <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+          <strong>选一张图片</strong><span>点这里，或者把图片拖进来</span>
+        </label>
+        <p class="help" data-p-image-help>建议 16:9、宽 2560 像素左右。会自动缩到长边 2800 以内；带透明的存 PNG，其他存 JPG。</p>
+        <button class="btn btn--ghost btn--sm" type="button" data-p-novideo hidden>去掉视频，只用图片</button>
+      </section>
+      <section class="card">
+        <h2 class="card__title">换视频</h2>
+        <label class="drop" data-p-drop="video">
+          <input type="file" accept="video/mp4,video/webm" hidden>
+          <strong>选一段视频</strong><span>MP4 或 WebM，25MB 以内</span>
+        </label>
+        <label class="check"><input type="checkbox" data-p-still checked> 同时用视频的最后一帧当静止画面（推荐）</label>
+        <p class="help">视频没声音、只播一次。没播之前、手机省流量、低配设备、开了「减少动态效果」时，显示静止画面。</p>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2 class="card__title">图注 <span class="card__note">海报右下角那行小字；空着的语言显示简体</span></h2>
+      <div class="grid" data-p-cap></div>
+      <div class="dlg__actions"><span class="editor__state" data-p-cap-state></span><button class="btn btn--primary" type="button" data-p-cap-save>保存图注</button></div>
+    </section>
+  </div>
+</div>
+
+<!-- 生成页面的结果 -->
+<dialog class="dlg" data-build-dlg>
+  <h2 class="dlg__title" data-build-title>正在生成页面…</h2>
+  <pre class="dlg__log" data-build-log></pre>
+  <p class="dlg__next" data-build-next hidden>好了！接下来：打开 <b>GitHub Desktop</b> → 左下角 Summary 写一句改了什么 → <b>Commit to main</b> → <b>Push origin</b>，一两分钟后网站上就是新的。</p>
+  <div class="dlg__actions">
+    <button class="btn btn--ghost" type="button" data-open-site>打开网站预览</button>
+    <button class="btn btn--primary" type="button" data-close>好</button>
+  </div>
+</dialog>
+
+<!-- 改标签的四种语言 -->
+<dialog class="dlg" data-tag-dlg>
+  <h2 class="dlg__title">标签</h2>
+  <div class="grid grid--1">
+    <label class="lbl">简体<input class="field" data-t="zh-Hans"></label>
+    <label class="lbl">繁體<input class="field" data-t="zh-Hant" placeholder="空着就显示简体"></label>
+    <label class="lbl">English<input class="field" data-t="en" placeholder="空着就显示简体"></label>
+    <label class="lbl">日本語<input class="field" data-t="ja" placeholder="空着就显示简体"></label>
+  </div>
+  <div class="dlg__actions">
+    <button class="btn btn--danger" type="button" data-tag-remove>去掉这个标签</button>
+    <span class="spacer"></span>
+    <button class="btn btn--ghost" type="button" data-close>取消</button>
+    <button class="btn btn--primary" type="button" data-tag-ok>好</button>
+  </div>
+</dialog>
+
+<div class="toast" data-toast hidden></div>
+
+<script src="app.js"></script>
+<script src="chars.js"></script>
+<script src="poster.js"></script>
+</body>
+</html>

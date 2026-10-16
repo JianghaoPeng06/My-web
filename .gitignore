@@ -1,0 +1,5 @@
+# 只跟这台电脑有关的东西，不上传（2026-10-17，后台搬进仓库时加的）
+# 后台：网站文件夹在哪（每台电脑自己生成）、运行记录、data.js 的自动备份
+tools/jp-admin/config.json
+tools/jp-admin/*.log
+tools/jp-admin/backups/

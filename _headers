@@ -13,3 +13,7 @@
 
 /assets/*
   Cache-Control: public, max-age=0, must-revalidate
+
+# 工具（tools/：后台、设计规范原文件）只放在仓库里备份，不给搜索引擎收录（2026-10-17）
+/tools/*
+  X-Robots-Tag: noindex, nofollow
