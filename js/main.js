@@ -1429,22 +1429,34 @@
             { t:'html',   v:'<div class="…">随便写</div>' }   // 原样输出，不转义
      除了 html / 字符串两种，其余都会转义，写中文标点和 < > 都不会出事。
      排版想自己控就用 html 块 —— 那一段可以写任何标签和 class。 */
+  /* 文字块可选的颜色 c、字体 f（2026-10-16，后台「正文」里选）：只认设计规范里的几种，别的值忽略。
+       c: 'ink' 墨色（标题色） | 'body' 正文灰 | 'muted' 说明灰 | 'tea' 茶芽（强调文字色）
+       f: 'sans' Google Sans | 'serif' Georgia | 'mono' 等宽 | 'deco' 装饰衬线 Kawoszeh（只给段落、引用，自动放大到宣言字号）
+     例：{ t:'p', v:'…', c:'tea', f:'sans' }。样式在 style.css 的 .tc-* / .tf-* */
+  var TC = { ink: 1, body: 1, muted: 1, tea: 1 }, TF = { sans: 1, serif: 1, mono: 1, deco: 1 };
+  function blockCls(b) {
+    var c = [];
+    if (TC[b.c]) c.push('tc-' + b.c);
+    if (TF[b.f] && (b.f !== 'deco' || b.t === 'p' || b.t === 'quote')) c.push('tf-' + b.f);
+    return c.length ? ' class="' + c.join(' ') + '"' : '';
+  }
   function bodyHTML(a, title) {
     var body = a.body;
     if (typeof body === 'string') return body;          /* 整篇直接写 HTML */
     if (!body || !body.length) return '';
     return body.map(function (b) {
       if (typeof b === 'string') return '<p>' + esc(b) + '</p>';
+      var k = blockCls(b);
       switch (b.t) {
-        case 'p':     return '<p>' + esc(b.v) + '</p>';
-        case 'h2':    return '<h2>' + esc(b.v) + '</h2>';
-        case 'h3':    return '<h3>' + esc(b.v) + '</h3>';
-        case 'quote': return '<blockquote>' + esc(b.v) + '</blockquote>';
+        case 'p':     return '<p' + k + '>' + esc(b.v) + '</p>';
+        case 'h2':    return '<h2' + k + '>' + esc(b.v) + '</h2>';
+        case 'h3':    return '<h3' + k + '>' + esc(b.v) + '</h3>';
+        case 'quote': return '<blockquote' + k + '>' + esc(b.v) + '</blockquote>';
         case 'hr':    return '<hr>';
         case 'html':  return b.v || '';                 /* 原样，不转义 */
         case 'ul': case 'ol': {
           var tag = b.t;
-          return '<' + tag + '>' + (b.v || []).map(function (x) {
+          return '<' + tag + k + '>' + (b.v || []).map(function (x) {
             return '<li>' + esc(x) + '</li>';
           }).join('') + '</' + tag + '>';
         }

@@ -1045,6 +1045,18 @@ figcaption { margin-top: 12px; text-align: center; color: var(--text-faint); fon
   margin: 44px 0; padding: 4px 0 4px 24px; border-left: 3px solid var(--brand);
   font-family: var(--font-serif); font-size: var(--fs-lead); line-height: 1.6; color: var(--text);
 }
+/* 正文文字块的颜色 / 字体（后台里选，main.js blockCls 加类名）。只放设计规范里的：
+   三档文字色 + 茶芽强调文字色（深色模式自动换成对应的浅色，对比度都够读）；规范四种字体。
+   装饰衬线照规范只用大字：自动放大到宣言字号（32→64），数字是起伏的旧式数字 */
+.article__body .tc-ink { color: var(--text); }
+.article__body .tc-body { color: var(--text-2); }
+.article__body .tc-muted { color: var(--text-muted); }
+.article__body .tc-tea { color: var(--accent); }
+.article__body .tf-sans { font-family: var(--font); }
+.article__body .tf-serif { font-family: var(--font-serif); }
+.article__body .tf-mono { font-family: var(--font-mono); font-size: .9em; }
+.article__body .tf-deco { font-family: var(--font-deco); font-size: var(--fs-statement); font-weight: 400; line-height: 1.2; letter-spacing: 0; font-variant-numeric: oldstyle-nums; text-wrap: balance; }
+.article__body blockquote.tf-deco { border-left: 0; padding-left: 0; }
 /* 正文插图可点开放大（main.js 08b）。封面不在 .article__body 里，不受影响 */
 .article__body img.is-zoomable { cursor: zoom-in; transition: transform .6s var(--e-out), opacity var(--t-fast); }
 @media (hover: hover) and (pointer: fine) {   /* 原来漏了 @media，悬停放大一直没生效（2026-10-06 体检发现） */
