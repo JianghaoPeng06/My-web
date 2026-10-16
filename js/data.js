@@ -888,7 +888,7 @@
     ]});
 
   /* ===== About · Guidelines ===== */
-  add({ slug: 'logos', section: 'about', cat: 'guidelines', date: '2026-08-12', read: 4, weight: 2,
+  add({ slug: 'logos', section: 'about', cat: 'guidelines', date: '2026-08-12', read: 1, weight: 2,
     title: L('标识系统', '標識系統', 'The logo system', 'ロゴシステム'),
     lede:  L('一个字母能承担多少识别度。', '一個字母能承擔多少識別度。',
              'How much recognisability a single letter can carry.',
