@@ -724,14 +724,15 @@
       { t: 'quote', v: '完美对称的角色，看起来像模板。' }
     ]});
 
-  add({ slug: 'design-specification-document', section: 'about', cat: 'guidelines', date: '2026-08-16', read: 9, weight: 5, pin: true,
+  add({ slug: 'design-specification-document', section: 'about', cat: 'guidelines', date: '2026-10-16', read: 9, weight: 5, pin: true,
     title: L('JasperPeng 设计规范文档', '設計規範文檔',
              'Design Specification Document', 'デザイン仕様ドキュメント'),
     lede:  L('一张暖色的纸、一株茶芽，和让它们井井有条的几条规矩。下面的色块、字体和动作都是活的，可以点、可以拖、可以试。',
              '一張暖色的紙、一株茶芽，和讓它們井井有條的幾條規矩。下面的色塊、字體和動作都是活的，可以點、可以拖、可以試。',
              'A warm sheet of paper, a single sprout, and the few rules that keep them in order. Everything below is live — click it, drag it, try it.',
              '温かい色の紙、一本の茶の芽、そしてそれらを整える数本のルール。下の色や書体、動きはすべて触って試せます。'),
-    tags: [L('设计规范','設計規範','Design Specification','デザイン仕様'), L('规范','規範','Guidelines','ガイドライン'), L('字体','字體','Fonts','書体'), L('标识','標識','Logos','ロゴ'), L('资源','資源','Resources','リソース')],
+    author: 'JasperPeng，Claude by Anthropic',
+    tags: [L('规范','規範','Guidelines','ガイドライン'), L('字体','字體','Fonts','書体'), L('标识','標識','Logos','ロゴ'), L('资源','資源','Resources','リソース')],
     body: [
       { t: 'html', v: '<div class="sx sx-hero" data-sx-auto><div class="sx-hero__dots" aria-hidden="true"><i style="--c:#FAF9F5;--i:0"></i><i style="--c:#141413;--i:1"></i><i style="--c:#8F9755;--i:2"></i><i style="--c:#8C89CD;--i:3"></i><i style="--c:#CF6872;--i:4"></i><i style="--c:#5E9FC3;--i:5"></i><i style="--c:#70B2B2;--i:6"></i><i style="--c:#D8C0A1;--i:7"></i></div><div class="sx-hero__say">A warm sheet of paper, <em>and a single sprout.</em></div><div class="sx-hero__sub">纸、墨、芽 —— 这个网站的颜色、字体、形状和动作都从这里来。<br>下面的东西都是活的：色块可以点，滑块可以拖，动画可以重播。</div></div>' },
       { t: 'h2', v: '00 五条原则' },
