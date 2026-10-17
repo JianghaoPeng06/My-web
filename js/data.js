@@ -518,7 +518,7 @@
     tags: [L('研究','研究','Research','リサーチ'), L('动态','動態','News','ニュース')],
     body: [
       { t: 'h2', v: '事以密成，语以泄败。', c: 'wisteria' },
-      { t: 'h2', v: '事以密成，語以泄敗', c: 'tea' },
+      { t: 'h2', v: '事以密成，語以泄敗。', c: 'tea' },
       { t: 'h2', v: 'Matters succeed through secrecy, and fail through careless talk.', c: 'muted' },
       { t: 'h2', v: '事は密をもって成り、語は泄をもって敗れる。', c: 'dusk' }
     ]});
