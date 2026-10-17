@@ -517,6 +517,14 @@
              '計画。'),
     tags: [L('研究','研究','Research','リサーチ'), L('动态','動態','News','ニュース')],
     body: [
+      { t: 'h2', v: '01.关于AI' },
+      { t: 'p', v: '时间过得好快，明明还没好好感受夏天的阳光，就已经秋天了，今天是2026年10月17日，是一个还算美好的周六，每天起床大约都已经12:00了，昨天熬夜做完了这个web的后台，现在已经能在本地很好地工作了，昨晚出现了一个令我全身紧张的意外，Claude掉线了，当我看到你所在的地区不提供Claude服务的时候我全身僵了一秒钟，我真的吓到了，这个Pro账号才订阅不久！' },
+      { t: 'quote', v: 'Anthropic主动限制中国大陆用户访问，即使你是中国大陆身份，在中国大陆以外的地区依然可以获取Anthropic服务，如果你是非大陆身份，在中国大陆也不可以获得Anthropic服务。' },
+      { t: 'img', src: 'assets/images/research/archive-plan-2.jpg' },
+      { t: 'p', v: '不过还好是一次乌龙，账号没封，登上了。关于接下来半年，我会尽快完成Web的文章覆盖工作，把旧闻章按照新的标准重新Push，关于Claude，可能未来几年都不会让大陆用户使用，相比起Claude by Anthropic，OpenAI出品的ChatGPT和CodeX可能才是中国大陆用户更多，相对更容易的选择，' },
+      { t: 'quote', v: '当一个政权把政治置于经济、文化与人的生活之上，甚至不惜牺牲这一切来维持政治的权威与延续时，它就已经在更深层的意义上输掉了自己。而更讽刺的是，一个这样的国家未必会立刻覆灭。只要它仍然能够提供廉价的劳动力、庞大的市场与可供攫取的利益，世界上就可能有人继续从它的现状中获益。外部的利益可以与内部的困境并存，甚至可能让某些本应受到纠正的问题被长期容忍。' },
+      { t: 'p', v: '' },
+      { t: 'p', v: '' },
       { t: 'h2', v: '事以密成，语以泄败。', c: 'wisteria' },
       { t: 'h2', v: '事以密成，語以泄敗。', c: 'tea' },
       { t: 'h2', v: 'Matters succeed through secrecy, and fail through careless talk.', c: 'muted' },
@@ -524,21 +532,17 @@
     ]});
 
   /* ===== Research · Philosophy ===== */
-  add({ slug: 'the-word', section: 'research', cat: 'philosophy', date: '2026-08-13', read: 7, weight: 4,
-    title: L('The word：语言作为一种视觉材料', 'The word：語言作為一種視覺材料',
-             'The word: language as a visual material', 'The word：視覚素材としての言語'),
-    lede:  L('文字、命名、字体，以及语言与视觉表达之间那条模糊的边界。',
-             '文字、命名、字體，以及語言與視覺表達之間那條模糊的邊界。',
-             'Words, naming, typefaces — and the blurred border between language and visual expression.',
-             '文字、命名、書体、そして言語と視覚表現のあいだの曖昧な境界。'),
+  add({ slug: 'my-philosophy', section: 'research', cat: 'philosophy', date: '2026-08-13', read: 7, weight: 4,
+    title: L('我的观点', '我的哲學',
+             'My Philosophy', '私の哲学'),
+    lede:  L('生命对于世界，是一种怎样的关系。',
+             '生命對於世界，是一種怎樣的關係。',
+             'What kind of relationship does life have with the world?',
+             '生命にとって世界とは、どのような関係なのか。'),
     menu: P('The word'),
     tags: [L('研究','研究','Research','リサーチ'), L('思考','思考','Philosophy','思索')],
     body: [
-      { t: 'p', v: '一个词被写下来的那一刻，它同时变成了两样东西：意思，和形状。大多数时候我们只读前者。' },
-      { t: 'h2', v: '当形状开始说话' },
-      { t: 'p', v: '但把字号放大到某个程度，形状就会盖过意思。这也是为什么标题的排版从来不只是"把字变大" —— 变大之后它就不再是句子，而是图形。' },
-      { t: 'figure', cap: '同一个词的六种字重' },
-      { t: 'p', v: '给角色命名的时候我也有同样的感觉。"祈"和"拉"在纸上的重量完全不同，哪怕还没有人知道他们是谁。' }
+      { t: 'p', v: '我无法完全确定，自己是否真的醒着。' }
     ]});
 
   add({ slug: 'image-read', section: 'research', cat: 'philosophy', date: '2026-08-07', read: 6, weight: 3, pin: true,
