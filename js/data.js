@@ -516,7 +516,7 @@
              '生命對於世界，是一種怎樣的關係。',
              'What kind of relationship does life have with the world?',
              '生命にとって世界とは、どのような関係なのか。'),
-    menu: L('我的观点', '我的哲學', '我的观点', '私の哲学'),
+    menu: L('我的观点', '我的哲學', 'My Philosophy', '私の哲学'),
     tags: [L('研究','研究','Research','リサーチ'), L('思考','思考','Philosophy','思索')],
     body: [
       { t: 'h2', v: '我无法完全确定，自己是否真的醒着。' },
