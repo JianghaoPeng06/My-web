@@ -19,8 +19,6 @@ window.JP_ASSETS = {
   "characters/xiahua": "assets/images/characters/xiahua.jpg",
   "comics/chapter-1": "assets/images/comics/chapter-1.jpg",
   "comics/side-story-1": "assets/images/comics/side-story-1.jpg",
-  "research/archive-plan-2": "assets/images/research/archive-plan-2.jpg",
-  "research/archive-plan": "assets/images/research/archive-plan.jpg",
   "research/image-read": "assets/images/research/image-read.jpg",
   "research/my-philosophy": "assets/images/research/my-philosophy.jpg",
   "research/site-launch-2": "assets/images/research/site-launch-2.jpg",

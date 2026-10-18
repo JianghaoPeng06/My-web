@@ -99,7 +99,7 @@
       <div class="menu" id="menu-research" role="region" aria-label="研究" aria-hidden="true">
         <div class="menu__grid" style="--cols:2">
           <div><p class="menu__kicker" data-t="s.research.kicker">浏览研究</p><ul class="menu__list"><li><a href="research/news/" data-t="c.research.news.label">动态<i class="arr" aria-hidden="true"></i></a></li><li><a href="research/philosophy/" data-t="c.research.philosophy.label">思考<i class="arr" aria-hidden="true"></i></a></li></ul></div>
-          <div><p class="menu__kicker menu__kicker--blank" aria-hidden="true">&nbsp;</p><ul class="menu__list"><li><a href="articles/my-philosophy/" data-t="m.my-philosophy">The word<i class="arr" aria-hidden="true"></i></a></li><li><a href="articles/image-read/" data-t="m.image-read">图像<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+          <div><p class="menu__kicker menu__kicker--blank" aria-hidden="true">&nbsp;</p><ul class="menu__list"><li><a href="articles/my-philosophy/" data-t="m.my-philosophy">我的观点<i class="arr" aria-hidden="true"></i></a></li><li><a href="articles/image-read/" data-t="m.image-read">图像<i class="arr" aria-hidden="true"></i></a></li></ul></div>
         </div>
       </div>
       <div class="menu" id="menu-works" role="region" aria-label="作品" aria-hidden="true">
@@ -230,18 +230,18 @@
       <!-- #recent:start —— 「最近更新」由 build.ps1 按 data.js 的 date 生成（新的在前，同一天 weight 高的在前），
            不要手改；main.js 打开页面时还会按 data.js 再核对一遍 -->
       <div class="grid grid--3" data-recent-grid>
+        <article class="card reveal" data-slug="my-philosophy">
+          <a class="card__link" href="articles/my-philosophy/">
+            <span class="card__media"><img src="assets/images/research/my-philosophy.jpg" alt="我的观点" loading="lazy" width="800" height="800"></span>
+            <div class="card__body"><h3 class="card__title" title="我的观点">我的观点</h3>
+            <p class="card__meta"><span>思考</span><span>2026年10月16日</span><span>7 分钟阅读</span></p></div>
+          </a>
+        </article>
         <article class="card reveal" data-slug="design-specification-document">
           <a class="card__link" href="articles/design-specification-document/">
             <span class="card__media"><img src="assets/images/resources/design-specification-document.jpg" alt="JasperPeng 设计规范文档" loading="lazy" width="800" height="800"></span>
             <div class="card__body"><h3 class="card__title" title="JasperPeng 设计规范文档">JasperPeng 设计规范文档</h3>
             <p class="card__meta"><span>规范</span><span>2026年10月16日</span><span>9 分钟阅读</span></p></div>
-          </a>
-        </article>
-        <article class="card reveal" data-slug="archive-plan">
-          <a class="card__link" href="articles/archive-plan/">
-            <span class="card__media"><img src="assets/images/research/archive-plan.jpg" alt="接下来半年打算做的事" loading="lazy" width="800" height="800"></span>
-            <div class="card__body"><h3 class="card__title" title="接下来半年打算做的事">接下来半年打算做的事</h3>
-            <p class="card__meta"><span>动态</span><span>2026年10月16日</span><span>1 分钟阅读</span></p></div>
           </a>
         </article>
         <article class="card reveal" data-slug="site-launch">
