@@ -20,6 +20,8 @@ window.JP_ASSETS = {
   "comics/chapter-1": "assets/images/comics/chapter-1.jpg",
   "comics/side-story-1": "assets/images/comics/side-story-1.jpg",
   "research/image-read": "assets/images/research/image-read.jpg",
+  "research/my-philosophy-2": "assets/images/research/my-philosophy-2.jpg",
+  "research/my-philosophy-3": "assets/images/research/my-philosophy-3.jpg",
   "research/my-philosophy": "assets/images/research/my-philosophy.jpg",
   "research/site-launch-2": "assets/images/research/site-launch-2.jpg",
   "research/site-launch-3": "assets/images/research/site-launch-3.jpg",
