@@ -921,6 +921,7 @@
       { t: 'h3', v: '庆幸的是，游戏的音乐还能在中国大陆以外的平台收听。' },
       { t: 'h2', v: '嗵嗵-DOUDOU', c: 'jam' },
       { t: 'img', src: 'assets/images/research/regrettable-3.jpg', cap: '嗵嗵-DOUDOU' },
+      { t: 'html', v: '<div style="margin:24px 0 16px;padding:18px 20px;background:#FAF9F5;border:1px solid #E8E6DC;border-radius:12px;">\n  <a href="https://Floruit.show/" target="_blank" rel="noopener noreferrer"\n     style="display:inline-flex;align-items:center;gap:7px;color:#356AC3;font-size:16px;font-weight:600;text-decoration:none;letter-spacing:-0.2px;">\n    跳转至 Floruit.show/嗵嗵\n    <span style="font-size:17px;font-weight:400;">↗</span>\n  </a>\n  <p style="margin:10px 0 0;color:#77766F;font-size:12px;line-height:1.8;">\n    友链是为互助之目的，所指向站点均与 JasperPeng <strong style="color:#5E5D59;font-weight:600;">无隶属或合作关系</strong>，亦不构成对其的认可或背书。\n  </p>\n</div>' },
       { t: 'h3', v: '截至发文，中国大陆官方至今没有对这首歌下架作出任何解释。以下说法也并未得到证实。' },
       { t: 'p', v: '一种说法，《嗵嗵》于2025年3月发行，与中国官方大力宣传歌曲《玉盘》冲突，《玉盘》对于中国大陆和台湾有特殊含义，大陆评论区控评现象严重，反对者继而涌向比《玉盘》热度更高的《嗵嗵》评论区刷不良言论[1]，导致《嗵嗵》下架。然而，目前尚缺乏能够直接证明上述事件之间存在因果关系的可靠证据，因此，这一解释仍应视为未经证实的推测，而非已确认的下架原因。' },
       { t: 'p', v: '一种说法认为，《嗵嗵》下架可能与其歌词引发的争议有关。部分听众或二创创作者对歌词中的生命、死亡及情绪表达进行了较为阴暗的解读，并将其与自我伤害或自杀等主题联系起来。这种解读可能引发部分用户的投诉或举报，进而导致平台对歌曲及相关视频进行审核处理。然而，目前尚缺乏能够证明相关举报确实发生，以及举报直接导致歌曲下架的可靠证据。' },
