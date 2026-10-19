@@ -25,6 +25,8 @@ window.JP_ASSETS = {
   "research/my-philosophy": "assets/images/research/my-philosophy.jpg",
   "research/regrettable-2": "assets/images/research/regrettable-2.jpg",
   "research/regrettable-3": "assets/images/research/regrettable-3.jpg",
+  "research/regrettable-4": "assets/images/research/regrettable-4.jpg",
+  "research/regrettable-5": "assets/images/research/regrettable-5.jpg",
   "research/regrettable": "assets/images/research/regrettable.jpg",
   "research/site-launch-2": "assets/images/research/site-launch-2.jpg",
   "research/site-launch-3": "assets/images/research/site-launch-3.jpg",

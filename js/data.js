@@ -899,7 +899,7 @@
     ]});
 
   /* ===== About · Resources ===== */
-  add({ slug: 'regrettable', section: 'research', cat: 'philosophy', date: '2026-10-19', read: 5, weight: 4,
+  add({ slug: 'regrettable', section: 'research', cat: 'philosophy', date: '2026-10-19', read: 5, weight: 4, pin: true,
     title: L('遗憾的是', '遺憾的',
              'Regrettable', '残念ながら'),
     lede:  L('分享一些我喜爱的歌，被封禁的歌。',
@@ -911,11 +911,11 @@
     body: [
       { t: 'h2', v: '艺术是属于世界的。' },
       { t: 'p', v: '我一直认为，艺术是属于世界的，是一个时代的符号和证明，当今世界，不管哪个国家考古出新的作品，对于全人类的发展或研究都是重要且珍贵的。我们能学习到旧日的文化，不管是技术还是某一种图案纹样，不仅能为日后艺术发展提供参考，也能为科学界研究地球提供论据。' },
-      { t: 'p', v: '文化和艺术本来应该是互不相干，各自生长的领域。然而因为政见不一，在没有言论自由的国家，永远失去了本应属于世界的文化瑰宝，这不仅是这个国家的损失，更是对全人类的损失。因为你一个地方的封禁，导致世界各地的朋友再也听不到这段旋律，再也见不到这片光景。' },
-      { t: 'p', v: '当然，人们不会因为你的威严就屈服，人们自发留下了很多宝贵的作品，在非官方的渠道永远保护着......' },
+      { t: 'p', v: '一个国家因为政见立场不同就封禁文化作品，这是很荒诞的。政治本身就是自由的，多样的，谁都有选择的权力。因为政治立场不同就封禁作品，甚至拘捕作者，这是对不同声音的政治迫害。作品的消失是全人类的损失，是时代的损失。' },
       { t: 'h2', v: '遗憾的' },
       { t: 'h2', v: '还愿-草东没有派对', c: 'jam' },
       { t: 'img', src: 'assets/images/research/regrettable-2.jpg', cap: '还愿-草东没有派对' },
+      { t: 'html', v: '<div style="margin:24px 0 16px;padding:18px 20px;background:#FAF9F5;border:1px solid #E8E6DC;border-radius:12px;">\n  <a href="https://shop.redcandlegames.com/" target="_blank" rel="noopener noreferrer"\n     style="display:inline-flex;align-items:center;gap:7px;color:#356AC3;font-size:16px;font-weight:600;text-decoration:none;letter-spacing:-0.2px;">\n    访问赤烛游戏官方商店\n    <span style="font-size:17px;font-weight:400;">↗</span>\n  </a>\n</div>' },
       { t: 'p', v: '游戏《还愿》的歌曲，因维尼熊称呼，被中国大陆封禁，起初人们以为只是大陆作妖，已经见怪不怪了，没想到后来Steam全球商店都下架了这部作品。' },
       { t: 'p', v: '2020 年 12 月： 赤烛宣布准备在 GOG 上重新发行，但 GOG 随后取消了发行计划。\n2021 年 3 月： 赤烛通过自己的官方商店重新销售《还愿》。\n2025 年 2 月： 开发商明确表示，没有重新上架 Steam 的计划，也没有 Steam 激活码可供购买。' },
       { t: 'h3', v: '庆幸的是，游戏的音乐还能在中国大陆以外的平台收听。' },
@@ -927,6 +927,15 @@
       { t: 'p', v: '一种说法认为，《嗵嗵》下架可能与其歌词引发的争议有关。部分听众或二创创作者对歌词中的生命、死亡及情绪表达进行了较为阴暗的解读，并将其与自我伤害或自杀等主题联系起来。这种解读可能引发部分用户的投诉或举报，进而导致平台对歌曲及相关视频进行审核处理。然而，目前尚缺乏能够证明相关举报确实发生，以及举报直接导致歌曲下架的可靠证据。' },
       { t: 'p', v: '此外，DOUDOU乐队遭受同行恶意举报也是一种未被证实的猜测。' },
       { t: 'p', v: '最后，关于福禄寿乐队过往以及版权方主动下架猜测很容易被证伪，首先，如果因为福禄寿乐队过往而下架作品，那也是福禄寿原账号先被下架封禁，而非DOUDOU账号，原账号《我用什么把你留住》热度比《嗵嗵》高，影响力也更大，没有理由只有《嗵嗵》被下架，其次，如果版权方主动要求下架，不会使全大陆内网无法搜索“嗵嗵”词条，也不会有改歌词版再次被下架。' },
+      { t: 'h2', v: '玫瑰色的你-张悬', c: 'jam' },
+      { t: 'img', src: 'assets/images/research/regrettable-4.jpg', cap: '玫瑰色的你-张悬' },
+      { t: 'html', v: '<div style="margin:24px 0 16px;padding:18px 20px;background:#FAF9F5;border:1px solid #E8E6DC;border-radius:12px;">\n  <a href="https://www.youtube.com/watch?v=CMH-VJ9cvG8"\n     target="_blank"\n     rel="noopener noreferrer"\n     style="display:inline-flex;align-items:center;gap:7px;color:#C05C78;font-size:16px;font-weight:600;text-decoration:none;letter-spacing:-0.2px;">\n    玫瑰色的你MV-张悬（需国际互联网环境）\n    <span style="font-size:17px;font-weight:400;">↗</span>\n  </a>\n</div>' },
+      { t: 'p', v: '有较充分的公开资料表明，这首歌的 MV 曾因涉及西藏相关政治符号而遭要求删除，歌曲音频后来也长期在中国大陆音乐平台无法正常收听。但两者的证据强度不同：MV 删除有一份流传的具体指令作为依据，而音频全面下架的具体行政命令及完整因果链，目前仍未获得同等强度的公开证实。' },
+      { t: 'p', v: '2014 年 4 月 10 日，一份后来由中国数字时代刊出的网络审查指令写道，张悬《玫瑰色的你》MV 在第 49 秒出现救护车上的人物，其头巾带有 “Free Tibet” 字样，衣服上有雪山狮子旗，随后要求删除该 MV。' },
+      { t: 'img', src: 'assets/images/research/regrettable-5.jpg', cap: '万千花蕊慈母悲哀-珂拉琪' },
+      { t: 'html', v: '<div style="margin:24px 0 16px;padding:18px 20px;background:#FAF9F5;border:1px solid #E8E6DC;border-radius:12px;">\n  <a href="https://www.youtube.com/watch?v=kkUWlcjmOew"\n     target="_blank"\n     rel="noopener noreferrer"\n     style="display:inline-flex;align-items:center;gap:7px;color:#637D91;font-size:16px;font-weight:600;text-decoration:none;letter-spacing:-0.2px;">\n    万千花蕊慈母悲哀MV-珂拉琪（需国际互联网环境）\n    <span style="font-size:17px;font-weight:400;">↗</span>\n  </a>\n</div>' },
+      { t: 'p', v: '2025 年 11 月，bilibili用户发布了标题为“下架歌曲原版《万千花蕊慈母悲哀》”的视频，并称原版在网易云、酷狗、QQ 音乐等平台无法正常获取。StreetVoice 的歌曲评论区也出现过用户报告 QQ 音乐下架的留言。' },
+      { t: 'p', v: '较多人支持的观点是歌曲作者珂拉琪乐队成员政见不符合中国大陆所认为的政治正确，因此封禁了此乐队在中国大陆发表的作品。个人看来此做法是非常荒诞的，政见立场本身就没有对错，却被一个国家强加对错标签，封禁不同的声音，最终只是掩耳盗铃。' },
       { t: 'hr' },
       { t: 'p', v: '[1]不良言论：此处特指中国大陆所认为的不良言论，对全世界范围内无适用性。' }
     ]});
