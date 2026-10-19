@@ -517,7 +517,7 @@
              'What kind of relationship does life have with the world?',
              '生命にとって世界とは、どのような関係なのか。'),
     menu: L('我的观点', '我的哲學', 'My Philosophy', '私の哲学'),
-    tags: [L('研究','研究','Research','リサーチ'), L('思考','思考','Philosophy','思索')],
+    tags: [L('研究','研究','Research','リサーチ'), L('思考','思考','Philosophy','思索'), L('哲学','哲學','philosophy','哲学')],
     body: [
       { t: 'h2', v: '我无法完全确定，自己是否真的醒着。' },
       { t: 'p', v: '从分子，原子再到细胞，血液循环，最后竟然能产生一个能思考，有想法的意识，这简直不可思议。' },
@@ -906,8 +906,9 @@
              '分享一些我喜愛的歌，被封禁的歌',
              'Share some songs I love — songs that have been banned.',
              '私の好きな曲、そして発禁になった曲をいくつか紹介したい。'),
+    author: '柠檬雪梨LemonSydney',
     menu: true,
-    tags: [L('资源','資源','Resources','リソース'), P('2026')],
+    tags: [L('思考','思考','Philosophy','思索'), L('研究','研究','Research','リサーチ'), L('哲学','哲學','philosophy','哲学'), L('音乐','音樂','music','音楽'), L('分享','分享','share','分かち合う')],
     body: [
       { t: 'h2', v: '艺术是属于世界的。' },
       { t: 'p', v: '我一直认为，艺术是属于世界的，是一个时代的符号和证明，当今世界，不管哪个国家考古出新的作品，对于全人类的发展或研究都是重要且珍贵的。我们能学习到旧日的文化，不管是技术还是某一种图案纹样，不仅能为日后艺术发展提供参考，也能为科学界研究地球提供论据。' },
@@ -932,10 +933,12 @@
       { t: 'html', v: '<div style="margin:24px 0 16px;padding:18px 20px;background:#FAF9F5;border:1px solid #E8E6DC;border-radius:12px;">\n  <a href="https://www.youtube.com/watch?v=CMH-VJ9cvG8"\n     target="_blank"\n     rel="noopener noreferrer"\n     style="display:inline-flex;align-items:center;gap:7px;color:#C05C78;font-size:16px;font-weight:600;text-decoration:none;letter-spacing:-0.2px;">\n    玫瑰色的你MV-张悬（需国际互联网环境）\n    <span style="font-size:17px;font-weight:400;">↗</span>\n  </a>\n</div>' },
       { t: 'p', v: '有较充分的公开资料表明，这首歌的 MV 曾因涉及西藏相关政治符号而遭要求删除，歌曲音频后来也长期在中国大陆音乐平台无法正常收听。但两者的证据强度不同：MV 删除有一份流传的具体指令作为依据，而音频全面下架的具体行政命令及完整因果链，目前仍未获得同等强度的公开证实。' },
       { t: 'p', v: '2014 年 4 月 10 日，一份后来由中国数字时代刊出的网络审查指令写道，张悬《玫瑰色的你》MV 在第 49 秒出现救护车上的人物，其头巾带有 “Free Tibet” 字样，衣服上有雪山狮子旗，随后要求删除该 MV。' },
+      { t: 'h2', v: '万千花蕊慈母悲哀-珂拉琪', c: 'jam' },
       { t: 'img', src: 'assets/images/research/regrettable-5.jpg', cap: '万千花蕊慈母悲哀-珂拉琪' },
       { t: 'html', v: '<div style="margin:24px 0 16px;padding:18px 20px;background:#FAF9F5;border:1px solid #E8E6DC;border-radius:12px;">\n  <a href="https://www.youtube.com/watch?v=kkUWlcjmOew"\n     target="_blank"\n     rel="noopener noreferrer"\n     style="display:inline-flex;align-items:center;gap:7px;color:#637D91;font-size:16px;font-weight:600;text-decoration:none;letter-spacing:-0.2px;">\n    万千花蕊慈母悲哀MV-珂拉琪（需国际互联网环境）\n    <span style="font-size:17px;font-weight:400;">↗</span>\n  </a>\n</div>' },
       { t: 'p', v: '2025 年 11 月，bilibili用户发布了标题为“下架歌曲原版《万千花蕊慈母悲哀》”的视频，并称原版在网易云、酷狗、QQ 音乐等平台无法正常获取。StreetVoice 的歌曲评论区也出现过用户报告 QQ 音乐下架的留言。' },
       { t: 'p', v: '较多人支持的观点是歌曲作者珂拉琪乐队成员政见不符合中国大陆所认为的政治正确，因此封禁了此乐队在中国大陆发表的作品。个人看来此做法是非常荒诞的，政见立场本身就没有对错，却被一个国家强加对错标签，封禁不同的声音，最终只是掩耳盗铃。' },
+      { t: 'p', v: 'Pray for world peace.', c: 'dusk', f: 'deco' },
       { t: 'hr' },
       { t: 'p', v: '[1]不良言论：此处特指中国大陆所认为的不良言论，对全世界范围内无适用性。' }
     ]});
