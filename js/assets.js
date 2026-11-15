@@ -19,6 +19,23 @@ window.JP_ASSETS = {
   "characters/xiahua": "assets/images/characters/xiahua.jpg",
   "comics/chapter-1": "assets/images/comics/chapter-1.jpg",
   "comics/side-story-1": "assets/images/comics/side-story-1.jpg",
+  "research/from-sans-to-serif-10": "assets/images/research/from-sans-to-serif-10.jpg",
+  "research/from-sans-to-serif-11": "assets/images/research/from-sans-to-serif-11.jpg",
+  "research/from-sans-to-serif-12": "assets/images/research/from-sans-to-serif-12.jpg",
+  "research/from-sans-to-serif-13": "assets/images/research/from-sans-to-serif-13.jpg",
+  "research/from-sans-to-serif-14": "assets/images/research/from-sans-to-serif-14.jpg",
+  "research/from-sans-to-serif-15": "assets/images/research/from-sans-to-serif-15.png",
+  "research/from-sans-to-serif-16": "assets/images/research/from-sans-to-serif-16.png",
+  "research/from-sans-to-serif-17": "assets/images/research/from-sans-to-serif-17.jpg",
+  "research/from-sans-to-serif-2": "assets/images/research/from-sans-to-serif-2.jpg",
+  "research/from-sans-to-serif-3": "assets/images/research/from-sans-to-serif-3.jpg",
+  "research/from-sans-to-serif-4": "assets/images/research/from-sans-to-serif-4.jpg",
+  "research/from-sans-to-serif-5": "assets/images/research/from-sans-to-serif-5.jpg",
+  "research/from-sans-to-serif-6": "assets/images/research/from-sans-to-serif-6.jpg",
+  "research/from-sans-to-serif-7": "assets/images/research/from-sans-to-serif-7.jpg",
+  "research/from-sans-to-serif-8": "assets/images/research/from-sans-to-serif-8.jpg",
+  "research/from-sans-to-serif-9": "assets/images/research/from-sans-to-serif-9.jpg",
+  "research/from-sans-to-serif": "assets/images/research/from-sans-to-serif.jpg",
   "research/image-read": "assets/images/research/image-read.jpg",
   "research/my-philosophy-2": "assets/images/research/my-philosophy-2.jpg",
   "research/my-philosophy-3": "assets/images/research/my-philosophy-3.jpg",
@@ -55,8 +72,7 @@ window.JP_ASSETS = {
   "works/nanjing-station": "assets/images/works/nanjing-station.jpg",
   "works/negative-space": "assets/images/works/negative-space.jpg",
   "works/osaka": "assets/images/works/osaka.jpg",
-  "works/tongtong-mask": "assets/images/works/tongtong-mask.jpg",
-  "works/type-scale": "assets/images/works/type-scale.jpg"
+  "works/tongtong-mask": "assets/images/works/tongtong-mask.jpg"
 };
 /* 条漫页面：assets/comics/<章节 slug>/ 里的图，按文件名排好序 */
 window.JP_COMIC_PAGES = {

@@ -99,7 +99,7 @@
       <div class="menu" id="menu-research" role="region" aria-label="研究" aria-hidden="true">
         <div class="menu__grid" style="--cols:2">
           <div><p class="menu__kicker" data-t="s.research.kicker">浏览研究</p><ul class="menu__list"><li><a href="research/news/" data-t="c.research.news.label">动态<i class="arr" aria-hidden="true"></i></a></li><li><a href="research/philosophy/" data-t="c.research.philosophy.label">思考<i class="arr" aria-hidden="true"></i></a></li></ul></div>
-          <div><p class="menu__kicker menu__kicker--blank" aria-hidden="true">&nbsp;</p><ul class="menu__list"><li><a href="articles/regrettable/" data-t="m.regrettable">遗憾的是<i class="arr" aria-hidden="true"></i></a></li><li><a href="articles/my-philosophy/" data-t="m.my-philosophy">我的观点<i class="arr" aria-hidden="true"></i></a></li><li><a href="articles/image-read/" data-t="m.image-read">图像<i class="arr" aria-hidden="true"></i></a></li></ul></div>
+          <div><p class="menu__kicker menu__kicker--blank" aria-hidden="true">&nbsp;</p><ul class="menu__list"><li><a href="articles/from-sans-to-serif/" data-t="m.from-sans-to-serif">中英混排的字号阶梯<i class="arr" aria-hidden="true"></i></a></li><li><a href="articles/regrettable/" data-t="m.regrettable">遗憾的是<i class="arr" aria-hidden="true"></i></a></li><li><a href="articles/my-philosophy/" data-t="m.my-philosophy">我的观点<i class="arr" aria-hidden="true"></i></a></li><li><a href="articles/image-read/" data-t="m.image-read">图像<i class="arr" aria-hidden="true"></i></a></li></ul></div>
         </div>
       </div>
       <div class="menu" id="menu-works" role="region" aria-label="作品" aria-hidden="true">
@@ -230,6 +230,13 @@
       <!-- #recent:start —— 「最近更新」由 build.ps1 按 data.js 的 date 生成（新的在前，同一天 weight 高的在前），
            不要手改；main.js 打开页面时还会按 data.js 再核对一遍 -->
       <div class="grid grid--3" data-recent-grid>
+        <article class="card reveal" data-slug="from-sans-to-serif">
+          <a class="card__link" href="articles/from-sans-to-serif/">
+            <span class="card__media"><img src="assets/images/research/from-sans-to-serif.jpg" alt="中英混排的字号阶梯" loading="lazy" width="800" height="800"></span>
+            <div class="card__body"><h3 class="card__title" title="中英混排的字号阶梯">中英混排的字号阶梯</h3>
+            <p class="card__meta"><span>动态</span><span>2026年11月15日</span><span>33 分钟阅读</span></p></div>
+          </a>
+        </article>
         <article class="card reveal" data-slug="regrettable">
           <a class="card__link" href="articles/regrettable/">
             <span class="card__media"><img src="assets/images/research/regrettable.jpg" alt="遗憾的是" loading="lazy" width="800" height="800"></span>
@@ -244,16 +251,16 @@
             <p class="card__meta"><span>思考</span><span>2026年10月16日</span><span>7 分钟阅读</span></p></div>
           </a>
         </article>
-        <article class="card reveal" data-slug="design-specification-document">
-          <a class="card__link" href="articles/design-specification-document/">
-            <span class="card__media"><img src="assets/images/resources/design-specification-document.jpg" alt="JasperPeng 设计规范文档" loading="lazy" width="800" height="800"></span>
-            <div class="card__body"><h3 class="card__title" title="JasperPeng 设计规范文档">JasperPeng 设计规范文档</h3>
-            <p class="card__meta"><span>规范</span><span>2026年10月16日</span><span>9 分钟阅读</span></p></div>
-          </a>
-        </article>
       </div>
 
       <div class="list" style="margin-top:var(--sp-xl)" data-recent-list>
+        <article class="list__item reveal" data-slug="design-specification-document">
+          <a class="list__link" href="articles/design-specification-document/">
+            <span class="list__media"><img src="assets/images/resources/design-specification-document.jpg" alt="JasperPeng 设计规范文档" loading="lazy" width="360" height="360"></span>
+            <div><h3 class="list__title" title="JasperPeng 设计规范文档">JasperPeng 设计规范文档</h3>
+            <p class="list__meta"><span>规范</span><span>9 分钟阅读</span></p></div>
+          </a>
+        </article>
         <article class="list__item reveal" data-slug="site-launch">
           <a class="list__link" href="articles/site-launch/">
             <span class="list__media"><img src="assets/images/research/site-launch.jpg" alt="JasperPeng 个人网站正式上线！来自 2026 年的声音。" loading="lazy" width="360" height="360"></span>
@@ -287,13 +294,6 @@
             <span class="list__media"><img src="assets/images/universe/noote-metro.png" alt="NooteMetro：线网的第三次修订" loading="lazy" width="360" height="360"></span>
             <div><h3 class="list__title" title="NooteMetro：线网的第三次修订">NooteMetro：线网的第三次修订</h3>
             <p class="list__meta"><span>轨道交通</span><span>9 分钟阅读</span></p></div>
-          </a>
-        </article>
-        <article class="list__item reveal" data-slug="tongtong-mask">
-          <a class="list__link" href="articles/tongtong-mask/">
-            <span class="list__media"><img src="assets/images/works/tongtong-mask.jpg" alt="嗵嗵仮面：一张面具的重量分配" loading="lazy" width="360" height="360"></span>
-            <div><h3 class="list__title" title="嗵嗵仮面：一张面具的重量分配">嗵嗵仮面：一张面具的重量分配</h3>
-            <p class="list__meta"><span>手作</span><span>6 分钟阅读</span></p></div>
           </a>
         </article>
       </div>
